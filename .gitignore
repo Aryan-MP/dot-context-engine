@@ -1,0 +1,27 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+dist/
+build/
+.venv/
+venv/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Dot's own local state
+.dot/
+dot-memories.json
+
+# Node
+node_modules/
+*.tsbuildinfo
+vscode-extension/out/
+vscode-extension/*.vsix
+dashboard/dist/
+
+# OS / editors
+.DS_Store
+*.log

@@ -1,0 +1,76 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "dot-context"
+version = "0.1.0"
+description = "Dot — a local-first AI context memory daemon. Stop re-explaining your codebase to every AI tool."
+readme = "README.md"
+license = { text = "MIT" }
+requires-python = ">=3.11"
+authors = [{ name = "Dot Contributors" }]
+keywords = ["ai", "context", "memory", "daemon", "copilot", "claude", "embeddings"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Software Development :: Tools",
+]
+
+dependencies = [
+    "typer>=0.12",
+    "fastapi>=0.110",
+    "uvicorn[standard]>=0.29",
+    "watchdog>=4.0",
+    "GitPython>=3.1",
+    "SQLAlchemy>=2.0",
+    "APScheduler>=3.10",
+    "pydantic>=2.6",
+    "httpx>=0.27",
+    "rich>=13.7",
+]
+
+[project.optional-dependencies]
+# The ML stack is optional so the CLI and daemon stay usable on machines
+# that can't (or don't want to) install torch. Dot degrades gracefully to
+# a deterministic hashing embedder and SQLite-backed vector search.
+ml = [
+    "chromadb>=0.5",
+    "sentence-transformers>=2.7",
+]
+treesitter = [
+    "tree-sitter>=0.21",
+    "tree-sitter-language-pack>=0.4",
+]
+dev = [
+    "pytest>=8.0",
+    "pytest-asyncio>=0.23",
+    "ruff>=0.4",
+    "mypy>=1.9",
+]
+all = ["dot-context[ml,treesitter,dev]"]
+
+[project.scripts]
+dot = "dot.cli:app"
+
+[project.urls]
+Homepage = "https://github.com/aryanp-spektra/dot-context-engine"
+
+[tool.hatch.build.targets.wheel]
+packages = ["dot"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B"]
+# B008: function calls in defaults are Typer's idiom; B905: zip strictness noise
+ignore = ["E501", "B008", "B905"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+asyncio_mode = "auto"
