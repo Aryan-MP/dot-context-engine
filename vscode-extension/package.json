@@ -1,0 +1,101 @@
+{
+  "name": "dot-context",
+  "displayName": "Dot — AI Context Memory",
+  "description": "Injects your codebase's memory (code context + captured decisions) into Copilot and other AI tools via the local Dot daemon.",
+  "version": "0.1.0",
+  "publisher": "dot",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/aryanp-spektra/dot-context-engine"
+  },
+  "engines": {
+    "vscode": "^1.90.0"
+  },
+  "categories": ["AI", "Other"],
+  "activationEvents": ["onStartupFinished"],
+  "main": "./out/extension.js",
+  "contributes": {
+    "commands": [
+      { "command": "dot.captureDecision", "title": "Dot: Capture This Decision" },
+      { "command": "dot.showContext", "title": "Dot: Show Context for Current File" },
+      { "command": "dot.sync", "title": "Dot: Force Re-index Project" },
+      { "command": "dot.startDaemon", "title": "Dot: Start Daemon" },
+      { "command": "dot.stopDaemon", "title": "Dot: Stop Daemon" },
+      { "command": "dot.openDashboard", "title": "Dot: Open Dashboard" }
+    ],
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "dot-sidebar",
+          "title": "Dot",
+          "icon": "media/dot.svg"
+        }
+      ]
+    },
+    "views": {
+      "dot-sidebar": [
+        {
+          "type": "webview",
+          "id": "dot.sidebarView",
+          "name": "What Dot Knows"
+        }
+      ]
+    },
+    "configuration": {
+      "title": "Dot",
+      "properties": {
+        "dot.apiUrl": {
+          "type": "string",
+          "default": "http://127.0.0.1:7337",
+          "description": "Base URL of the local Dot daemon."
+        },
+        "dot.autoStartDaemon": {
+          "type": "boolean",
+          "default": true,
+          "description": "Start the Dot daemon automatically when a Dot-initialized workspace opens."
+        },
+        "dot.injectIntoCopilot": {
+          "type": "boolean",
+          "default": true,
+          "description": "Register Dot as a chat context tool for Copilot / Language Model API consumers."
+        },
+        "dot.tokenBudget": {
+          "type": "number",
+          "default": 4000,
+          "description": "Token budget for assembled context."
+        }
+      }
+    },
+    "languageModelTools": [
+      {
+        "name": "dot-context_lookup",
+        "displayName": "Dot codebase memory",
+        "modelDescription": "Retrieves relevant code chunks and recorded architectural decisions for the current workspace from the local Dot context daemon. Use when you need project-specific knowledge: how something is implemented, why a choice was made, or which files relate to a topic.",
+        "canBeReferencedInPrompt": true,
+        "toolReferenceName": "dotContext",
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "query": {
+              "type": "string",
+              "description": "Natural-language question or topic to retrieve context for"
+            }
+          },
+          "required": ["query"]
+        }
+      }
+    ]
+  },
+  "scripts": {
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "lint": "tsc --noEmit",
+    "package": "vsce package"
+  },
+  "devDependencies": {
+    "@types/node": "^20.12.0",
+    "@types/vscode": "^1.90.0",
+    "typescript": "^5.4.0"
+  }
+}
