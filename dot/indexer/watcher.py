@@ -17,7 +17,7 @@ from pathlib import Path
 from watchdog.events import FileSystemEvent, FileSystemEventHandler
 from watchdog.observers import Observer
 
-from dot.config import INDEXABLE_EXTENSIONS, ProjectConfig
+from dot.config import SHARED_MEMORIES_FILE, ProjectConfig
 
 logger = logging.getLogger(__name__)
 
@@ -76,7 +76,9 @@ class ProjectWatcher:
         self._stop = threading.Event()
 
     def is_relevant(self, path: Path) -> bool:
-        if path.suffix.lower() not in INDEXABLE_EXTENSIONS:
+        # The shared-memories file is not indexed as code, but changes to it
+        # (e.g. after `git pull`) must reach the daemon so it can import them.
+        if path.name != SHARED_MEMORIES_FILE and path.suffix.lower() not in self.config.indexable_extensions:
             return False
         try:
             relative = path.resolve().relative_to(Path(self.config.project_root).resolve())
@@ -135,10 +137,13 @@ def walk_project(config: ProjectConfig) -> list[Path]:
     """All indexable files in the project, respecting ignore rules."""
     root = Path(config.project_root)
     ignored = config.ignored_dirs
+    extensions = config.indexable_extensions
     results: list[Path] = []
     for path in root.rglob("*"):
-        if not path.is_file() or path.suffix.lower() not in INDEXABLE_EXTENSIONS:
+        if not path.is_file() or path.suffix.lower() not in extensions:
             continue
+        if path.name == SHARED_MEMORIES_FILE:
+            continue  # imported as memories, not indexed as code
         relative = path.relative_to(root)
         if any(part in ignored for part in relative.parts):
             continue

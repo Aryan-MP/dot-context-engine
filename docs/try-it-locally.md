@@ -90,16 +90,38 @@ You get the project overview, a force-directed dependency graph, the searchable
 memory timeline, and a context-preview page that shows exactly what Dot would
 inject for any query — with per-chunk score breakdowns.
 
-## 6. AI tool integrations
+## 6. Team collaboration (shared memory)
 
-**Claude Code** — already wired by `dot init`: CLAUDE.md tells Claude how to
-query Dot, and a SessionStart hook injects context when a session begins. Ask
-Claude something project-specific and it can pull
-`curl 'http://127.0.0.1:7337/context?query=…&fmt=claude'` itself.
+Decisions mined from git history are automatically shared — every teammate
+mining the same history converges on identical memories. For everything else,
+share explicitly:
 
-**GitHub Copilot, no extension** — the daemon refreshes a Dot-managed section
-of `.github/copilot-instructions.md` hourly with your top decisions; Copilot
-picks that file up natively.
+```bash
+dot memory add "Chose Stripe over Adyen for EU coverage" --share
+git add dot-memories.jsonl && git commit -m "share decision" && git push
+```
+
+`dot-memories.jsonl` is a committed, append-only file. When a teammate pulls,
+their daemon notices the change and imports the new memories automatically
+(or run `dot memory pull` manually). New clones import everything on
+`dot init`. No server, no accounts — git is the sync.
+
+```bash
+dot memory share <id>     # share an existing memory after the fact
+dot memory pull           # force-import after a git pull
+```
+
+## 7. AI tool integrations
+
+**Claude Code** — `dot init` wires it when it detects Claude usage (a
+`.claude/` directory or existing CLAUDE.md; force with `--claude`, skip with
+`--no-claude`). It registers a real **MCP server** in `.mcp.json`, giving
+Claude native `dot_context`, `dot_remember`, and `dot_status` tools — plus
+CLAUDE.md instructions and a SessionStart hook as fallbacks.
+
+**GitHub Copilot, no extension** — opt in with `dot init --copilot`; the
+daemon then maintains a Dot section in `.github/copilot-instructions.md`
+(refreshed hourly) with your top decisions, which Copilot picks up natively.
 
 **VS Code extension** (sidebar, decision capture, Copilot LM tool):
 
@@ -116,7 +138,7 @@ npx @vscode/vsce package    # → dot-context-0.1.0.vsix
 code --install-extension dot-context-0.1.0.vsix
 ```
 
-## 7. Keep it running / shut it down
+## 8. Keep it running / shut it down
 
 ```bash
 dot daemon stop                  # stop the background daemon
@@ -136,3 +158,7 @@ rm -rf .dot                      # nuke everything Dot knows about a project
 - `tree-sitter` parsing for non-Python languages is an optional extra
   (`pip install -e ".[treesitter]"`); without it a regex heuristic still finds
   functions, classes, and imports in most C-like languages.
+- Plain-text content: add extensions in `.dot/config.json`, e.g.
+  `"extra_extensions": [".txt"]`, then `dot sync`.
+- Running Dot on several projects at once is fine — each daemon grabs the next
+  free port automatically and records it in its project's `.dot/config.json`.

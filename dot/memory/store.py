@@ -493,6 +493,17 @@ class Store:
                 for record in session.scalars(stmt).all()
             ]
 
+    def existing_memory_ids(self) -> set[str]:
+        with self.session() as session:
+            return set(session.scalars(select(MemoryRecord.memory_id)).all())
+
+    def get_memory(self, memory_id: str) -> Memory | None:
+        with self.session() as session:
+            record = session.get(MemoryRecord, memory_id)
+            if record is None:
+                return None
+            return Memory.from_record(record, self.config.memory_half_life_days)
+
     def delete_memory(self, memory_id: str) -> bool:
         with self.session() as session:
             record = session.get(MemoryRecord, memory_id)
