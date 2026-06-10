@@ -1,6 +1,8 @@
 [build-system]
-requires = ["hatchling"]
-build-backend = "hatchling.build"
+# setuptools over hatchling: hatchling's editable hooks get shadowed by stale
+# system copies on some Debian/Ubuntu images, breaking `pip install -e .`
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
 
 [project]
 name = "dot-context"
@@ -59,8 +61,8 @@ dot = "dot.cli:app"
 [project.urls]
 Homepage = "https://github.com/aryanp-spektra/dot-context-engine"
 
-[tool.hatch.build.targets.wheel]
-packages = ["dot"]
+[tool.setuptools.packages.find]
+include = ["dot*"]
 
 [tool.ruff]
 line-length = 100
