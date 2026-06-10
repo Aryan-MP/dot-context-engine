@@ -25,3 +25,4 @@ dashboard/dist/
 # OS / editors
 .DS_Store
 *.log
+.claude/

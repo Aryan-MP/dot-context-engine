@@ -30,8 +30,12 @@ are generated locally with sentence-transformers, storage is SQLite + ChromaDB o
 
 ## Quick start
 
+> Not on PyPI yet — install from source. Full walkthrough (CLI, API, dashboard,
+> VS Code extension): [docs/try-it-locally.md](docs/try-it-locally.md).
+
 ```bash
-pip install dot-context[ml]      # or plain `dot-context` for the dependency-light build
+git clone https://github.com/aryanp-spektra/dot-context-engine.git
+cd dot-context-engine && pip install -e ".[ml]"   # or ".[dev]" for the light build
 
 cd your-project
 dot init                          # index the project, wire up git + Claude Code hooks
