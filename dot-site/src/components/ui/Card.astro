@@ -1,0 +1,19 @@
+---
+export interface Props {
+  hover?: boolean;
+  glow?: boolean;
+  class?: string;
+  as?: string;
+}
+
+const { hover = false, glow = false, class: extra = '', as = 'div' } = Astro.props;
+const Tag = as as any;
+
+const base = 'bg-elevated rounded-2xl border border-border transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)]';
+const hoverCls = hover ? 'hover:border-accent/20 hover:-translate-y-0.5' : '';
+const glowCls = glow ? 'hover:shadow-[0_20px_60px_-20px_rgba(124,106,247,0.35)]' : '';
+---
+
+<Tag class={`${base} ${hoverCls} ${glowCls} ${extra}`}>
+  <slot />
+</Tag>

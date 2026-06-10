@@ -1,0 +1,35 @@
+---
+import SectionLabel from '../ui/SectionLabel.astro';
+import { truths } from '../../data/truths.ts';
+
+// Distribute across three columns for a masonry feel without JS.
+const columns: string[][] = [[], [], []];
+truths.forEach((t, i) => columns[i % 3].push(t));
+---
+
+<section id="truths" class="py-32">
+  <div class="container-dot">
+    <SectionLabel>Built for systems thinkers</SectionLabel>
+    <h2 class="reveal reveal-delay-1 mt-5 font-serif text-[clamp(36px,5vw,56px)] font-normal leading-[1.1]">
+      Every developer<br /><span class="text-primary/70">knows this feeling.</span>
+    </h2>
+
+    <div class="mt-14 grid grid-cols-1 gap-5 md:grid-cols-3">
+      {
+        columns.map((col, colIndex) => (
+          <div class="flex flex-col gap-5">
+            {col.map((truth, i) => (
+              <blockquote
+                class={`reveal reveal-delay-${((colIndex + i) % 4) + 1} rounded-2xl border-l-2 border-accent bg-elevated p-8`}
+              >
+                <p class="font-serif text-[22px] font-normal italic leading-snug text-primary/90">
+                  “{truth}”
+                </p>
+              </blockquote>
+            ))}
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</section>

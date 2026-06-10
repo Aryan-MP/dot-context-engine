@@ -1,0 +1,86 @@
+---
+const REPO = 'aryanp-spektra/dot-context-engine';
+const GITHUB_URL = `https://github.com/${REPO}`;
+
+const product = [
+  { label: 'Docs', href: '/docs' },
+  { label: 'Changelog', href: '/changelog' },
+  { label: 'GitHub', href: GITHUB_URL },
+  { label: 'Discord', href: GITHUB_URL + '/discussions' },
+];
+const community = [
+  { label: 'Twitter / X', href: 'https://x.com' },
+  { label: 'Contributing', href: GITHUB_URL + '/blob/main/CONTRIBUTING.md' },
+  { label: 'Issues', href: GITHUB_URL + '/issues' },
+];
+const year = new Date().getFullYear();
+---
+
+<footer class="border-t border-border bg-surface">
+  <div class="container-dot grid grid-cols-1 gap-12 py-14 md:grid-cols-3">
+    <!-- Brand -->
+    <div>
+      <a href="/" class="text-lg font-semibold tracking-tight">d<span class="text-accent">·</span>t</a>
+      <p class="mt-3 max-w-xs text-sm text-secondary">Memory for every AI tool you use.</p>
+      <p class="mt-2 text-xs text-muted">Built by developers, for developers.</p>
+    </div>
+
+    <!-- Link columns -->
+    <div class="grid grid-cols-2 gap-8">
+      <div>
+        <h3 class="mb-3 font-mono text-xs uppercase tracking-wider text-muted">Product</h3>
+        <ul class="space-y-2">
+          {
+            product.map((l) => (
+              <li>
+                <a
+                  href={l.href}
+                  class="text-sm text-secondary transition-colors hover:text-primary"
+                  {...(l.href.startsWith('http') ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+                >
+                  {l.label}
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+      <div>
+        <h3 class="mb-3 font-mono text-xs uppercase tracking-wider text-muted">Community</h3>
+        <ul class="space-y-2">
+          {
+            community.map((l) => (
+              <li>
+                <a
+                  href={l.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="text-sm text-secondary transition-colors hover:text-primary"
+                >
+                  {l.label}
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+    </div>
+
+    <!-- Install -->
+    <div>
+      <h3 class="mb-3 font-mono text-xs uppercase tracking-wider text-muted">Install</h3>
+      <div class="space-y-2">
+        <code class="block rounded-lg border border-border bg-bg px-3 py-2 font-mono text-sm text-secondary">pip install dot-ai</code>
+        <code class="block rounded-lg border border-border bg-bg px-3 py-2 font-mono text-sm text-muted">brew install dot-ai <span class="text-amber/70">(soon)</span></code>
+      </div>
+      <p class="mt-4 text-xs text-muted">Supports: macOS · Linux · Windows</p>
+    </div>
+  </div>
+
+  <div class="border-t border-border">
+    <div class="container-dot flex flex-col gap-2 py-6 text-xs text-muted sm:flex-row sm:items-center">
+      <span>© {year} Dot. MIT License.</span>
+      <span class="sm:ml-auto">Your code never leaves your machine.</span>
+    </div>
+  </div>
+</footer>

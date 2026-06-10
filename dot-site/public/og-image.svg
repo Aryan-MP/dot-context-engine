@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
+  <defs>
+    <radialGradient id="glow" cx="50%" cy="38%" r="55%">
+      <stop offset="0%" stop-color="#7c6af7" stop-opacity="0.22"/>
+      <stop offset="100%" stop-color="#0c0c0e" stop-opacity="0"/>
+    </radialGradient>
+    <pattern id="dots" width="28" height="28" patternUnits="userSpaceOnUse">
+      <circle cx="2" cy="2" r="1" fill="#ffffff" fill-opacity="0.04"/>
+    </pattern>
+  </defs>
+  <rect width="1200" height="630" fill="#0c0c0e"/>
+  <rect width="1200" height="630" fill="url(#dots)"/>
+  <rect width="1200" height="630" fill="url(#glow)"/>
+
+  <g transform="translate(96,120)">
+    <text font-family="JetBrains Mono, monospace" font-size="22" letter-spacing="6" fill="#7c6af7">OPEN SOURCE · LOCAL FIRST · MODEL AGNOSTIC</text>
+    <text y="150" font-family="Instrument Serif, Georgia, serif" font-size="104" fill="#f0f0f5">Your AI tools have</text>
+    <text y="262" font-family="Instrument Serif, Georgia, serif" font-size="104" fill="#f0f0f5" fill-opacity="0.7">no memory.</text>
+    <text y="360" font-family="Inter, sans-serif" font-size="30" fill="#8b8b9e">Dot fixes that. One local daemon that gives every AI tool</text>
+    <text y="404" font-family="Inter, sans-serif" font-size="30" fill="#8b8b9e">a memory of your codebase.</text>
+  </g>
+
+  <g transform="translate(980,300)">
+    <circle r="58" fill="#7c6af7"/>
+    <circle r="92" fill="none" stroke="#7c6af7" stroke-opacity="0.4" stroke-width="2" stroke-dasharray="5 8"/>
+    <text font-family="JetBrains Mono, monospace" font-size="30" fill="#fff" text-anchor="middle" dy="10">dot</text>
+  </g>
+</svg>

@@ -1,0 +1,63 @@
+---
+import SectionLabel from '../ui/SectionLabel.astro';
+import Badge from '../ui/Badge.astro';
+import Terminal from '../ui/Terminal.astro';
+import { integrations } from '../../data/integrations.ts';
+import { icons } from '../../data/icons.ts';
+
+const apiLines = [
+  { type: 'muted' as const, text: '# The universal integration — any tool, one endpoint' },
+  { type: 'command' as const, text: 'GET localhost:7337/context' },
+  { type: 'accent' as const, text: '  ?file=src/payments/processor.py' },
+  { type: 'accent' as const, text: '  ?query=add retry logic with exponential backoff' },
+  { type: 'accent' as const, text: '  ?tokens=4000' },
+  { type: 'muted' as const, text: '' },
+  { type: 'muted' as const, text: '# Response in <100ms:' },
+  { type: 'output' as const, text: '{' },
+  { type: 'output' as const, text: '  "context": "...",' },
+  { type: 'success' as const, text: '  "chunks": 12,' },
+  { type: 'success' as const, text: '  "decisions": 2,' },
+  { type: 'success' as const, text: '  "tokens": 3240,' },
+  { type: 'success' as const, text: '  "assembled_in_ms": 67' },
+  { type: 'output' as const, text: '}' },
+];
+---
+
+<section id="integrations" class="py-32">
+  <div class="container-dot">
+    <SectionLabel>Integrations</SectionLabel>
+    <h2 class="reveal reveal-delay-1 mt-5 font-serif text-[clamp(36px,5vw,56px)] font-normal leading-[1.1]">
+      Works with every tool<br /><span class="text-primary/70">you already use.</span>
+    </h2>
+
+    <div class="mt-14 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      {
+        integrations.map((it, i) => (
+          <div
+            class={`reveal reveal-delay-${(i % 4) + 1} group rounded-xl border border-border bg-elevated p-6 transition-all duration-300 hover:-translate-y-1 hover:border-accent/40`}
+          >
+            <div class="mb-4 flex items-center gap-3">
+              <div class="flex h-9 w-9 flex-none items-center justify-center rounded-lg border border-border bg-surface text-primary transition-colors group-hover:border-accent/40">
+                <svg viewBox="0 0 24 24" width="18" height="18" set:html={icons[it.icon]} />
+              </div>
+              <div>
+                <h4 class="text-[15px] font-semibold leading-tight tracking-tight">{it.name}</h4>
+                <span class="font-mono text-[10px] text-accent">{it.method}</span>
+              </div>
+            </div>
+            <p class="mb-4 min-h-[2.5rem] text-[13px] leading-snug text-secondary">{it.description}</p>
+            {it.status === 'available' ? (
+              <Badge variant="success" dot>Available</Badge>
+            ) : (
+              <Badge variant="warning" dot>Coming soon</Badge>
+            )}
+          </div>
+        ))
+      }
+    </div>
+
+    <div class="reveal mt-12">
+      <Terminal title="universal-api" lines={apiLines} class="mx-auto max-w-2xl" />
+    </div>
+  </div>
+</section>

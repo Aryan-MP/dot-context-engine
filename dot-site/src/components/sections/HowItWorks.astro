@@ -1,0 +1,162 @@
+---
+import SectionLabel from '../ui/SectionLabel.astro';
+
+const callouts = [
+  {
+    tag: 'AST chunking',
+    title: 'Structure, not token windows',
+    body: 'Naive chunkers slice code every N tokens and shred functions in half. Tree-sitter parses real syntax — each chunk is a whole function, class, or module.',
+  },
+  {
+    tag: 'Local embeddings',
+    title: 'all-MiniLM-L6-v2, on your CPU',
+    body: 'Embeddings are generated locally. No API calls, no tokens billed, no code uploaded. Your most sensitive asset never touches a network.',
+  },
+  {
+    tag: 'Sub-100ms',
+    title: 'Pre-indexed and instant',
+    body: 'Vectors and the dependency graph are built ahead of time, so every context lookup is a fast in-memory query — real-time on every file switch.',
+  },
+];
+---
+
+<section id="how" class="py-32">
+  <div class="container-dot">
+    <SectionLabel>Architecture</SectionLabel>
+    <h2 class="reveal reveal-delay-1 mt-5 font-serif text-[clamp(36px,5vw,56px)] font-normal leading-[1.1]">
+      Built different.<br /><span class="text-primary/70">Not just another RAG wrapper.</span>
+    </h2>
+
+    <div class="reveal reveal-delay-2 mt-14 overflow-x-auto rounded-2xl border border-border bg-surface/50 p-4 sm:p-8">
+      <svg
+        viewBox="0 0 1000 460"
+        class="mx-auto block h-auto w-full min-w-[760px]"
+        role="img"
+        aria-label="Inputs (codebase, git history, conversations, decisions) flow into the Dot daemon — Tree-sitter parser, local embedder, context assembler — then out to Claude Code, GitHub Copilot, Cursor, and any tool over REST."
+      >
+        <defs>
+          <radialGradient id="hexGlow" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="#7c6af7" stop-opacity="0.35" />
+            <stop offset="100%" stop-color="#7c6af7" stop-opacity="0" />
+          </radialGradient>
+          <path id="in1" d="M210,90 C340,90 360,230 430,230" />
+          <path id="in2" d="M210,185 C320,185 350,230 430,230" />
+          <path id="in3" d="M210,275 C320,275 350,230 430,230" />
+          <path id="in4" d="M210,370 C340,370 360,230 430,230" />
+          <path id="out1" d="M570,230 C640,230 660,90 790,90" />
+          <path id="out2" d="M570,230 C650,230 670,185 790,185" />
+          <path id="out3" d="M570,230 C650,230 670,275 790,275" />
+          <path id="out4" d="M570,230 C640,230 660,370 790,370" />
+        </defs>
+
+        <!-- flow paths -->
+        <g fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="1.2">
+          <use href="#in1" /><use href="#in2" /><use href="#in3" /><use href="#in4" />
+          <use href="#out1" /><use href="#out2" /><use href="#out3" /><use href="#out4" />
+        </g>
+
+        <!-- traveling dots: green inbound, violet outbound -->
+        <circle r="3.2" fill="#4ade80"><animateMotion dur="3.2s" repeatCount="indefinite"><mpath href="#in1" /></animateMotion></circle>
+        <circle r="3.2" fill="#4ade80"><animateMotion dur="3.6s" begin="0.8s" repeatCount="indefinite"><mpath href="#in2" /></animateMotion></circle>
+        <circle r="3.2" fill="#4ade80"><animateMotion dur="3.4s" begin="1.5s" repeatCount="indefinite"><mpath href="#in3" /></animateMotion></circle>
+        <circle r="3.2" fill="#4ade80"><animateMotion dur="3.8s" begin="2.2s" repeatCount="indefinite"><mpath href="#in4" /></animateMotion></circle>
+        <circle r="3.2" fill="#7c6af7"><animateMotion dur="3s" begin="0.4s" repeatCount="indefinite"><mpath href="#out1" /></animateMotion></circle>
+        <circle r="3.2" fill="#7c6af7"><animateMotion dur="3.5s" begin="1.1s" repeatCount="indefinite"><mpath href="#out2" /></animateMotion></circle>
+        <circle r="3.2" fill="#7c6af7"><animateMotion dur="3.3s" begin="1.9s" repeatCount="indefinite"><mpath href="#out3" /></animateMotion></circle>
+        <circle r="3.2" fill="#7c6af7"><animateMotion dur="3.7s" begin="2.6s" repeatCount="indefinite"><mpath href="#out4" /></animateMotion></circle>
+
+        <!-- INPUTS -->
+        <g font-family="JetBrains Mono, monospace" font-size="13" fill="#8b8b9e">
+          <g>
+            <rect x="40" y="66" width="170" height="48" rx="10" fill="#18181f" stroke="rgba(255,255,255,0.09)" />
+            <text x="64" y="95">📁 Your codebase</text>
+          </g>
+          <g>
+            <rect x="40" y="161" width="170" height="48" rx="10" fill="#18181f" stroke="rgba(255,255,255,0.09)" />
+            <text x="64" y="190">⎇ Git history</text>
+          </g>
+          <g>
+            <rect x="40" y="251" width="170" height="48" rx="10" fill="#18181f" stroke="rgba(255,255,255,0.09)" />
+            <text x="64" y="280">💬 Conversations</text>
+          </g>
+          <g>
+            <rect x="40" y="346" width="170" height="48" rx="10" fill="#18181f" stroke="rgba(255,255,255,0.09)" />
+            <text x="64" y="375">🧠 Decisions</text>
+          </g>
+        </g>
+
+        <!-- CENTER hexagon daemon -->
+        <circle cx="500" cy="230" r="150" fill="url(#hexGlow)" />
+        <g>
+          <polygon
+            points="500,110 604,170 604,290 500,350 396,290 396,170"
+            fill="#111116"
+            stroke="rgba(124,106,247,0.4)"
+            stroke-width="1.5"
+          />
+          <!-- concentric rings -->
+          <circle cx="500" cy="230" r="92" fill="none" stroke="rgba(255,255,255,0.08)" stroke-dasharray="3 6">
+            <animateTransform attributeName="transform" type="rotate" from="0 500 230" to="360 500 230" dur="50s" repeatCount="indefinite" />
+          </circle>
+          <circle cx="500" cy="230" r="66" fill="none" stroke="rgba(124,106,247,0.35)" stroke-dasharray="3 6">
+            <animateTransform attributeName="transform" type="rotate" from="360 500 230" to="0 500 230" dur="38s" repeatCount="indefinite" />
+          </circle>
+          <circle cx="500" cy="230" r="40" fill="none" stroke="rgba(124,106,247,0.55)" stroke-dasharray="3 6">
+            <animateTransform attributeName="transform" type="rotate" from="0 500 230" to="360 500 230" dur="26s" repeatCount="indefinite" />
+          </circle>
+          <circle cx="500" cy="230" r="22" fill="#7c6af7">
+            <animate attributeName="r" values="22;24;22" dur="4s" repeatCount="indefinite" />
+          </circle>
+          <text x="500" y="234" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="12" fill="#fff">dot</text>
+
+          <g font-family="JetBrains Mono, monospace" font-size="9.5" fill="#4a4a5e" text-anchor="middle">
+            <text x="500" y="150">Tree-sitter AST Parser</text>
+            <text x="500" y="176">Local Embedder (CPU)</text>
+            <text x="500" y="202">Context Assembler</text>
+          </g>
+        </g>
+
+        <!-- OUTPUTS -->
+        <g font-family="JetBrains Mono, monospace" font-size="13" fill="#8b8b9e">
+          <g>
+            <rect x="790" y="66" width="172" height="48" rx="10" fill="#18181f" stroke="rgba(255,255,255,0.09)" />
+            <text x="812" y="88" fill="#f0f0f5">Claude Code</text>
+            <text x="812" y="104" font-size="10" fill="#4a4a5e">via MCP</text>
+          </g>
+          <g>
+            <rect x="790" y="161" width="172" height="48" rx="10" fill="#18181f" stroke="rgba(255,255,255,0.09)" />
+            <text x="812" y="183" fill="#f0f0f5">GitHub Copilot</text>
+            <text x="812" y="199" font-size="10" fill="#4a4a5e">via VS Code API</text>
+          </g>
+          <g>
+            <rect x="790" y="251" width="172" height="48" rx="10" fill="#18181f" stroke="rgba(255,255,255,0.09)" />
+            <text x="812" y="273" fill="#f0f0f5">Cursor</text>
+            <text x="812" y="289" font-size="10" fill="#4a4a5e">via REST</text>
+          </g>
+          <g>
+            <rect x="790" y="346" width="172" height="48" rx="10" fill="#18181f" stroke="rgba(255,255,255,0.09)" />
+            <text x="812" y="368" fill="#f0f0f5">Any tool</text>
+            <text x="812" y="384" font-size="10" fill="#4a4a5e">:7337</text>
+          </g>
+        </g>
+
+        <g font-family="JetBrains Mono, monospace" font-size="10">
+          <text x="125" y="44" text-anchor="middle" fill="#4ade80">context in</text>
+          <text x="876" y="44" text-anchor="middle" fill="#7c6af7">context out</text>
+        </g>
+      </svg>
+    </div>
+
+    <div class="mt-7 grid grid-cols-1 gap-5 md:grid-cols-3">
+      {
+        callouts.map((c, i) => (
+          <div class={`reveal reveal-delay-${i + 1} rounded-2xl border border-border bg-elevated p-6`}>
+            <div class="font-mono text-xs text-accent">[{c.tag}]</div>
+            <h4 class="mt-2.5 text-[16px] font-semibold tracking-tight">{c.title}</h4>
+            <p class="mt-2 text-sm leading-relaxed text-secondary">{c.body}</p>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</section>

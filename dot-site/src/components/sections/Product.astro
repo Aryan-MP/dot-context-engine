@@ -1,0 +1,266 @@
+---
+import SectionLabel from '../ui/SectionLabel.astro';
+import { icons } from '../../data/icons.ts';
+
+const orbiters = [
+  { icon: 'file', label: 'codebase', pos: 'left-1/2 -top-3 -translate-x-1/2' },
+  { icon: 'git', label: 'history', pos: 'top-1/2 -right-3 -translate-y-1/2' },
+  { icon: 'chat', label: 'decisions', pos: 'left-1/2 -bottom-3 -translate-x-1/2' },
+  { icon: 'brain', label: 'memories', pos: 'top-1/2 -left-3 -translate-y-1/2' },
+];
+
+const scenes = [
+  { n: '1', title: 'Learns your codebase', desc: 'AST-aware indexing of every file.' },
+  { n: '2', title: 'Captures your decisions', desc: 'Mined from git, comments, chats.' },
+  { n: '3', title: 'Assembles context', desc: 'Ranked + delivered in under 100ms.' },
+];
+---
+
+<section id="product" class="py-32" data-product>
+  <div class="container-dot">
+    <SectionLabel>The product</SectionLabel>
+    <h2 class="reveal reveal-delay-1 mt-5 font-serif text-[clamp(36px,5vw,56px)] font-normal leading-[1.1]">
+      One daemon.<br /><span class="text-primary/70">Every tool remembers.</span>
+    </h2>
+
+    <!-- mobile tabs -->
+    <div class="mt-10 flex gap-2 lg:hidden" role="tablist">
+      {
+        scenes.map((s, i) => (
+          <button
+            data-product-tab={s.n}
+            class:list={[
+              'flex-1 rounded-lg border border-border px-3 py-2 text-xs font-medium transition-colors',
+              i === 0 ? 'tab-active' : 'text-secondary',
+            ]}
+          >
+            {s.title}
+          </button>
+        ))
+      }
+    </div>
+
+    <div class="mt-12 grid grid-cols-1 gap-12 lg:grid-cols-[0.85fr_1.15fr]">
+      <!-- LEFT — sticky orbit -->
+      <div class="lg:sticky lg:top-24 lg:h-fit lg:self-start">
+        <div data-product-stage data-active="1" class="rounded-2xl border border-border bg-surface/50 p-6">
+          <div class="orbit relative mx-auto aspect-square w-full max-w-[380px]">
+            <!-- radiating lines + outward dots to tools -->
+            <svg class="absolute inset-0 h-full w-full" viewBox="0 0 400 400" aria-hidden="true">
+              <g stroke="#7c6af7" stroke-opacity="0.22" stroke-width="1">
+                <line x1="200" y1="200" x2="70" y2="64" />
+                <line x1="200" y1="200" x2="330" y2="64" />
+                <line x1="200" y1="200" x2="200" y2="350" />
+              </g>
+              <circle r="3" fill="#7c6af7">
+                <animateMotion dur="3s" repeatCount="indefinite" path="M200,200 L70,64" />
+              </circle>
+              <circle r="3" fill="#7c6af7">
+                <animateMotion dur="3.4s" begin="0.6s" repeatCount="indefinite" path="M200,200 L330,64" />
+              </circle>
+              <circle r="3" fill="#7c6af7">
+                <animateMotion dur="3.2s" begin="1.2s" repeatCount="indefinite" path="M200,200 L200,350" />
+              </circle>
+            </svg>
+
+            <!-- rotating input ring -->
+            <div class="absolute inset-[16%] rounded-full border border-dashed border-white/10 animate-orbit">
+              {
+                orbiters.map((o) => (
+                  <div class={`absolute ${o.pos}`}>
+                    <div class="flex items-center gap-1.5 rounded-full border border-border bg-elevated px-2.5 py-1 animate-orbit-rev">
+                      <svg viewBox="0 0 24 24" width="13" height="13" class="text-secondary" set:html={icons[o.icon]} />
+                      <span class="font-mono text-[10px] text-secondary">{o.label}</span>
+                    </div>
+                  </div>
+                ))
+              }
+            </div>
+
+            <!-- center daemon -->
+            <div class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
+              <div class="relative flex h-20 w-20 items-center justify-center rounded-full bg-accent animate-breathe shadow-[0_0_50px_rgba(124,106,247,0.5)]">
+                <span class="font-mono text-sm text-white">dot</span>
+              </div>
+            </div>
+
+            <!-- tool badges -->
+            <div class="absolute left-[6%] top-[8%] flex items-center gap-1.5 rounded-lg border border-border bg-elevated px-2.5 py-1.5">
+              <svg viewBox="0 0 24 24" width="14" height="14" class="text-primary" set:html={icons.claude} />
+              <span class="font-mono text-[10px] text-secondary">Claude</span>
+            </div>
+            <div class="absolute right-[6%] top-[8%] flex items-center gap-1.5 rounded-lg border border-border bg-elevated px-2.5 py-1.5">
+              <svg viewBox="0 0 24 24" width="14" height="14" class="text-primary" set:html={icons.github} />
+              <span class="font-mono text-[10px] text-secondary">Copilot</span>
+            </div>
+            <div class="absolute bottom-[4%] left-1/2 flex -translate-x-1/2 items-center gap-1.5 rounded-lg border border-border bg-elevated px-2.5 py-1.5">
+              <svg viewBox="0 0 24 24" width="14" height="14" class="text-primary" set:html={icons.cursor} />
+              <span class="font-mono text-[10px] text-secondary">Cursor</span>
+            </div>
+          </div>
+
+          <!-- scene captions -->
+          <div class="mt-6 space-y-2">
+            {
+              scenes.map((s) => (
+                <div data-scene={s.n} class="scene flex items-center gap-3 rounded-lg px-3 py-2">
+                  <span class="flex h-6 w-6 flex-none items-center justify-center rounded-full border border-accent/40 font-mono text-[11px] text-accent">
+                    {s.n}
+                  </span>
+                  <div>
+                    <div class="text-sm font-medium text-primary">{s.title}</div>
+                    <div class="text-xs text-muted">{s.desc}</div>
+                  </div>
+                </div>
+              ))
+            }
+          </div>
+        </div>
+      </div>
+
+      <!-- RIGHT — scrolling segments -->
+      <div>
+        <!-- SEGMENT 1 -->
+        <div data-segment="1" class="flex min-h-[70vh] flex-col justify-center py-10">
+          <h3 class="font-serif text-[28px] font-normal">Dot learns your codebase</h3>
+          <p class="mt-3 max-w-md text-[15px] text-secondary">
+            Run one command. Dot parses every file with Tree-sitter, chunks it by
+            function and class, and embeds it locally — building a complete map of
+            your project.
+          </p>
+          <div class="mt-6 overflow-hidden rounded-xl border border-border bg-elevated">
+            <div class="flex items-center gap-2 border-b border-border bg-surface px-4 py-2.5 font-mono text-xs text-muted">
+              <span class="h-2.5 w-2.5 rounded-full bg-green/80"></span> ~/my-project
+            </div>
+            <div class="p-4 font-mono text-[12px]">
+              <div class="text-primary">$ <span class="text-green">dot init</span></div>
+              <div data-idx-stream class="mt-2 h-[120px] overflow-hidden leading-[1.7] text-muted"></div>
+              <div class="mt-2 h-1 w-full overflow-hidden rounded-full bg-bg">
+                <div data-idx-bar class="h-full w-0 rounded-full bg-accent transition-[width] duration-200"></div>
+              </div>
+              <div data-idx-done class="idx-done mt-3 text-green">
+                ✓ index complete · dependency graph built
+              </div>
+            </div>
+          </div>
+          <div class="mt-4 flex flex-wrap gap-2">
+            <span data-idx-pill class="pill rounded-full border border-border bg-elevated px-3 py-1 font-mono text-[11px] text-secondary">3,847 files</span>
+            <span data-idx-pill class="pill rounded-full border border-border bg-elevated px-3 py-1 font-mono text-[11px] text-secondary">12,439 chunks</span>
+            <span data-idx-pill class="pill rounded-full border border-border bg-elevated px-3 py-1 font-mono text-[11px] text-secondary">graph: 2,103 nodes</span>
+          </div>
+        </div>
+
+        <!-- SEGMENT 2 -->
+        <div data-segment="2" class="mobile-hidden flex min-h-[70vh] flex-col justify-center py-10">
+          <h3 class="font-serif text-[28px] font-normal">Dot captures your decisions</h3>
+          <p class="mt-3 max-w-md text-[15px] text-secondary">
+            As it reads your git history, Dot surfaces the architectural decisions
+            buried in commit messages — structured, dated, and queryable forever.
+          </p>
+          <div class="mt-6 grid gap-3 sm:grid-cols-[1.1fr_1fr]">
+            <div class="overflow-hidden rounded-xl border border-border bg-elevated">
+              <div class="border-b border-border bg-surface px-4 py-2.5 font-mono text-xs text-muted">git log</div>
+              <div data-commit-stream class="h-[200px] overflow-hidden p-3 font-mono"></div>
+            </div>
+            <div class="space-y-2.5">
+              <div data-decision-card class="decision rounded-xl border border-accent/25 bg-accent/5 p-3">
+                <div class="flex items-center gap-1.5 font-mono text-[11px] text-accent">
+                  <svg viewBox="0 0 24 24" width="12" height="12" set:html={icons.pin} /> abc123
+                </div>
+                <div class="mt-1 text-[13px] font-medium text-primary">Switched to event sourcing</div>
+                <div class="text-xs text-secondary">CRUD caused race conditions at scale</div>
+              </div>
+              <div data-decision-card class="decision rounded-xl border border-accent/25 bg-accent/5 p-3">
+                <div class="flex items-center gap-1.5 font-mono text-[11px] text-accent">
+                  <svg viewBox="0 0 24 24" width="12" height="12" set:html={icons.pin} /> def456
+                </div>
+                <div class="mt-1 text-[13px] font-medium text-primary">Chose Redis over Memcached</div>
+                <div class="text-xs text-secondary">TTL requirements + existing team knowledge</div>
+              </div>
+              <div data-decision-card class="decision rounded-xl border border-accent/25 bg-accent/5 p-3">
+                <div class="flex items-center gap-1.5 font-mono text-[11px] text-accent">
+                  <svg viewBox="0 0 24 24" width="12" height="12" set:html={icons.pin} /> ghi789
+                </div>
+                <div class="mt-1 text-[13px] font-medium text-primary">Removed sync HTTP calls</div>
+                <div class="text-xs text-secondary">Caused cascade timeouts under load</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- SEGMENT 3 -->
+        <div data-segment="3" class="mobile-hidden flex min-h-[70vh] flex-col justify-center py-10">
+          <h3 class="font-serif text-[28px] font-normal">Context assembled in 67ms</h3>
+          <p class="mt-3 max-w-md text-[15px] text-secondary">
+            Open a file and Dot fires five parallel queries, ranks the results,
+            and hands a perfectly-sized context payload to whichever AI tool you’re
+            using — before you finish typing.
+          </p>
+          <div class="mt-6 overflow-hidden rounded-xl border border-border bg-elevated">
+            <div class="border-b border-border bg-surface px-4 py-2.5 font-mono text-xs text-muted">
+              GET localhost:7337/context
+            </div>
+            <div class="p-4">
+              <div data-asm-stream class="min-h-[150px] space-y-1.5 font-mono"></div>
+              <div data-asm-badge class="asm-badge mt-3 inline-flex flex-wrap items-center gap-2 rounded-lg border border-green/30 bg-green/5 px-3 py-2 font-mono text-[11px] text-green">
+                ✓ context ready · 3,240 tokens · 12 chunks · 2 decisions · 67ms
+              </div>
+              <div data-asm-response class="asm-response mt-3 rounded-lg border-l-2 border-accent bg-accent/5 px-3 py-2 text-[12px] leading-relaxed text-secondary">
+                <span class="text-accent">ai:</span> applying your auth rate-limit pattern to payments,
+                with the tighter SLA threshold you set last week.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .scene {
+    opacity: 0.35;
+    transition: opacity 400ms var(--easing), background-color 400ms var(--easing);
+  }
+  .scene.scene-active {
+    opacity: 1;
+    background: rgba(124, 106, 247, 0.07);
+  }
+  .tab-active {
+    border-color: rgba(124, 106, 247, 0.5);
+    background: rgba(124, 106, 247, 0.1);
+    color: #f0f0f5;
+  }
+  .pill,
+  .decision {
+    opacity: 0;
+    transform: translateY(8px);
+    transition: opacity 500ms var(--easing), transform 500ms var(--easing);
+  }
+  .pill.visible,
+  .decision.visible {
+    opacity: 1;
+    transform: none;
+  }
+  .idx-done,
+  .asm-badge,
+  .asm-response {
+    opacity: 0;
+    transition: opacity 500ms var(--easing);
+  }
+  .idx-done.on,
+  .asm-badge.on,
+  .asm-response.on {
+    opacity: 1;
+  }
+  @media (max-width: 1023px) {
+    .mobile-hidden {
+      display: none;
+    }
+  }
+</style>
+
+<script>
+  import { initStickyScroll } from '../../scripts/sticky-scroll';
+  initStickyScroll();
+</script>

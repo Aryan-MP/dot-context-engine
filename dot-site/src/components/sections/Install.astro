@@ -1,0 +1,119 @@
+---
+import SectionLabel from '../ui/SectionLabel.astro';
+import Terminal from '../ui/Terminal.astro';
+import { icons } from '../../data/icons.ts';
+
+const installLines = [
+  { type: 'command' as const, text: '$ pip install dot-ai' },
+  { type: 'output' as const, text: 'Downloading dot-ai-0.1.0...' },
+  { type: 'output' as const, text: 'Installing dependencies...' },
+  { type: 'success' as const, text: '✓ dot-ai 0.1.0 installed' },
+  { type: 'muted' as const, text: '' },
+  { type: 'command' as const, text: '$ cd my-project && dot init' },
+  { type: 'muted' as const, text: '' },
+  { type: 'output' as const, text: 'Scanning project structure...' },
+  { type: 'output' as const, text: 'Parsing with Tree-sitter...  ████████████ 100%' },
+  { type: 'output' as const, text: 'Generating embeddings...     ████████████ 100%' },
+  { type: 'output' as const, text: 'Building dependency graph... ████████████ 100%' },
+  { type: 'output' as const, text: 'Analyzing git history...     ████████████ 100%' },
+  { type: 'muted' as const, text: '' },
+  { type: 'success' as const, text: '✓ 3,847 files indexed' },
+  { type: 'success' as const, text: '✓ 12,439 semantic chunks' },
+  { type: 'success' as const, text: '✓ 2,103 dependency nodes' },
+  { type: 'success' as const, text: '✓ 23 decisions captured from git history' },
+  { type: 'success' as const, text: '✓ MCP server registered with Claude Code' },
+  { type: 'success' as const, text: '✓ VS Code extension activated' },
+  { type: 'muted' as const, text: '' },
+  { type: 'accent' as const, text: '● dot is running. Your AI tools now have memory.' },
+  { type: 'muted' as const, text: '' },
+  { type: 'command' as const, text: '$ dot status' },
+  { type: 'muted' as const, text: '' },
+  { type: 'accent' as const, text: '● daemon        running    (pid 8432, uptime 1m)' },
+  { type: 'output' as const, text: '  project       my-project' },
+  { type: 'output' as const, text: '  files         3,847' },
+  { type: 'output' as const, text: '  memories      23' },
+  { type: 'output' as const, text: '  last sync     just now' },
+  { type: 'output' as const, text: '  api           http://localhost:7337' },
+  { type: 'output' as const, text: '  integrations  claude-code ✓  copilot ✓  cursor ✓' },
+];
+
+const osList = [
+  { name: 'macOS', icon: 'apple' },
+  { name: 'Linux', icon: 'linux' },
+  { name: 'Windows', icon: 'windows' },
+];
+
+const stats = [
+  { value: 2, prefix: '', suffix: ' min', label: 'to set up' },
+  { value: 100, prefix: '<', suffix: 'ms', label: 'context assembly' },
+  { value: 0, prefix: '', suffix: '', label: 'data sent anywhere' },
+  { value: '∞', prefix: '', suffix: '', label: 'AI tools supported' },
+];
+---
+
+<section id="install" class="py-32">
+  <div class="container-dot">
+    <div class="mx-auto max-w-2xl text-center">
+      <SectionLabel class="justify-center">Get started</SectionLabel>
+      <h2 class="reveal reveal-delay-1 mt-5 font-serif text-[clamp(40px,5.5vw,60px)] font-normal leading-[1.08]">
+        Up in two minutes.<br /><span class="text-primary/70">Remembering forever.</span>
+      </h2>
+    </div>
+
+    <div class="reveal reveal-delay-2 mx-auto mt-12 max-w-2xl">
+      <Terminal title="install — dot" lines={installLines} animated glow />
+    </div>
+
+    <div class="reveal mt-7 flex flex-wrap items-center justify-center gap-3">
+      {
+        osList.map((os) => (
+          <span class="flex items-center gap-2 rounded-lg border border-border bg-elevated px-3.5 py-1.5 text-sm text-secondary">
+            <svg viewBox="0 0 24 24" width="15" height="15" set:html={icons[os.icon]} />
+            {os.name}
+          </span>
+        ))
+      }
+      <span class="text-sm text-muted">Free forever. Open source. MIT license.</span>
+    </div>
+
+    <div class="mt-12 grid grid-cols-2 gap-4 md:grid-cols-4" data-stats>
+      {
+        stats.map((s, i) => (
+          <div class={`reveal reveal-delay-${i + 1} rounded-2xl border border-border bg-elevated p-6 text-center`}>
+            <div class="font-mono text-3xl font-medium text-accent md:text-4xl">
+              {s.prefix}<span data-stat-value={typeof s.value === 'number' ? s.value : undefined}>{typeof s.value === 'number' ? '0' : s.value}</span>{s.suffix}
+            </div>
+            <div class="mt-2 text-xs text-secondary">{s.label}</div>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<script>
+  import { onceInView } from '../../scripts/intersection';
+
+  const grid = document.querySelector('[data-stats]');
+  if (grid) {
+    onceInView(grid, () => {
+      const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      grid.querySelectorAll<HTMLElement>('[data-stat-value]').forEach((el) => {
+        const target = Number(el.getAttribute('data-stat-value'));
+        if (Number.isNaN(target)) return;
+        if (reduced || target === 0) {
+          el.textContent = String(target);
+          return;
+        }
+        const start = performance.now();
+        const dur = 1400;
+        const step = (now: number) => {
+          const t = Math.min(1, (now - start) / dur);
+          el.textContent = String(Math.round(target * (1 - Math.pow(1 - t, 3))));
+          if (t < 1) requestAnimationFrame(step);
+        };
+        requestAnimationFrame(step);
+      });
+    });
+  }
+</script>

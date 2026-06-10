@@ -1,0 +1,68 @@
+---
+export interface TerminalLine {
+  type: 'command' | 'output' | 'success' | 'error' | 'accent' | 'muted';
+  text: string;
+}
+
+export interface Props {
+  title?: string;
+  lines: TerminalLine[];
+  animated?: boolean;
+  class?: string;
+  glow?: boolean;
+}
+
+const { title = 'terminal', lines, animated = false, class: extra = '', glow = false } =
+  Astro.props;
+
+const typeColor: Record<string, string> = {
+  command: 'text-primary',
+  output: 'text-secondary',
+  success: 'text-green',
+  error: 'text-red',
+  accent: 'text-accent',
+  muted: 'text-muted',
+};
+
+const glowCls = glow
+  ? 'shadow-[0_30px_80px_-30px_rgba(124,106,247,0.4)] border-accent/25'
+  : '';
+---
+
+<div
+  class={`terminal-window overflow-hidden rounded-xl border border-border bg-elevated ${glowCls} ${extra}`}
+  data-animated={animated ? 'true' : 'false'}
+  data-lines={animated ? JSON.stringify(lines) : undefined}
+>
+  <div class="flex items-center gap-3 border-b border-border bg-surface px-4 py-2.5">
+    <span class="flex gap-1.5" aria-hidden="true">
+      <span class="h-3 w-3 rounded-full bg-red/80"></span>
+      <span class="h-3 w-3 rounded-full bg-amber/80"></span>
+      <span class="h-3 w-3 rounded-full bg-green/80"></span>
+    </span>
+    <span class="font-mono text-xs text-muted">{title}</span>
+  </div>
+
+  <div
+    class="terminal-body whitespace-pre-wrap break-words p-5 font-mono text-[13px] leading-[1.8]"
+    data-terminal-body
+  >
+    {
+      lines.map((line) => (
+        <div
+          class={`terminal-line ${typeColor[line.type]} ${animated ? 'opacity-0' : ''}`}
+          data-text={line.text}
+          data-type={line.type}
+        >
+          {line.text || ' '}
+        </div>
+      ))
+    }
+  </div>
+</div>
+
+{/* Always hoisted so Astro bundles it; no-ops when no animated terminal is present. */}
+<script>
+  import { initAnimatedTerminals } from '../../scripts/terminal';
+  initAnimatedTerminals();
+</script>

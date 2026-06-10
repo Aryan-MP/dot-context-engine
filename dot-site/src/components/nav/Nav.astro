@@ -1,0 +1,178 @@
+---
+import { icons } from '../../data/icons.ts';
+
+const REPO = 'aryanp-spektra/dot-context-engine';
+const GITHUB_URL = `https://github.com/${REPO}`;
+
+// Fetch star count at build time, with a graceful fallback when offline.
+function formatStars(n: number): string {
+  if (n >= 1000) return `${(n / 1000).toFixed(1).replace(/\.0$/, '')}k`;
+  return String(n);
+}
+let stars = '2.4k';
+try {
+  const res = await fetch(`https://api.github.com/repos/${REPO}`, {
+    headers: { Accept: 'application/vnd.github+json' },
+  });
+  if (res.ok) {
+    const data = await res.json();
+    if (typeof data.stargazers_count === 'number') {
+      stars = formatStars(data.stargazers_count);
+    }
+  }
+} catch {
+  // offline build — keep fallback
+}
+
+const links = [
+  { label: 'Docs', href: '/docs' },
+  { label: 'Changelog', href: '/changelog' },
+];
+---
+
+<header
+  id="site-nav"
+  class="fixed inset-x-0 top-0 z-50 border-b border-transparent transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)]"
+>
+  <div class="container-dot flex items-center gap-6 py-3.5">
+    <!-- Wordmark -->
+    <a href="/" class="group flex items-center text-[18px] font-semibold tracking-tight" aria-label="Dot home">
+      <span>d</span><span class="px-px text-accent">·</span><span>t</span>
+    </a>
+
+    <!-- Desktop links -->
+    <nav class="ml-auto hidden items-center gap-7 text-sm md:flex">
+      {
+        links.map((l) => (
+          <a href={l.href} class="text-secondary transition-colors duration-200 hover:text-primary">
+            {l.label}
+          </a>
+        ))
+      }
+      <a
+        href={GITHUB_URL}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="flex items-center gap-2 text-secondary transition-colors duration-200 hover:text-primary"
+      >
+        <svg viewBox="0 0 24 24" width="16" height="16" set:html={icons.github} />
+        <span class="font-mono text-xs">{stars}</span>
+      </a>
+      <a
+        href="#install"
+        class="rounded-full bg-accent px-4 py-1.5 text-sm font-medium text-white transition-all duration-200 hover:bg-accent/90 active:scale-[0.98]"
+      >
+        Install
+      </a>
+    </nav>
+
+    <!-- Mobile toggle -->
+    <button
+      id="nav-toggle"
+      class="ml-auto flex h-9 w-9 items-center justify-center rounded-lg text-secondary transition-colors hover:text-primary md:hidden"
+      aria-label="Open menu"
+      aria-expanded="false"
+    >
+      <svg viewBox="0 0 24 24" width="22" height="22" set:html={icons.menu} />
+    </button>
+  </div>
+</header>
+
+<!-- Mobile drawer -->
+<div
+  id="nav-drawer"
+  class="pointer-events-none fixed inset-0 z-[60] md:hidden"
+  aria-hidden="true"
+>
+  <div id="nav-backdrop" class="absolute inset-0 bg-black/60 opacity-0 transition-opacity duration-300"></div>
+  <aside
+    id="nav-panel"
+    class="absolute right-0 top-0 flex h-full w-72 translate-x-full flex-col gap-1 border-l border-border bg-surface p-6 transition-transform duration-300 ease-[cubic-bezier(0.16,1,0.3,1)]"
+  >
+    <div class="mb-6 flex items-center justify-between">
+      <span class="text-lg font-semibold">d<span class="text-accent">·</span>t</span>
+      <button id="nav-close" class="text-secondary hover:text-primary" aria-label="Close menu">
+        <svg viewBox="0 0 24 24" width="22" height="22" set:html={icons.close} />
+      </button>
+    </div>
+    {
+      links.map((l) => (
+        <a href={l.href} class="rounded-lg px-3 py-2.5 text-secondary hover:bg-elevated hover:text-primary" data-nav-link>
+          {l.label}
+        </a>
+      ))
+    }
+    <a
+      href={GITHUB_URL}
+      target="_blank"
+      rel="noopener noreferrer"
+      class="flex items-center gap-2 rounded-lg px-3 py-2.5 text-secondary hover:bg-elevated hover:text-primary"
+      data-nav-link
+    >
+      <svg viewBox="0 0 24 24" width="16" height="16" set:html={icons.github} />
+      GitHub · {stars}
+    </a>
+    <a
+      href="#install"
+      class="mt-3 rounded-full bg-accent px-4 py-2.5 text-center font-medium text-white"
+      data-nav-link
+    >
+      Install
+    </a>
+  </aside>
+</div>
+
+<script>
+  // Blur + border on scroll, driven by a sentinel (no scroll listener).
+  const nav = document.getElementById('site-nav');
+  if (nav) {
+    const sentinel = document.createElement('div');
+    sentinel.setAttribute('aria-hidden', 'true');
+    sentinel.style.cssText = 'position:absolute;top:0;height:8px;width:1px;pointer-events:none;';
+    document.body.prepend(sentinel);
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        const scrolled = !entry.isIntersecting;
+        nav.classList.toggle('border-border', scrolled);
+        nav.classList.toggle('bg-bg/80', scrolled);
+        nav.classList.toggle('backdrop-blur-xl', scrolled);
+      },
+      { threshold: 0 },
+    );
+    io.observe(sentinel);
+  }
+
+  // Mobile drawer
+  const drawer = document.getElementById('nav-drawer');
+  const panel = document.getElementById('nav-panel');
+  const backdrop = document.getElementById('nav-backdrop');
+  const toggle = document.getElementById('nav-toggle');
+  const closeBtn = document.getElementById('nav-close');
+
+  function openDrawer() {
+    if (!drawer || !panel || !backdrop || !toggle) return;
+    drawer.classList.add('pointer-events-auto');
+    drawer.setAttribute('aria-hidden', 'false');
+    toggle.setAttribute('aria-expanded', 'true');
+    requestAnimationFrame(() => {
+      panel.classList.remove('translate-x-full');
+      backdrop.classList.remove('opacity-0');
+    });
+  }
+  function closeDrawer() {
+    if (!drawer || !panel || !backdrop || !toggle) return;
+    panel.classList.add('translate-x-full');
+    backdrop.classList.add('opacity-0');
+    toggle.setAttribute('aria-expanded', 'false');
+    drawer.setAttribute('aria-hidden', 'true');
+    setTimeout(() => drawer.classList.remove('pointer-events-auto'), 300);
+  }
+
+  toggle?.addEventListener('click', openDrawer);
+  closeBtn?.addEventListener('click', closeDrawer);
+  backdrop?.addEventListener('click', closeDrawer);
+  document.querySelectorAll('[data-nav-link]').forEach((l) => l.addEventListener('click', closeDrawer));
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeDrawer();
+  });
+</script>

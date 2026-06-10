@@ -1,0 +1,64 @@
+---
+import Page from '../layouts/Page.astro';
+import SectionLabel from '../components/ui/SectionLabel.astro';
+import Badge from '../components/ui/Badge.astro';
+
+const releases = [
+  {
+    version: 'v0.1.0',
+    date: '2026-06-10',
+    tag: 'Initial release',
+    variant: 'accent' as const,
+    items: [
+      'Core daemon: filesystem watcher → AST parser → semantic chunker → local embedder → store pipeline.',
+      'Hybrid storage: SQLite for structured metadata + ChromaDB for vector search, with graceful fallbacks.',
+      'Decision mining from git history, code comments, and AI conversation transcripts.',
+      'Context assembly engine: multi-signal ranking (similarity, proximity, recency, edit frequency, decisions).',
+      'Per-tool formatters: Claude (XML), Copilot (concise), markdown, and raw JSON.',
+      'Local REST API on :7337 and a full Typer CLI (init, status, ask, inject, memory, sync, forget, dashboard).',
+      'Integrations: Claude Code (MCP + SessionStart hook), GitHub Copilot (VS Code extension), Cursor (REST).',
+      'Forgetting curve: memories decay over time and are reinforced on access.',
+    ],
+  },
+];
+---
+
+<Page title="Changelog — Dot" description="Release notes and version history for Dot.">
+  <section class="dot-grid pb-24 pt-36">
+    <div class="container-dot max-w-3xl">
+      <SectionLabel>Changelog</SectionLabel>
+      <h1 class="reveal reveal-delay-1 mt-5 font-serif text-[clamp(40px,5.5vw,64px)] font-normal leading-[1.08]">
+        What’s new in Dot.
+      </h1>
+      <p class="reveal reveal-delay-2 mt-6 max-w-xl text-lg text-secondary">
+        Every release, with the details that matter. Follow along on GitHub for
+        the full commit history.
+      </p>
+
+      <div class="mt-16 space-y-12 border-l border-border pl-8">
+        {
+          releases.map((release) => (
+            <article class="reveal relative">
+              <span class="absolute -left-[2.6rem] top-1 flex h-5 w-5 items-center justify-center rounded-full border border-accent/40 bg-bg">
+                <span class="h-2 w-2 rounded-full bg-accent" />
+              </span>
+              <div class="flex flex-wrap items-center gap-3">
+                <h2 class="font-mono text-xl text-primary">{release.version}</h2>
+                <Badge variant={release.variant}>{release.tag}</Badge>
+                <time class="font-mono text-xs text-muted">{release.date}</time>
+              </div>
+              <ul class="mt-5 space-y-2.5">
+                {release.items.map((item) => (
+                  <li class="flex gap-3 text-[15px] leading-relaxed text-secondary">
+                    <span class="mt-2 h-1.5 w-1.5 flex-none rounded-full bg-accent/60" />
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            </article>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+</Page>

@@ -1,0 +1,30 @@
+---
+export interface Props {
+  variant?: 'default' | 'success' | 'warning' | 'accent';
+  class?: string;
+  dot?: boolean;
+}
+
+const { variant = 'default', class: extra = '', dot = false } = Astro.props;
+
+const variants: Record<string, string> = {
+  default: 'bg-elevated text-secondary border border-border',
+  success: 'bg-green/10 text-green border border-green/20',
+  warning: 'bg-amber/10 text-amber border border-amber/20',
+  accent: 'bg-accent/10 text-accent border border-accent/25',
+};
+
+const dotColor: Record<string, string> = {
+  default: 'bg-secondary',
+  success: 'bg-green',
+  warning: 'bg-amber',
+  accent: 'bg-accent',
+};
+---
+
+<span
+  class={`inline-flex items-center gap-1.5 rounded-full font-mono text-xs px-2.5 py-0.5 ${variants[variant]} ${extra}`}
+>
+  {dot && <span class={`h-1.5 w-1.5 rounded-full ${dotColor[variant]}`} />}
+  <slot />
+</span>
