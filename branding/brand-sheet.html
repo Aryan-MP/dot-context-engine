@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Dot — brand sheet</title>
+<style>
+  :root { --accent:#7c6af7; --bg:#0c0c0e; --text:#f0f0f5; --muted:#8b8b9e; }
+  * { margin:0; box-sizing:border-box; }
+  body { background:var(--bg); color:var(--text); font-family:Inter,system-ui,sans-serif; padding:48px; line-height:1.6; }
+  h1 { font-weight:600; letter-spacing:-0.02em; margin-bottom:4px; }
+  .sub { color:var(--muted); margin-bottom:40px; }
+  h2 { font-size:14px; text-transform:uppercase; letter-spacing:.12em; color:var(--muted); margin:44px 0 16px; font-weight:600; }
+  .grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:16px; }
+  .tile { border:1px solid rgba(255,255,255,.08); border-radius:16px; padding:28px; display:flex; flex-direction:column; align-items:center; gap:14px; }
+  .tile.dark { background:#111116; }
+  .tile.light { background:#fafafa; color:#1a1a1f; border-color:rgba(0,0,0,.08); }
+  .tile img, .tile object { width:150px; height:auto; }
+  .tile.wide img { width:100%; max-width:340px; }
+  .cap { font-size:12.5px; color:var(--muted); text-align:center; }
+  .tile.light .cap { color:#6a6a7a; }
+  .mono-demo { color:var(--accent); }
+  .mono-demo.white { color:#f0f0f5; }
+  .mono-demo.black { color:#16161c; }
+  .sizes { display:flex; align-items:flex-end; gap:22px; }
+  .story { max-width:680px; color:var(--muted); font-size:15px; }
+  .story b { color:var(--text); }
+  code { font-family:"JetBrains Mono",monospace; font-size:12.5px; background:#18181f; padding:2px 7px; border-radius:6px; }
+</style>
+</head>
+<body>
+  <h1>Dot brand sheet</h1>
+  <p class="sub">The memory spiral · v1</p>
+
+  <p class="story"><b>The idea.</b> A galaxy of memory fragments, every file, commit,
+  and decision, spiraling inward and condensing into a single luminous dot.
+  Knowledge scattered across a codebase becomes one point of recall. The two
+  spiral arms echo a neuron's dendrites and a galaxy at once; the trail fades
+  the way memory decays, and the core glows the way the daemon never sleeps.
+  It animates naturally (the spiral turns, the core breathes), reduces to a
+  plain dot at 16 pixels, and is drawn entirely from the product's own accent
+  violet <code>#7c6af7</code> on near-black <code>#0c0c0e</code>.</p>
+
+  <h2>Primary mark</h2>
+  <div class="grid">
+    <div class="tile dark"><img src="logo-mark.svg" alt="primary mark"><span class="cap">logo-mark.svg · dark surfaces</span></div>
+    <div class="tile dark"><img src="logo-mark-animated.svg" alt="animated mark"><span class="cap">logo-mark-animated.svg · spiral rotates, core breathes</span></div>
+    <div class="tile light"><img src="logo-mark.svg" alt="mark on light"><span class="cap">primary mark on light · still works, mono preferred</span></div>
+  </div>
+
+  <h2>Lockup &amp; icon</h2>
+  <div class="grid">
+    <div class="tile dark wide"><img src="logo-lockup.svg" alt="lockup"><span class="cap">logo-lockup.svg · mark + d·t wordmark</span></div>
+    <div class="tile dark"><img src="app-icon.svg" alt="app icon"><span class="cap">app-icon.svg · avatars, stores, social</span></div>
+    <div class="tile dark"><img src="favicon.svg" alt="favicon"><span class="cap">favicon.svg · simplified for 16–32 px</span></div>
+  </div>
+
+  <h2>Mono (one color, inherits currentColor)</h2>
+  <div class="grid">
+    <div class="tile dark"><span class="mono-demo"><object data="logo-mark-mono.svg" type="image/svg+xml" width="150" height="150"></object></span><span class="cap">accent violet</span></div>
+    <div class="tile dark"><span class="mono-demo white"><object data="logo-mark-mono.svg" type="image/svg+xml" width="150" height="150"></object></span><span class="cap">white · for badges, embossing</span></div>
+    <div class="tile light"><span class="mono-demo black"><object data="logo-mark-mono.svg" type="image/svg+xml" width="150" height="150"></object></span><span class="cap">near-black · light surfaces</span></div>
+  </div>
+
+  <h2>Scale check</h2>
+  <div class="tile dark" style="align-items:flex-start">
+    <div class="sizes">
+      <img src="favicon.svg" width="16" height="16" alt="">
+      <img src="favicon.svg" width="24" height="24" alt="">
+      <img src="favicon.svg" width="32" height="32" alt="">
+      <img src="logo-mark.svg" width="48" height="48" alt="">
+      <img src="logo-mark.svg" width="96" height="96" alt="">
+      <img src="logo-mark.svg" width="160" height="160" alt="">
+    </div>
+    <span class="cap">16 / 24 / 32 use favicon.svg (simplified); 48+ use the full mark</span>
+  </div>
+
+  <h2>Rules</h2>
+  <p class="story">
+    Keep clear space of at least half the core's diameter around the mark.
+    Never recolor the spiral outside the palette; on light backgrounds prefer
+    the mono mark in near-black. Don't add strokes, shadows, or rotate the
+    static mark. The animated mark is for the website hero and loading states
+    only, never inside dense UI. The wordmark is lowercase <b>d·t</b> or
+    <b>dot</b>, Inter SemiBold, tight tracking, with the middle dot always in
+    accent violet.
+  </p>
+</body>
+</html>
