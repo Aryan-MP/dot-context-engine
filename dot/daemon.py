@@ -20,7 +20,7 @@ from datetime import UTC, datetime
 from pathlib import Path
 
 from dot import DEFAULT_HOST, DEFAULT_PORT
-from dot.config import ProjectConfig, dot_home
+from dot.config import SHARED_MEMORIES_FILE, ProjectConfig, dot_home
 from dot.context.assembler import ContextAssembler
 from dot.indexer.chunker import chunk_file
 from dot.indexer.parser import CodeParser
@@ -28,6 +28,7 @@ from dot.indexer.watcher import ProjectWatcher, walk_project
 from dot.integrations.copilot import write_instructions_file
 from dot.integrations.git import GitIntegration
 from dot.memory.decisions import DecisionService
+from dot.memory.shared import import_shared
 from dot.memory.store import Store
 
 logger = logging.getLogger(__name__)
@@ -78,6 +79,13 @@ class Daemon:
             return str(path)
 
     def _on_change(self, event_type: str, path: Path) -> None:
+        if path.name == SHARED_MEMORIES_FILE:
+            # A teammate's shared memories arrived (e.g. via git pull).
+            if event_type != "deleted":
+                imported = import_shared(self.store, self.config)
+                if imported:
+                    logger.info("imported %d shared memories", imported)
+            return
         if event_type == "deleted":
             self.store.delete_file(self._relative(path))
             logger.info("removed index for %s", path)
@@ -87,7 +95,7 @@ class Daemon:
                 logger.info("indexed %s (%d chunks)", path, written)
 
     def full_sync(self, force: bool = False) -> dict:
-        """Re-index the whole project + re-mine git decisions."""
+        """Re-index the whole project, re-mine git, import shared memories."""
         files = walk_project(self.config)
         chunks_written = 0
         files_touched = 0
@@ -102,11 +110,14 @@ class Daemon:
                 files_touched += 1
                 chunks_written += written
         decisions = self.decisions.mine_git()
+        shared = import_shared(self.store, self.config)
         return {
             "files_scanned": len(files),
             "files_indexed": files_touched,
             "chunks_written": chunks_written,
             "decisions_captured": decisions,
+            "shared_imported": shared,
+            "git_available": self.git.available,
         }
 
     # ------------------------------------------------------------------
@@ -121,10 +132,11 @@ class Daemon:
         scheduler = BackgroundScheduler(daemon=True)
         scheduler.add_job(self.decisions.mine_git, "interval", minutes=15, id="mine-git")
         scheduler.add_job(self.store.prune_decayed, "interval", hours=6, id="prune-memories")
-        scheduler.add_job(
-            lambda: write_instructions_file(self.store), "interval", hours=1,
-            id="copilot-instructions",
-        )
+        if "copilot" in self.config.integrations:
+            scheduler.add_job(
+                lambda: write_instructions_file(self.store), "interval", hours=1,
+                id="copilot-instructions",
+            )
         scheduler.start()
         self._scheduler = scheduler
 
@@ -150,7 +162,7 @@ class Daemon:
         from dot.api import create_app
 
         host = host or self.config.api_host or DEFAULT_HOST
-        port = port or self.config.api_port or DEFAULT_PORT
+        port = resolve_port(self.config, host, port or self.config.api_port or DEFAULT_PORT)
 
         write_pid_file(self.config, os.getpid(), port)
         logger.info("dot daemon starting for %s", self.config.project_root)
@@ -176,6 +188,35 @@ class Daemon:
             if self._scheduler:
                 self._scheduler.shutdown(wait=False)
             remove_pid_file(self.config)
+
+
+# ----------------------------------------------------------------------
+# Port resolution — every project gets its own daemon; when the preferred
+# port is taken (another project's daemon), walk up to the next free one
+# and persist it so the CLI, hooks, and integrations all agree.
+# ----------------------------------------------------------------------
+def _port_free(host: str, port: int) -> bool:
+    import socket
+
+    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
+        sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+        try:
+            sock.bind((host, port))
+            return True
+        except OSError:
+            return False
+
+
+def resolve_port(config: ProjectConfig, host: str, preferred: int, attempts: int = 100) -> int:
+    for offset in range(attempts):
+        candidate = preferred + offset
+        if _port_free(host, candidate):
+            if candidate != config.api_port:
+                config.api_port = candidate
+                config.save()
+                logger.info("port %d busy; using %d (saved to config)", preferred, candidate)
+            return candidate
+    raise RuntimeError(f"no free port in {preferred}-{preferred + attempts}")
 
 
 # ----------------------------------------------------------------------

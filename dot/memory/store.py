@@ -493,6 +493,17 @@ class Store:
                 for record in session.scalars(stmt).all()
             ]
 
+    def existing_memory_ids(self) -> set[str]:
+        with self.session() as session:
+            return set(session.scalars(select(MemoryRecord.memory_id)).all())
+
+    def get_memory(self, memory_id: str) -> Memory | None:
+        with self.session() as session:
+            record = session.get(MemoryRecord, memory_id)
+            if record is None:
+                return None
+            return Memory.from_record(record, self.config.memory_half_life_days)
+
     def delete_memory(self, memory_id: str) -> bool:
         with self.session() as session:
             record = session.get(MemoryRecord, memory_id)
@@ -600,6 +611,7 @@ class Store:
                 select(func.count()).select_from(MemoryRecord).where(MemoryRecord.archived == 0)
             ) or 0
             last_indexed = session.scalar(select(func.max(FileRecord.last_indexed)))
+        storage_bytes = _dir_size(self.config.dot_dir)
         return {
             "project": self.config.project_name,
             "project_root": self.config.project_root,
@@ -609,7 +621,31 @@ class Store:
             "last_indexed": last_indexed.isoformat() if last_indexed else None,
             "embedding_backend": self.embedder.backend,
             "vector_backend": "chromadb" if self._chroma else "sqlite",
+            "storage_bytes": storage_bytes,
+            "storage_human": _human_size(storage_bytes),
         }
+
+
+def _dir_size(path) -> int:
+    from pathlib import Path
+
+    total = 0
+    for entry in Path(path).rglob("*"):
+        try:
+            if entry.is_file():
+                total += entry.stat().st_size
+        except OSError:
+            continue
+    return total
+
+
+def _human_size(size: int) -> str:
+    value = float(size)
+    for unit in ("B", "KB", "MB", "GB"):
+        if value < 1024 or unit == "GB":
+            return f"{value:.1f} {unit}" if unit != "B" else f"{int(value)} B"
+        value /= 1024
+    return f"{value:.1f} GB"
 
 
 def _resolve_module_to_file(module: str, file_paths: set[str]) -> str | None:

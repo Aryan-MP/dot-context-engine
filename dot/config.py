@@ -15,6 +15,9 @@ from pathlib import Path
 DOT_DIR_NAME = ".dot"
 CONFIG_FILE_NAME = "config.json"
 
+# Committed, append-only file that carries shared team memories with the repo.
+SHARED_MEMORIES_FILE = "dot-memories.jsonl"
+
 IGNORED_DIRS = {
     ".git", ".dot", ".hg", ".svn", "node_modules", "__pycache__", ".venv",
     "venv", ".tox", ".mypy_cache", ".ruff_cache", ".pytest_cache", "dist",
@@ -61,6 +64,12 @@ class ProjectConfig:
     api_host: str = "127.0.0.1"
     api_port: int = 7337
     extra_ignored_dirs: list[str] = field(default_factory=list)
+    # Additional file extensions to index beyond the built-in set, e.g. [".txt"]
+    extra_extensions: list[str] = field(default_factory=list)
+    # Which tool integrations dot manages for this project ("claude", "copilot").
+    # Populated by `dot init` flags / auto-detection; the daemon only writes
+    # integration files (CLAUDE.md, copilot-instructions.md) listed here.
+    integrations: list[str] = field(default_factory=list)
     profiles: dict[str, dict] = field(
         default_factory=lambda: {
             "quick-assist": {"token_budget": 2000, "n_chunks": 8, "include_decisions": True},
@@ -87,6 +96,14 @@ class ProjectConfig:
     @property
     def ignored_dirs(self) -> set[str]:
         return IGNORED_DIRS | set(self.extra_ignored_dirs)
+
+    @property
+    def indexable_extensions(self) -> set[str]:
+        return INDEXABLE_EXTENSIONS | {ext.lower() for ext in self.extra_extensions}
+
+    @property
+    def shared_memories_path(self) -> Path:
+        return Path(self.project_root) / SHARED_MEMORIES_FILE
 
     def save(self) -> None:
         self.dot_dir.mkdir(parents=True, exist_ok=True)

@@ -89,39 +89,93 @@ def version() -> None:
     console.print(f"dot {__version__}")
 
 
+def _detect_claude(root: Path) -> bool:
+    """Only wire Claude Code if there's evidence it's used in this project."""
+    return (root / ".claude").is_dir() or (root / "CLAUDE.md").exists() or (
+        root / ".mcp.json"
+    ).exists()
+
+
+def _ensure_gitignored(root: Path) -> bool:
+    """Make sure the project's .gitignore covers Dot's local state."""
+    gitignore = root / ".gitignore"
+    entry = ".dot/"
+    if gitignore.exists():
+        lines = gitignore.read_text().splitlines()
+        if any(line.strip().rstrip("/") == ".dot" for line in lines):
+            return False
+        gitignore.write_text(
+            gitignore.read_text().rstrip() + "\n\n# Dot local index (machine-specific)\n" + entry + "\n"
+        )
+    else:
+        gitignore.write_text("# Dot local index (machine-specific)\n" + entry + "\n")
+    return True
+
+
 @app.command()
 def init(
     path: Path = typer.Argument(Path("."), help="Project directory"),
-    claude: bool = typer.Option(True, help="Wire up Claude Code (CLAUDE.md + hook)"),
+    claude: bool | None = typer.Option(
+        None,
+        "--claude/--no-claude",
+        help="Wire up Claude Code (CLAUDE.md + hooks + MCP). Default: auto-detect.",
+    ),
+    copilot: bool = typer.Option(
+        False, "--copilot", help="Maintain .github/copilot-instructions.md for Copilot"
+    ),
     git_hook: bool = typer.Option(True, help="Install git post-commit hook"),
     sync_now: bool = typer.Option(True, "--sync/--no-sync", help="Run initial index"),
 ) -> None:
     """Initialize Dot in a project."""
     root = path.resolve()
     config = ProjectConfig(project_root=str(root))
+
+    use_claude = _detect_claude(root) if claude is None else claude
+    config.integrations = [
+        name for name, enabled in (("claude", use_claude), ("copilot", copilot)) if enabled
+    ]
     config.save()
     console.print(f"[green]✓[/green] initialized .dot/ in [bold]{root}[/bold]")
+    if _ensure_gitignored(root):
+        console.print("[green]✓[/green] added .dot/ to .gitignore")
 
     if git_hook:
         from dot.integrations.git import GitIntegration
 
         if GitIntegration(str(root)).install_post_commit_hook():
             console.print("[green]✓[/green] installed git post-commit hook")
-    if claude:
+    if use_claude:
         from dot.integrations import claude as claude_integration
 
         for action in claude_integration.install(config):
             console.print(f"[green]✓[/green] {action}")
+    elif claude is None:
+        console.print(
+            "[dim]Claude Code not detected — skipped CLAUDE.md. Use --claude to force.[/dim]"
+        )
 
     if sync_now:
         console.print("indexing project (first run downloads the embedding model)…")
         daemon = _local_daemon(config)
         result = daemon.full_sync()
-        console.print(
+        message = (
             f"[green]✓[/green] indexed {result['files_indexed']} files "
             f"({result['chunks_written']} chunks), "
             f"captured {result['decisions_captured']} decisions from git"
         )
+        if result.get("shared_imported"):
+            message += f", imported {result['shared_imported']} shared memories"
+        console.print(message)
+        if not result.get("git_available"):
+            console.print(
+                "[yellow]![/yellow] no git repository found — decision mining and "
+                "commit hooks are disabled until you `git init`"
+            )
+    if copilot:
+        from dot.integrations.copilot import write_instructions_file
+
+        write_instructions_file(_local_daemon(config).store, config)
+        console.print("[green]✓[/green] created .github/copilot-instructions.md")
     console.print("\nNext: [bold]dot daemon start[/bold] to keep Dot watching in the background.")
 
 
@@ -148,6 +202,8 @@ def status() -> None:
     table.add_row("last indexed", str(data.get("last_indexed") or "never"))
     table.add_row("embeddings", str(data.get("embedding_backend")))
     table.add_row("vector store", str(data.get("vector_backend")))
+    if data.get("storage_human"):
+        table.add_row("local storage", str(data.get("storage_human")))
     if data.get("git_branch"):
         table.add_row("git branch", str(data.get("git_branch")))
     console.print(table)
@@ -242,6 +298,46 @@ def forget(pattern: str = typer.Argument(..., help="Regex/substring to match mem
     console.print(f"[green]✓[/green] forgot {removed} memories")
 
 
+@app.command("import")
+def import_cmd(
+    file: Path | None = typer.Argument(
+        None,
+        help="Memories file to import (.json from `dot memory export`, or .jsonl). "
+        "Default: the project's shared dot-memories.jsonl",
+    ),
+) -> None:
+    """Import memories into this project (shared team file, or an exported file)."""
+    from dot.memory.shared import import_file, import_shared
+
+    config = _load_config()
+    store = _local_daemon(config).store
+    if file is None:
+        imported = import_shared(store, config)
+        source = "dot-memories.jsonl"
+    else:
+        try:
+            imported = import_file(store, file)
+        except (FileNotFoundError, ValueError) as exc:
+            console.print(f"[red]{exc}[/red]")
+            raise typer.Exit(1) from exc
+        source = str(file)
+    if imported:
+        console.print(f"[green]✓[/green] imported {imported} memories from {source}")
+    else:
+        console.print(f"nothing new to import from {source}")
+
+
+@app.command()
+def mcp(
+    project: Path | None = typer.Option(None, "--project", help="Project root"),
+) -> None:
+    """Run the MCP server on stdio (used by Claude Code via .mcp.json)."""
+    from dot.integrations.mcp import serve
+
+    config = _load_config(project, require_init=False)
+    serve(config.project_root)
+
+
 @app.command()
 def dashboard() -> None:
     """Open the web dashboard."""
@@ -293,6 +389,9 @@ def memory_add(
     kind: str = typer.Option("decision", help="decision | rejected | action_item | note"),
     file: str = typer.Option("", "--file", help="Related file path"),
     tag: list[str] = typer.Option([], "--tag", help="Tags (repeatable)"),
+    share: bool = typer.Option(
+        False, "--share", help="Also append to dot-memories.jsonl so teammates get it"
+    ),
 ) -> None:
     """Capture a decision manually."""
     config = _load_config()
@@ -300,6 +399,57 @@ def memory_add(
         content=content, kind=kind, source="manual", file_path=file, tags=tag
     )
     console.print(f"[green]✓[/green] captured {memory.memory_id[:8]} ({kind})")
+    if share:
+        from dot.config import SHARED_MEMORIES_FILE
+        from dot.memory.shared import export_memory
+
+        if export_memory(config, memory):
+            console.print(
+                f"[green]✓[/green] shared — commit [bold]{SHARED_MEMORIES_FILE}[/bold] "
+                "to publish it to your team"
+            )
+
+
+@memory_app.command("share")
+def memory_share(
+    memory_id: str = typer.Argument(..., help="Memory id (prefix ok) to share with the team"),
+) -> None:
+    """Append an existing memory to dot-memories.jsonl for the team."""
+    from dot.config import SHARED_MEMORIES_FILE
+    from dot.memory.shared import export_memory
+
+    config = _load_config()
+    store = _local_daemon(config).store
+    candidates = [
+        m for m in store.list_memories(limit=10_000, include_archived=True)
+        if m.memory_id.startswith(memory_id)
+    ]
+    if not candidates:
+        console.print("[red]no memory with that id[/red]")
+        raise typer.Exit(1)
+    if len(candidates) > 1:
+        console.print(f"[red]{len(candidates)} memories match that prefix; be more specific[/red]")
+        raise typer.Exit(1)
+    if export_memory(config, candidates[0]):
+        console.print(
+            f"[green]✓[/green] shared {candidates[0].memory_id[:8]} — commit "
+            f"[bold]{SHARED_MEMORIES_FILE}[/bold] to publish it"
+        )
+    else:
+        console.print("[yellow]already shared[/yellow]")
+
+
+@memory_app.command("pull")
+def memory_pull() -> None:
+    """Import shared memories from dot-memories.jsonl (after a git pull)."""
+    from dot.memory.shared import import_shared
+
+    config = _load_config()
+    imported = import_shared(_local_daemon(config).store, config)
+    if imported:
+        console.print(f"[green]✓[/green] imported {imported} shared memories")
+    else:
+        console.print("nothing new to import")
 
 
 @memory_app.command("export")
@@ -368,7 +518,9 @@ def daemon_start(
             start_new_session=True,
         )
     console.print(
-        f"[green]✓[/green] daemon started (pid {process.pid}, port {port}) — logs at {log_path}"
+        f"[green]✓[/green] daemon started (pid {process.pid}) — logs at {log_path}\n"
+        "  port: requested "
+        f"{port}; if busy, the next free port is used — `dot status` shows the actual one"
     )
 
 

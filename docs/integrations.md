@@ -4,10 +4,14 @@ Dot is model-agnostic: anything that can hit `http://127.0.0.1:7337` can use it.
 
 ## Claude Code
 
-`dot init` wires this automatically:
+`dot init` wires this when it detects Claude usage in the project (a `.claude/`
+directory, CLAUDE.md, or .mcp.json — force with `--claude`):
 
-- a **CLAUDE.md section** telling Claude how to query Dot (`/context`, `/memory`)
-  and to record significant decisions back via `POST /memory`
+- an **MCP server** registered in `.mcp.json` (`dot mcp` on stdio), giving
+  Claude native tools: `dot_context` (retrieve ranked context),
+  `dot_remember` (record a decision, optionally `share: true` for the team),
+  and `dot_status`
+- a **CLAUDE.md section** telling Claude how to query Dot's REST API
 - a **SessionStart hook** in `.claude/settings.json` that injects assembled
   context when a session begins
 

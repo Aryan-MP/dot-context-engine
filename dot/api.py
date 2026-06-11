@@ -40,6 +40,7 @@ class MemoryIn(BaseModel):
     file_path: str = ""
     tags: list[str] = []
     confidence: float = Field(default=1.0, ge=0.0, le=1.0)
+    share: bool = False  # also append to dot-memories.jsonl for the team
 
 
 class ConversationIn(BaseModel):
@@ -106,7 +107,12 @@ def create_app(daemon: Daemon) -> FastAPI:
             tags=body.tags,
             confidence=body.confidence,
         )
-        return {"id": memory.memory_id, "kind": memory.kind}
+        shared = False
+        if body.share:
+            from dot.memory.shared import export_memory
+
+            shared = export_memory(daemon.config, memory)
+        return {"id": memory.memory_id, "kind": memory.kind, "shared": shared}
 
     @app.post("/memory/conversation", status_code=201)
     def capture_conversation(body: ConversationIn) -> dict:
