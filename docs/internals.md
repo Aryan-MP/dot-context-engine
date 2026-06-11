@@ -1,5 +1,10 @@
 # Dot internals: the complete technical guide
 
+> New to embeddings, vector search, ASTs, or daemons? Read
+> [foundations.md](foundations.md) first. It teaches every concept this
+> document assumes, from zero, with worked examples, and ends with a map of
+> which chapter unlocks which section here.
+
 This document explains every part of Dot in depth: the problem, the
 architecture, the algorithms, the math, the storage layout, the protocols,
 and the trade-offs behind each decision. It is written so that one careful

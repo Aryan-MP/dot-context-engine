@@ -32,7 +32,8 @@ are generated locally with sentence-transformers, storage is SQLite + ChromaDB o
 
 > Not on PyPI yet — install from source. Full walkthrough with test
 > experiments: [docs/getting-started.md](docs/getting-started.md).
-> Deep technical internals: [docs/internals.md](docs/internals.md).
+> Deep technical internals: [docs/internals.md](docs/internals.md)
+> (prerequisites taught from zero in [docs/foundations.md](docs/foundations.md)).
 
 ```bash
 git clone https://github.com/aryanp-spektra/dot-context-engine.git
