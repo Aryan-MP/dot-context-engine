@@ -5,31 +5,23 @@
       <stop offset="70%" stop-color="#7c6af7"/>
       <stop offset="100%" stop-color="#5b48e8"/>
     </radialGradient>
-    <radialGradient id="halo" cx="50%" cy="50%" r="50%">
-      <stop offset="0%" stop-color="#7c6af7" stop-opacity="0.45"/>
-      <stop offset="100%" stop-color="#7c6af7" stop-opacity="0"/>
-    </radialGradient>
   </defs>
   <rect width="240" height="240" rx="52" fill="#0c0c0e"/>
   <g>
-    <circle cx="162.00" cy="120.00" r="11.00" fill="#7c6af7" opacity="0.95"/>
-    <circle cx="153.02" cy="153.02" r="9.80" fill="#7c6af7" opacity="0.79"/>
-    <circle cx="120.00" cy="171.91" r="8.85" fill="#7c6af7" opacity="0.68"/>
-    <circle cx="79.19" cy="160.81" r="7.96" fill="#7c6af7" opacity="0.60"/>
-    <circle cx="55.84" cy="120.00" r="7.12" fill="#7c6af7" opacity="0.52"/>
-    <circle cx="69.57" cy="69.57" r="6.31" fill="#7c6af7" opacity="0.45"/>
-    <circle cx="120.00" cy="40.71" r="5.52" fill="#7c6af7" opacity="0.38"/>
-    <circle cx="182.33" cy="57.67" r="4.75" fill="#7c6af7" opacity="0.31"/>
-    <circle cx="218.00" cy="120.00" r="4.00" fill="#7c6af7" opacity="0.25"/>
-    <circle cx="78.00" cy="120.00" r="11.00" fill="#7c6af7" opacity="0.95"/>
-    <circle cx="86.98" cy="86.98" r="9.80" fill="#7c6af7" opacity="0.79"/>
-    <circle cx="120.00" cy="68.09" r="8.85" fill="#7c6af7" opacity="0.68"/>
-    <circle cx="160.81" cy="79.19" r="7.96" fill="#7c6af7" opacity="0.60"/>
-    <circle cx="184.16" cy="120.00" r="7.12" fill="#7c6af7" opacity="0.52"/>
-    <circle cx="170.43" cy="170.43" r="6.31" fill="#7c6af7" opacity="0.45"/>
-    <circle cx="120.00" cy="199.29" r="5.52" fill="#7c6af7" opacity="0.38"/>
-    <circle cx="57.67" cy="182.33" r="4.75" fill="#7c6af7" opacity="0.31"/>
-    <circle cx="22.00" cy="120.00" r="4.00" fill="#7c6af7" opacity="0.25"/>
+    <circle cx="178.00" cy="120.00" r="14.00" fill="#7c6af7" opacity="0.95"/>
+    <circle cx="162.50" cy="167.20" r="12.26" fill="#7c6af7" opacity="0.78"/>
+    <circle cx="112.73" cy="189.17" r="10.86" fill="#7c6af7" opacity="0.67"/>
+    <circle cx="58.39" cy="164.76" r="9.56" fill="#7c6af7" opacity="0.58"/>
+    <circle cx="38.43" cy="102.66" r="8.33" fill="#7c6af7" opacity="0.50"/>
+    <circle cx="74.34" cy="40.91" r="7.15" fill="#7c6af7" opacity="0.42"/>
+    <circle cx="150.90" cy="24.89" r="6.00" fill="#7c6af7" opacity="0.35"/>
+    <circle cx="62.00" cy="120.00" r="14.00" fill="#7c6af7" opacity="0.95"/>
+    <circle cx="77.50" cy="72.80" r="12.26" fill="#7c6af7" opacity="0.78"/>
+    <circle cx="127.27" cy="50.83" r="10.86" fill="#7c6af7" opacity="0.67"/>
+    <circle cx="181.61" cy="75.24" r="9.56" fill="#7c6af7" opacity="0.58"/>
+    <circle cx="201.57" cy="137.34" r="8.33" fill="#7c6af7" opacity="0.50"/>
+    <circle cx="165.66" cy="199.09" r="7.15" fill="#7c6af7" opacity="0.42"/>
+    <circle cx="89.10" cy="215.11" r="6.00" fill="#7c6af7" opacity="0.35"/>
   </g>
-  <circle cx="120" cy="120" r="34" fill="url(#core)"/>
+  <circle cx="120" cy="120" r="44" fill="url(#core)"/>
 </svg>

@@ -36,8 +36,9 @@ const links = [
 >
   <div class="container-dot flex items-center gap-6 py-3.5">
     <!-- Wordmark -->
-    <a href="/" class="group flex items-center text-[18px] font-semibold tracking-tight" aria-label="Dot home">
-      <span>d</span><span class="px-px text-accent">·</span><span>t</span>
+    <a href="/" class="group flex items-center gap-2.5 text-[20px] font-semibold tracking-tight" aria-label="Dot home">
+      <img src="/logo-mark.svg" alt="" width="34" height="34" class="transition-transform duration-300 group-hover:rotate-[20deg]" />
+      <span>d<span class="px-px text-accent">·</span>t</span>
     </a>
 
     <!-- Desktop links -->
@@ -90,7 +91,10 @@ const links = [
     class="absolute right-0 top-0 flex h-full w-72 translate-x-full flex-col gap-1 border-l border-border bg-surface p-6 transition-transform duration-300 ease-[cubic-bezier(0.16,1,0.3,1)]"
   >
     <div class="mb-6 flex items-center justify-between">
-      <span class="text-lg font-semibold">d<span class="text-accent">·</span>t</span>
+      <span class="flex items-center gap-2 text-lg font-semibold">
+        <img src="/logo-mark.svg" alt="" width="26" height="26" />
+        d<span class="text-accent">·</span>t
+      </span>
       <button id="nav-close" class="text-secondary hover:text-primary" aria-label="Close menu">
         <svg viewBox="0 0 24 24" width="22" height="22" set:html={icons.close} />
       </button>
