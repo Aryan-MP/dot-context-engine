@@ -19,7 +19,7 @@ Everything runs on your machine. Nothing is uploaded anywhere.
 7. [Configuration reference](#7-configuration-reference)
 8. [Storage: how much disk does Dot use?](#8-storage)
 9. [Troubleshooting](#9-troubleshooting)
-10. [Uninstall / reset](#10-uninstall--reset)
+10. [Uninstall / reset](#10-uninstall-reset)
 
 ---
 

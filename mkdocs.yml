@@ -1,0 +1,65 @@
+site_name: Dot
+site_description: >-
+  Dot is a local-first AI context memory daemon. These docs cover getting
+  started, the foundations behind it, and a complete technical deep dive.
+site_url: https://aryanp-spektra.github.io/dot-context-engine/
+repo_url: https://github.com/aryanp-spektra/dot-context-engine
+repo_name: dot-context-engine
+edit_uri: edit/main/docs/
+
+theme:
+  name: material
+  logo: assets/logo.svg
+  favicon: assets/favicon.svg
+  palette:
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: custom
+      accent: custom
+      toggle:
+        icon: material/weather-sunny
+        name: Switch to light mode
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: custom
+      accent: custom
+      toggle:
+        icon: material/weather-night
+        name: Switch to dark mode
+  font:
+    text: Inter
+    code: JetBrains Mono
+  features:
+    - navigation.sections
+    - navigation.top
+    - navigation.footer
+    - toc.follow
+    - search.suggest
+    - search.highlight
+    - content.code.copy
+
+extra_css:
+  - assets/extra.css
+
+nav:
+  - Home: index.md
+  - Getting started: getting-started.md
+  - Foundations: foundations.md
+  - Internals: internals.md
+  - Architecture overview: architecture.md
+  - Integrations: integrations.md
+
+markdown_extensions:
+  - admonition
+  - attr_list
+  - md_in_html
+  - tables
+  - toc:
+      permalink: true
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.superfences
+  - pymdownx.inlinehilite
+
+plugins:
+  - search

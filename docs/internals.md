@@ -31,7 +31,7 @@ files; every formula is shown with a worked example.
 16. [Performance characteristics](#16-performance)
 17. [Privacy and security model](#17-privacy-and-security)
 18. [Graceful degradation map](#18-graceful-degradation)
-19. [Known limits and extension points](#19-known-limits)
+19. [Known limits and extension points](#19-known-limits-and-extension-points)
 
 ---
 

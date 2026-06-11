@@ -1,0 +1,38 @@
+/* Dot brand palette for Material */
+:root {
+  --md-primary-fg-color: #7c6af7;
+  --md-primary-fg-color--light: #9d8ffb;
+  --md-primary-fg-color--dark: #5b48e8;
+  --md-accent-fg-color: #9d8ffb;
+}
+
+[data-md-color-scheme="slate"] {
+  --md-default-bg-color: #0c0c0e;
+  --md-default-fg-color: #f0f0f5;
+  --md-default-fg-color--light: #8b8b9e;
+  --md-code-bg-color: #18181f;
+  --md-typeset-a-color: #9d8ffb;
+  --md-footer-bg-color: #111116;
+  --md-footer-bg-color--dark: #0c0c0e;
+}
+
+[data-md-color-scheme="slate"] .md-header,
+[data-md-color-scheme="slate"] .md-tabs {
+  background-color: rgba(12, 12, 14, 0.85);
+  backdrop-filter: blur(12px);
+}
+
+.md-header__button.md-logo img {
+  height: 1.7rem;
+  width: 1.7rem;
+}
+
+.md-typeset h1,
+.md-typeset h2 {
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+.md-typeset table:not([class]) {
+  font-size: 0.72rem;
+}
