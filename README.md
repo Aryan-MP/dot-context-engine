@@ -30,8 +30,9 @@ are generated locally with sentence-transformers, storage is SQLite + ChromaDB o
 
 ## Quick start
 
-> Not on PyPI yet — install from source. Full walkthrough (CLI, API, dashboard,
-> VS Code extension): [docs/try-it-locally.md](docs/try-it-locally.md).
+> Not on PyPI yet — install from source. Full walkthrough with test
+> experiments: [docs/getting-started.md](docs/getting-started.md).
+> Deep technical internals: [docs/internals.md](docs/internals.md).
 
 ```bash
 git clone https://github.com/aryanp-spektra/dot-context-engine.git
@@ -98,9 +99,10 @@ extras** — without them Dot degrades to a deterministic hashing embedder, SQLi
 brute-force vector search, and heuristic parsing, so the full pipeline still works
 (and tests run) on any machine.
 
-See [docs/architecture.md](docs/architecture.md) for the internals,
-[docs/getting-started.md](docs/getting-started.md) for a walkthrough, and
-[docs/integrations.md](docs/integrations.md) for tool wiring.
+See [docs/getting-started.md](docs/getting-started.md) for the full
+walkthrough and test experiments, [docs/internals.md](docs/internals.md)
+for the complete technical deep dive (architecture, algorithms, math, and
+trade-offs), and [docs/integrations.md](docs/integrations.md) for tool wiring.
 
 ## License
 

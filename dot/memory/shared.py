@@ -81,20 +81,50 @@ def import_shared(store: Store, config: ProjectConfig | None = None) -> int:
     path = config.shared_memories_path
     if not path.exists():
         return 0
+    records = _parse_jsonl(path)
+    return import_records(store, records)
 
-    existing = store.existing_memory_ids()
-    imported = 0
+
+def import_file(store: Store, path) -> int:
+    """Import memories from an exported file (.json from `dot memory export`
+    or a .jsonl shared-memories file). Idempotent."""
+    from pathlib import Path
+
+    path = Path(path)
+    if not path.exists():
+        raise FileNotFoundError(path)
+    if path.suffix.lower() == ".jsonl":
+        records = _parse_jsonl(path)
+    else:
+        data = json.loads(path.read_text(encoding="utf-8"))
+        records = data.get("memories", data) if isinstance(data, dict) else data
+        if not isinstance(records, list):
+            raise ValueError(f"{path.name}: expected a list of memories")
+    return import_records(store, records)
+
+
+def _parse_jsonl(path) -> list[dict]:
+    records: list[dict] = []
     for line_no, line in enumerate(path.read_text(encoding="utf-8").splitlines(), start=1):
         line = line.strip()
         if not line:
             continue
         try:
-            record = json.loads(line)
+            records.append(json.loads(line))
         except json.JSONDecodeError:
             logger.warning("%s:%d is not valid JSON; skipping", path.name, line_no)
+    return records
+
+
+def import_records(store: Store, records: list[dict]) -> int:
+    """Idempotently add memory records to the local store."""
+    existing = store.existing_memory_ids()
+    imported = 0
+    for record in records:
+        if not isinstance(record, dict):
             continue
         memory_id = record.get("id")
-        content = record.get("content", "").strip()
+        content = (record.get("content") or "").strip()
         if not memory_id or not content or memory_id in existing:
             continue
 
@@ -128,5 +158,5 @@ def import_shared(store: Store, config: ProjectConfig | None = None) -> int:
         imported += 1
 
     if imported:
-        logger.info("imported %d shared memories from %s", imported, path.name)
+        logger.info("imported %d memories", imported)
     return imported

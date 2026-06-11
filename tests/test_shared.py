@@ -73,6 +73,35 @@ def test_full_sync_imports_shared(daemon):
     assert not daemon.store.get_chunks_for_file(SHARED_MEMORIES_FILE)
 
 
+def test_import_exported_file_roundtrip(daemon, tmp_path_factory):
+    """`dot memory export` on one machine, `dot import` on another."""
+    daemon.store.add_memory("Chose Kafka over RabbitMQ for replay", kind="decision")
+    daemon.store.add_memory("TODO: add backpressure to the consumer", kind="action_item")
+    export_path = tmp_path_factory.mktemp("export") / "dot-memories.json"
+    export_path.write_text(
+        json.dumps({"project": "x", "memories": daemon.store.export_memories()})
+    )
+
+    other_root = tmp_path_factory.mktemp("other-machine")
+    other_config = ProjectConfig(project_root=str(other_root))
+    other_config.save()
+    from dot.daemon import Daemon
+    from dot.memory.shared import import_file
+
+    other = Daemon(other_config)
+    assert import_file(other.store, export_path) == 2
+    assert import_file(other.store, export_path) == 0  # idempotent
+    contents = {m.content for m in other.store.list_memories()}
+    assert any("Kafka" in c for c in contents)
+
+
+def test_stats_include_storage(daemon):
+    daemon.full_sync()
+    stats = daemon.store.stats()
+    assert stats["storage_bytes"] > 0
+    assert stats["storage_human"].split()[1] in {"B", "KB", "MB", "GB"}
+
+
 def test_extra_extensions_config(tmp_path):
     (tmp_path / "notes.txt").write_text("challenge1: build the enterprise Copilot demo script")
     (tmp_path / "readme.md").write_text("# project")

@@ -202,6 +202,8 @@ def status() -> None:
     table.add_row("last indexed", str(data.get("last_indexed") or "never"))
     table.add_row("embeddings", str(data.get("embedding_backend")))
     table.add_row("vector store", str(data.get("vector_backend")))
+    if data.get("storage_human"):
+        table.add_row("local storage", str(data.get("storage_human")))
     if data.get("git_branch"):
         table.add_row("git branch", str(data.get("git_branch")))
     console.print(table)
@@ -294,6 +296,35 @@ def forget(pattern: str = typer.Argument(..., help="Regex/substring to match mem
         raise typer.Abort()
     removed = store.forget_pattern(pattern)
     console.print(f"[green]✓[/green] forgot {removed} memories")
+
+
+@app.command("import")
+def import_cmd(
+    file: Path | None = typer.Argument(
+        None,
+        help="Memories file to import (.json from `dot memory export`, or .jsonl). "
+        "Default: the project's shared dot-memories.jsonl",
+    ),
+) -> None:
+    """Import memories into this project (shared team file, or an exported file)."""
+    from dot.memory.shared import import_file, import_shared
+
+    config = _load_config()
+    store = _local_daemon(config).store
+    if file is None:
+        imported = import_shared(store, config)
+        source = "dot-memories.jsonl"
+    else:
+        try:
+            imported = import_file(store, file)
+        except (FileNotFoundError, ValueError) as exc:
+            console.print(f"[red]{exc}[/red]")
+            raise typer.Exit(1) from exc
+        source = str(file)
+    if imported:
+        console.print(f"[green]✓[/green] imported {imported} memories from {source}")
+    else:
+        console.print(f"nothing new to import from {source}")
 
 
 @app.command()
