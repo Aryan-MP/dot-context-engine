@@ -2,7 +2,7 @@
   "name": "dot-context",
   "displayName": "Dot — AI Context Memory",
   "description": "Injects your codebase's memory (code context + captured decisions) into Copilot and other AI tools via the local Dot daemon.",
-  "version": "0.1.0",
+  "version": "0.1.0-alpha",
   "publisher": "dot",
   "license": "MIT",
   "repository": {
