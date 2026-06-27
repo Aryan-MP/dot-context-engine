@@ -577,17 +577,49 @@ def daemon_start(
         console.print("[yellow]daemon already running[/yellow]")
         return
     log_path = config.dot_dir / "daemon.log"
+
+    # Detach the child so it outlives this shell. start_new_session is
+    # Unix-only; on Windows use the equivalent process-creation flags.
+    popen_kwargs: dict = {}
+    if sys.platform == "win32":
+        popen_kwargs["creationflags"] = (
+            subprocess.CREATE_NEW_PROCESS_GROUP | 0x00000008  # DETACHED_PROCESS
+        )
+    else:
+        popen_kwargs["start_new_session"] = True
+
     with open(log_path, "ab") as log_file:
         process = subprocess.Popen(
             [sys.executable, "-m", "dot.cli", "daemon", "run",
              "--project", str(config.project_root), "--port", str(port)],
             stdout=log_file, stderr=log_file,
-            start_new_session=True,
+            **popen_kwargs,
         )
+
+    # Don't report success blindly: a port clash, bad config, or import error
+    # would kill the child immediately. Give it a moment, then verify.
+    import time as _time
+
+    for _ in range(20):  # up to ~2s
+        if process.poll() is not None:
+            break
+        _time.sleep(0.1)
+
+    if process.poll() is not None and process.returncode != 0:
+        console.print("[red]✗ daemon failed to start.[/red] Last log lines:")
+        try:
+            tail = log_path.read_text(errors="replace").splitlines()[-15:]
+            for line in tail:
+                console.print(f"  [dim]{line}[/dim]")
+        except OSError:
+            pass
+        console.print(f"\nFull log: {log_path}. Try [bold]dot doctor[/bold] to diagnose.")
+        raise typer.Exit(1)
+
     console.print(
         f"[green]✓[/green] daemon started (pid {process.pid}) — logs at {log_path}\n"
-        "  port: requested "
-        f"{port}; if busy, the next free port is used — `dot status` shows the actual one"
+        f"  requested port {port}; if busy the next free port is used — "
+        "[bold]dot status[/bold] shows the actual one"
     )
 
 

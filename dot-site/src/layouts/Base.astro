@@ -11,7 +11,7 @@ export interface Props {
 const {
   title = 'Memory for every AI tool you use',
   description = 'Open-source local daemon that gives Claude Code, GitHub Copilot, Cursor, and any AI tool a memory of your codebase. Private. Local. Model-agnostic.',
-  image = '/og-image.svg',
+  image = '/og-image.png',
 } = Astro.props;
 
 const fullTitle = title.includes('Dot') ? title : `${title} — Dot`;
@@ -51,6 +51,8 @@ const jsonLd = {
     <link rel="canonical" href={canonical} />
 
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
     <meta name="theme-color" content="#0c0c0e" />
 
     <!-- Fonts: preconnect + display=swap for zero blocking -->

@@ -1,28 +1,30 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
-  <defs>
-    <radialGradient id="glow" cx="50%" cy="38%" r="55%">
-      <stop offset="0%" stop-color="#7c6af7" stop-opacity="0.22"/>
-      <stop offset="100%" stop-color="#0c0c0e" stop-opacity="0"/>
-    </radialGradient>
-    <pattern id="dots" width="28" height="28" patternUnits="userSpaceOnUse">
-      <circle cx="2" cy="2" r="1" fill="#ffffff" fill-opacity="0.04"/>
-    </pattern>
-  </defs>
-  <rect width="1200" height="630" fill="#0c0c0e"/>
-  <rect width="1200" height="630" fill="url(#dots)"/>
-  <rect width="1200" height="630" fill="url(#glow)"/>
-
-  <g transform="translate(96,120)">
-    <text font-family="JetBrains Mono, monospace" font-size="22" letter-spacing="6" fill="#7c6af7">OPEN SOURCE · LOCAL FIRST · MODEL AGNOSTIC</text>
-    <text y="150" font-family="Instrument Serif, Georgia, serif" font-size="104" fill="#f0f0f5">Your AI tools have</text>
-    <text y="262" font-family="Instrument Serif, Georgia, serif" font-size="104" fill="#f0f0f5" fill-opacity="0.7">no memory.</text>
-    <text y="360" font-family="Inter, sans-serif" font-size="30" fill="#8b8b9e">Dot fixes that. One local daemon that gives every AI tool</text>
-    <text y="404" font-family="Inter, sans-serif" font-size="30" fill="#8b8b9e">a memory of your codebase.</text>
-  </g>
-
-  <g transform="translate(980,300)">
-    <circle r="58" fill="#7c6af7"/>
-    <circle r="92" fill="none" stroke="#7c6af7" stroke-opacity="0.4" stroke-width="2" stroke-dasharray="5 8"/>
-    <text font-family="JetBrains Mono, monospace" font-size="30" fill="#fff" text-anchor="middle" dy="10">dot</text>
-  </g>
+<defs>
+  <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0%" stop-color="#0c0c0e"/><stop offset="55%" stop-color="#0d0b14"/>
+    <stop offset="100%" stop-color="#120d20"/>
+  </linearGradient>
+  <radialGradient id="halo" cx="50%" cy="50%" r="50%">
+    <stop offset="0%" stop-color="#7c6af7" stop-opacity="0.40"/>
+    <stop offset="100%" stop-color="#7c6af7" stop-opacity="0"/>
+  </radialGradient>
+  <radialGradient id="core" cx="38%" cy="34%" r="75%">
+    <stop offset="0%" stop-color="#9d8ffb"/><stop offset="70%" stop-color="#7c6af7"/>
+    <stop offset="100%" stop-color="#5b48e8"/>
+  </radialGradient>
+  <radialGradient id="vignette" cx="50%" cy="28%" r="75%">
+    <stop offset="0%" stop-color="#7c6af7" stop-opacity="0.10"/>
+    <stop offset="100%" stop-color="#7c6af7" stop-opacity="0"/>
+  </radialGradient>
+</defs>
+<rect width="1200" height="630" fill="url(#bg)"/>
+<rect width="1200" height="630" fill="url(#vignette)"/>
+<circle cx="630.0" cy="189.0" r="5.00" fill="#7c6af7" opacity="0.95"/><circle cx="628.4" cy="202.7" r="4.71" fill="#7c6af7" opacity="0.84"/><circle cx="620.7" cy="214.9" r="4.47" fill="#7c6af7" opacity="0.78"/><circle cx="607.8" cy="223.0" r="4.25" fill="#7c6af7" opacity="0.72"/><circle cx="591.8" cy="224.7" r="4.05" fill="#7c6af7" opacity="0.67"/><circle cx="576.0" cy="219.1" r="3.85" fill="#7c6af7" opacity="0.62"/><circle cx="563.5" cy="206.6" r="3.66" fill="#7c6af7" opacity="0.58"/><circle cx="557.4" cy="189.0" r="3.47" fill="#7c6af7" opacity="0.54"/><circle cx="559.6" cy="169.6" r="3.28" fill="#7c6af7" opacity="0.50"/><circle cx="570.6" cy="152.2" r="3.10" fill="#7c6af7" opacity="0.46"/><circle cx="589.0" cy="140.7" r="2.92" fill="#7c6af7" opacity="0.42"/><circle cx="611.6" cy="138.2" r="2.75" fill="#7c6af7" opacity="0.38"/><circle cx="634.1" cy="146.2" r="2.58" fill="#7c6af7" opacity="0.35"/><circle cx="651.9" cy="164.0" r="2.41" fill="#7c6af7" opacity="0.31"/><circle cx="660.5" cy="189.0" r="2.24" fill="#7c6af7" opacity="0.28"/><circle cx="657.3" cy="216.6" r="2.07" fill="#7c6af7" opacity="0.25"/><circle cx="641.7" cy="241.3" r="1.90" fill="#7c6af7" opacity="0.21"/><circle cx="615.7" cy="257.6" r="1.74" fill="#7c6af7" opacity="0.18"/><circle cx="583.5" cy="261.1" r="1.58" fill="#7c6af7" opacity="0.15"/><circle cx="551.5" cy="249.8" r="1.42" fill="#7c6af7" opacity="0.12"/><circle cx="526.3" cy="224.5" r="1.26" fill="#7c6af7" opacity="0.09"/><circle cx="514.0" cy="189.0" r="1.10" fill="#7c6af7" opacity="0.06"/><circle cx="570.0" cy="189.0" r="5.00" fill="#7c6af7" opacity="0.95"/><circle cx="571.6" cy="175.3" r="4.71" fill="#7c6af7" opacity="0.84"/><circle cx="579.3" cy="163.1" r="4.47" fill="#7c6af7" opacity="0.78"/><circle cx="592.2" cy="155.0" r="4.25" fill="#7c6af7" opacity="0.72"/><circle cx="608.2" cy="153.3" r="4.05" fill="#7c6af7" opacity="0.67"/><circle cx="624.0" cy="158.9" r="3.85" fill="#7c6af7" opacity="0.62"/><circle cx="636.5" cy="171.4" r="3.66" fill="#7c6af7" opacity="0.58"/><circle cx="642.6" cy="189.0" r="3.47" fill="#7c6af7" opacity="0.54"/><circle cx="640.4" cy="208.4" r="3.28" fill="#7c6af7" opacity="0.50"/><circle cx="629.4" cy="225.8" r="3.10" fill="#7c6af7" opacity="0.46"/><circle cx="611.0" cy="237.3" r="2.92" fill="#7c6af7" opacity="0.42"/><circle cx="588.4" cy="239.8" r="2.75" fill="#7c6af7" opacity="0.38"/><circle cx="565.9" cy="231.8" r="2.58" fill="#7c6af7" opacity="0.35"/><circle cx="548.1" cy="214.0" r="2.41" fill="#7c6af7" opacity="0.31"/><circle cx="539.5" cy="189.0" r="2.24" fill="#7c6af7" opacity="0.28"/><circle cx="542.7" cy="161.4" r="2.07" fill="#7c6af7" opacity="0.25"/><circle cx="558.3" cy="136.7" r="1.90" fill="#7c6af7" opacity="0.21"/><circle cx="584.3" cy="120.4" r="1.74" fill="#7c6af7" opacity="0.18"/><circle cx="616.5" cy="116.9" r="1.58" fill="#7c6af7" opacity="0.15"/><circle cx="648.5" cy="128.2" r="1.42" fill="#7c6af7" opacity="0.12"/><circle cx="673.7" cy="153.5" r="1.26" fill="#7c6af7" opacity="0.09"/><circle cx="686.0" cy="189.0" r="1.10" fill="#7c6af7" opacity="0.06"/><circle cx="600.0" cy="189.0" r="52" fill="url(#halo)"/><circle cx="600.0" cy="189.0" r="20" fill="url(#core)"/><circle cx="593" cy="182" r="6" fill="#fff" opacity="0.35"/>
+<text x="600.0" y="369" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="104" font-weight="700" letter-spacing="-3" fill="#f0f0f5">Dot</text>
+<text x="600.0" y="441" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="33" font-weight="500" fill="#9b9bb0">Memory for every AI tool you use.</text>
+<text x="600.0" y="495" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="22" font-weight="400" fill="#6a6a7e">Local-first  ·  private  ·  model-agnostic  ·  open source</text>
+<g>
+  <rect x="510" y="536" width="180" height="40" rx="20" fill="none" stroke="#7c6af7" stroke-opacity="0.5"/>
+  <text x="600.0" y="562" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="18" fill="#9d8ffb">v0.1.0-alpha</text>
+</g>
 </svg>

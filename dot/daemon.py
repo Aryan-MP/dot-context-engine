@@ -314,17 +314,46 @@ def remove_pid_file(config: ProjectConfig) -> None:
     _pid_path(config).unlink(missing_ok=True)
 
 
+def _pid_alive(pid: int) -> bool:
+    """Whether a process with this PID exists, cross-platform.
+
+    ``os.kill(pid, 0)`` is POSIX-only; signal 0 is invalid on Windows, so we
+    branch on platform to avoid crashing the whole daemon lifecycle there.
+    """
+    if pid <= 0:
+        return False
+    if sys.platform == "win32":  # pragma: no cover - exercised on Windows only
+        import ctypes
+
+        PROCESS_QUERY_LIMITED_INFORMATION = 0x1000
+        STILL_ACTIVE = 259
+        kernel32 = ctypes.windll.kernel32  # type: ignore[attr-defined]
+        handle = kernel32.OpenProcess(PROCESS_QUERY_LIMITED_INFORMATION, False, pid)
+        if not handle:
+            return False
+        try:
+            code = ctypes.c_ulong()
+            if kernel32.GetExitCodeProcess(handle, ctypes.byref(code)):
+                return code.value == STILL_ACTIVE
+            return True
+        finally:
+            kernel32.CloseHandle(handle)
+    try:
+        os.kill(pid, 0)
+        return True
+    except (OSError, ProcessLookupError):
+        return False
+
+
 def is_running(config: ProjectConfig) -> bool:
     info = read_pid_file(config)
     if info is None:
         return False
     pid, _port = info
-    try:
-        os.kill(pid, 0)
+    if _pid_alive(pid):
         return True
-    except (OSError, ProcessLookupError):
-        remove_pid_file(config)
-        return False
+    remove_pid_file(config)
+    return False
 
 
 # ----------------------------------------------------------------------
