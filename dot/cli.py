@@ -89,6 +89,31 @@ def version() -> None:
     console.print(f"dot {__version__}")
 
 
+@app.command()
+def doctor(
+    project: Path | None = typer.Option(
+        None, "--project", help="Project directory to check (default: auto-detect)"
+    ),
+) -> None:
+    """Run first-run health checks and report exactly what's wrong."""
+    from dot.doctor import render, run_doctor
+
+    root = (project.resolve() if project else find_project_root())
+    port = DEFAULT_PORT
+    if root is not None:
+        try:
+            port = ProjectConfig.load(Path(root)).api_port
+        except Exception:
+            pass
+    checks = run_doctor(project_root=Path(root) if root else None, port=port)
+    ok, warns, fails = render(checks, console)
+    console.print(
+        f"\n[bold]{ok} ok, {warns} warnings, {fails} failures[/bold]"
+    )
+    if fails:
+        raise typer.Exit(1)
+
+
 def _detect_claude(root: Path) -> bool:
     """Only wire Claude Code if there's evidence it's used in this project."""
     return (root / ".claude").is_dir() or (root / "CLAUDE.md").exists() or (
@@ -123,6 +148,11 @@ def init(
     copilot: bool = typer.Option(
         False, "--copilot", help="Maintain .github/copilot-instructions.md for Copilot"
     ),
+    conversations: bool = typer.Option(
+        False, "--conversations",
+        help="Auto-capture decisions from Claude Code session transcripts "
+             "(local ~/.claude JSONL, opt-in, no network)",
+    ),
     git_hook: bool = typer.Option(True, help="Install git post-commit hook"),
     sync_now: bool = typer.Option(True, "--sync/--no-sync", help="Run initial index"),
 ) -> None:
@@ -134,10 +164,16 @@ def init(
     config.integrations = [
         name for name, enabled in (("claude", use_claude), ("copilot", copilot)) if enabled
     ]
+    config.capture_conversations = conversations
     config.save()
     console.print(f"[green]✓[/green] initialized .dot/ in [bold]{root}[/bold]")
     if _ensure_gitignored(root):
         console.print("[green]✓[/green] added .dot/ to .gitignore")
+    if conversations:
+        console.print(
+            "[green]✓[/green] conversation capture enabled — Claude Code session "
+            "decisions will be captured locally (opt-in, ~/.claude only, no network)"
+        )
 
     if git_hook:
         from dot.integrations.git import GitIntegration
@@ -277,6 +313,37 @@ def sync(force: bool = typer.Option(False, "--force", help="Re-index unchanged f
         f"[green]✓[/green] {result['files_indexed']} files indexed, "
         f"{result['chunks_written']} chunks, {result['decisions_captured']} decisions"
     )
+
+
+@app.command()
+def capture() -> None:
+    """Capture decisions from Claude Code session transcripts (on-demand scan).
+
+    Reads local JSONL transcripts (``~/.claude`` or ``$CLAUDE_CONFIG_DIR``)
+    for the current project and feeds decision-bearing turns through Dot's
+    existing capture pipeline. Incremental and idempotent — safe to re-run.
+    Enable with ``dot init --conversations`` (off by default, no network).
+    """
+    config = _load_config()
+    if not config.capture_conversations:
+        console.print(
+            "[yellow]conversation capture is off[/yellow] — enable with "
+            "[bold]dot init --conversations[/bold] (local ~/.claude only, opt-in, no network)"
+        )
+        return
+    response = _try_api(config, "POST", "/conversations/scan")
+    if response is not None:
+        result = response.json()
+    else:
+        console.print("daemon not running — scanning in-process…")
+        result = _local_daemon(config).scan_conversations()
+    console.print(
+        f"[green]✓[/green] scanned {result.get('transcripts_scanned', 0)} transcripts, "
+        f"{result.get('decisions_captured', 0)} decisions captured "
+        f"({result.get('newly_captured', 0)} new this run)"
+    )
+    if result.get("errors"):
+        console.print(f"[yellow]![/yellow] {result['errors']} transcript(s) failed (see daemon log)")
 
 
 @app.command()

@@ -91,6 +91,7 @@ Useful flags:
 |---|---|
 | `--claude` / `--no-claude` | force or skip the Claude Code wiring (default: auto-detect) |
 | `--copilot` | maintain `.github/copilot-instructions.md` for GitHub Copilot |
+| `--conversations` | opt in to automatic capture from Claude Code session transcripts (default: off) |
 | `--no-sync` | initialize without running the first index |
 
 Then start the daemon:
@@ -269,7 +270,32 @@ Expected: Claude can call the native tools `dot_context`, `dot_remember`,
 and `dot_status`. Ask it to "record this decision in dot" after making a
 choice, and verify with `dot memory list`.
 
-### Experiment 12: the full cross-tool scenario
+### Experiment 12: capture decisions from Claude Code chats automatically
+
+The manual `/memory/conversation` paste is gone. Opt in once:
+
+```bash
+dot init --conversations
+```
+
+This sets `capture_conversations` in `.dot/config.json` (off by default). The
+daemon then reads local JSONL session transcripts under `~/.claude` (or
+`$CLAUDE_CONFIG_DIR`) for this project, extracts decision-bearing assistant
+turns, and feeds them through the same capture pipeline as commit messages —
+no fork, no network, no transcript pasting. Captures are incremental
+(per-file byte offsets) and idempotent (sha256 memory ids), so re-running is
+free.
+
+```bash
+dot capture     # on-demand scan, prints counts
+dot memory list # decisions surface with source conversation:<session-id>
+```
+
+Privacy: capture reads **only** local `~/.claude` files for the project you
+opted in on, never sends transcript contents anywhere, and is off unless you
+run `dot init --conversations`. Point it elsewhere with `CLAUDE_CONFIG_DIR`.
+
+### Experiment 13: the full cross-tool scenario
 
 The product thesis in one test:
 

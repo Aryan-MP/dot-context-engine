@@ -70,6 +70,11 @@ class ProjectConfig:
     # Populated by `dot init` flags / auto-detection; the daemon only writes
     # integration files (CLAUDE.md, copilot-instructions.md) listed here.
     integrations: list[str] = field(default_factory=list)
+    # Opt-in: automatically capture decisions from Claude Code session
+    # transcripts (local JSONL under ~/.claude or $CLAUDE_CONFIG_DIR).
+    # Strictly local-first (no network). Off by default; enabled with
+    # `dot init --conversations` or by setting this flag in .dot/config.json.
+    capture_conversations: bool = False
     profiles: dict[str, dict] = field(
         default_factory=lambda: {
             "quick-assist": {"token_budget": 2000, "n_chunks": 8, "include_decisions": True},
@@ -116,6 +121,6 @@ class ProjectConfig:
         if config_path.exists():
             data = json.loads(config_path.read_text())
             data["project_root"] = str(project_root)
-            known = {f.name for f in cls.__dataclass_fields__.values()}  # type: ignore[attr-defined]
+            known = set(cls.__dataclass_fields__)
             return cls(**{k: v for k, v in data.items() if k in known})
         return cls(project_root=str(project_root))
