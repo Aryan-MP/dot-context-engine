@@ -1,4 +1,9 @@
-# ● dot
+# ● Dot
+
+[![PyPI](https://img.shields.io/pypi/v/dot-context?color=blue&label=PyPI)](https://pypi.org/project/dot-context/)
+[![GitHub release](https://img.shields.io/github/v/release/aryanp-spektra/dot-context-engine?include_prereleases&label=release)](https://github.com/aryanp-spektra/dot-context-engine/releases)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![Tests](https://github.com/aryanp-spektra/dot-context-engine/actions/workflows/ci.yml/badge.svg)](https://github.com/aryanp-spektra/dot-context-engine/actions/workflows/ci.yml)
 
 **A local-first AI context memory daemon.** Stop re-explaining your codebase to every AI tool.
 
@@ -9,6 +14,26 @@ right context to any AI tool through a local REST API.
 
 **Local. Private. Model-agnostic. Open source.** No code leaves your machine — embeddings
 are generated locally with sentence-transformers, storage is SQLite + ChromaDB on disk.
+
+## Install
+
+```bash
+pip install dot-context[ml]        # alpha release from PyPI, with local embeddings
+dot --version
+```
+
+Or install the light build (no ML stack — uses deterministic hashing instead):
+
+```bash
+pip install dot-context
+```
+
+For development, clone and install in editable mode:
+
+```bash
+git clone https://github.com/aryanp-spektra/dot-context-engine.git
+cd dot-context-engine && pip install -e ".[dev]"
+```
 
 ## How it works
 
@@ -30,15 +55,7 @@ are generated locally with sentence-transformers, storage is SQLite + ChromaDB o
 
 ## Quick start
 
-> Not on PyPI yet — install from source. Full walkthrough with test
-> experiments: [docs/getting-started.md](docs/getting-started.md).
-> Deep technical internals: [docs/internals.md](docs/internals.md)
-> (prerequisites taught from zero in [docs/foundations.md](docs/foundations.md)).
-
 ```bash
-git clone https://github.com/aryanp-spektra/dot-context-engine.git
-cd dot-context-engine && pip install -e ".[ml]"   # or ".[dev]" for the light build
-
 cd your-project
 dot init                          # index the project, wire up git + Claude Code hooks
 dot daemon start                  # keep watching in the background
@@ -49,7 +66,11 @@ dot status
 dot dashboard                     # web UI at http://localhost:7337/ui
 ```
 
-### CLI
+Full walkthrough with experiments: [docs/getting-started.md](docs/getting-started.md)  
+Deep technical internals: [docs/internals.md](docs/internals.md)  
+Prerequisites from zero: [docs/foundations.md](docs/foundations.md)
+
+## CLI
 
 | command | what it does |
 |---|---|
@@ -63,7 +84,7 @@ dot dashboard                     # web UI at http://localhost:7337/ui
 | `dot dashboard` | open the web UI |
 | `dot daemon run/start/stop/install-service` | control the daemon (launchd/systemd) |
 
-### REST API (localhost:7337)
+## REST API (localhost:7337)
 
 ```
 GET  /status                 daemon health + project stats
@@ -82,7 +103,8 @@ POST /sync                   force re-index
   injects context at the start of every session.
 - **VS Code / Copilot** — the [extension](vscode-extension/) shows "what Dot knows about
   this file" in a sidebar, registers Dot as a Language Model tool for Copilot Chat
-  (`#dotContext`), and offers one-click decision capture.
+  (`#dotContext`), and offers one-click decision capture. Download the `.vsix` from the
+  [latest release](https://github.com/aryanp-spektra/dot-context-engine/releases/latest).
 - **Anything else** — `curl localhost:7337/context?query=...&fmt=raw`.
 
 ## Development
@@ -104,6 +126,11 @@ See [docs/getting-started.md](docs/getting-started.md) for the full
 walkthrough and test experiments, [docs/internals.md](docs/internals.md)
 for the complete technical deep dive (architecture, algorithms, math, and
 trade-offs), and [docs/integrations.md](docs/integrations.md) for tool wiring.
+
+## Contributing
+
+We welcome bug reports, feature ideas, and pull requests. See
+[CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
 
 ## License
 

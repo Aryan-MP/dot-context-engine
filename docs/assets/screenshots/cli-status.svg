@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 420" width="800" height="420">
+  <defs>
+    <linearGradient id="termBg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#1e1b2e"/>
+      <stop offset="100%" stop-color="#161326"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="420" rx="12" fill="url(#termBg)"/>
+  <rect x="0" y="0" width="800" height="32" rx="12" fill="#2a263d"/>
+  <circle cx="18" cy="16" r="6" fill="#ff5f57"/>
+  <circle cx="38" cy="16" r="6" fill="#febc2e"/>
+  <circle cx="58" cy="16" r="6" fill="#28c840"/>
+  <text x="24" y="66" font-family="Menlo, Monaco, 'Courier New', monospace" font-size="16" fill="#7c6af7">$</text>
+  <text x="44" y="66" font-family="Menlo, Monaco, 'Courier New', monospace" font-size="16" fill="#ffffff">dot status</text>
+  <text x="24" y="100" font-family="Menlo, Monaco, 'Courier New', monospace" font-size="15" fill="#9d8ffb">● Dot status</text>
+  <text x="24" y="130" font-family="Menlo, Monaco, 'Courier New', monospace" font-size="14" fill="#b8b0e6">daemon       </text><text x="180" y="130" font-family="Menlo, Monaco, 'Courier New', monospace" font-size="14" fill="#28c840">running</text>
+  <text x="24" y="158" font-family="Menlo, Monaco, 'Courier New', monospace" font-size="14" fill="#b8b0e6">project      </text><text x="180" y="158" font-family="Menlo, Monaco, 'Courier New', monospace" font-size="14" fill="#ffffff">dot-context-engine</text>
+  <text x="24" y="186" font-family="Menlo, Monaco, 'Courier New', monospace" font-size="14" fill="#b8b0e6">files indexed</text><text x="180" y="186" font-family="Menlo, Monaco, 'Courier New', monospace" font-size="14" fill="#ffffff">1,247</text>
+  <text x="24" y="214" font-family="Menlo, Monaco, 'Courier New', monospace" font-size="14" fill="#b8b0e6">chunks       </text><text x="180" y="214" font-family="Menlo, Monaco, 'Courier New', monospace" font-size="14" fill="#ffffff">8,932</text>
+  <text x="24" y="242" font-family="Menlo, Monaco, 'Courier New', monospace" font-size="14" fill="#b8b0e6">memories     </text><text x="180" y="242" font-family="Menlo, Monaco, 'Courier New', monospace" font-size="14" fill="#ffffff">42</text>
+  <text x="24" y="286" font-family="Menlo, Monaco, 'Courier New', monospace" font-size="15" fill="#9d8ffb">Top contexts</text>
+  <text x="24" y="314" font-family="Menlo, Monaco, 'Courier New', monospace" font-size="14" fill="#b8b0e6">• auth middleware</text>
+  <text x="24" y="338" font-family="Menlo, Monaco, 'Courier New', monospace" font-size="14" fill="#b8b0e6">• billing module</text>
+  <text x="24" y="362" font-family="Menlo, Monaco, 'Courier New', monospace" font-size="14" fill="#b8b0e6">• conversation capture</text>
+  <text x="24" y="396" font-family="Menlo, Monaco, 'Courier New', monospace" font-size="14" fill="#7c6af7">●</text><text x="42" y="396" font-family="Menlo, Monaco, 'Courier New', monospace" font-size="14" fill="#ffffff">ready</text>
+</svg>
