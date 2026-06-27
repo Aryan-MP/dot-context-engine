@@ -24,6 +24,33 @@ curl 'http://127.0.0.1:7337/context?query=how%20does%20billing%20work&fmt=claude
 The `claude` format is XML-tagged (`<codebase_context>`, `<decisions>`,
 `<code_chunks>`) — dense and structured the way Claude parses best.
 
+### Automatic session capture
+
+Manual transcript pasting is optional now. Opt in once:
+
+```bash
+dot init --conversations
+```
+
+This sets `capture_conversations` in `.dot/config.json` (off by default). The
+daemon then resolves the project's transcript directory (respecting
+`CLAUDE_CONFIG_DIR`, falling back to `~/.claude`), watches it for new and
+modified `.jsonl` files, and runs an incremental scan roughly every 10
+minutes (plus immediately on file events, debounced). On demand:
+
+```bash
+dot capture                          # CLI
+# or POST /conversations/scan        # REST endpoint, mirrors /sync
+```
+
+Capture is strictly local: it reads only `~/.claude` (or `$CLAUDE_CONFIG_DIR`)
+for this project, maps sessions via each transcript line's `cwd` field (not
+folder-name encoding), drops everything that isn't a decision, and never
+sends transcript contents anywhere. It degrades to a silent no-op when
+Claude Code isn't installed. Captured decisions surface in `dot memory list`
+and `GET /memory` with `source: conversation:<session-id>` and flow into
+`/context` assembly like any other memory.
+
 ## VS Code + Copilot
 
 Install the extension from `vscode-extension/` (`npm install && npm run compile`,

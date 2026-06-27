@@ -22,6 +22,8 @@ from pathlib import Path
 from dot import DEFAULT_HOST, DEFAULT_PORT
 from dot.config import SHARED_MEMORIES_FILE, ProjectConfig, dot_home
 from dot.context.assembler import ContextAssembler
+from dot.conversations import ClaudeCodeSource, ConversationIngester
+from dot.conversations.watcher import ConversationWatcher
 from dot.indexer.chunker import chunk_file
 from dot.indexer.parser import CodeParser
 from dot.indexer.watcher import ProjectWatcher, walk_project
@@ -45,6 +47,15 @@ class Daemon:
         self.decisions = DecisionService(self.store)
         self.git = GitIntegration(config.project_root)
         self.watcher = ProjectWatcher(config, self._on_change)
+        # Conversation capture is opt-in; the ingester is built lazily only
+        # when the feature is enabled so a plain daemon start costs nothing
+        # when ~/.claude is absent or the user hasn't opted in.
+        self._conversations: ConversationIngester | None = None
+        self._conversation_watcher: ConversationWatcher | None = None
+        if self.conversations_enabled:
+            self._conversation_watcher = ConversationWatcher(
+                config, ClaudeCodeSource(), self.scan_conversations
+            )
         self.started_at = datetime.now(UTC)
         self._scheduler = None
         self._index_lock = threading.Lock()
@@ -121,6 +132,43 @@ class Daemon:
         }
 
     # ------------------------------------------------------------------
+    # Conversation capture (opt-in)
+    # ------------------------------------------------------------------
+    @property
+    def conversations_enabled(self) -> bool:
+        return bool(self.config.capture_conversations)
+
+    def conversations(self) -> ConversationIngester | None:
+        """The conversation ingester, lazily built when capture is enabled."""
+        if not self.conversations_enabled:
+            return None
+        if self._conversations is None:
+            self._conversations = ConversationIngester(
+                self.store, source=ClaudeCodeSource()
+            )
+        return self._conversations
+
+    def scan_conversations(self) -> dict:
+        """Run one incremental conversation scan (daemon/CLI/API entrypoint)."""
+        ingester = self.conversations()
+        if ingester is None:
+            return {
+                "enabled": False,
+                "transcripts_scanned": 0,
+                "decisions_captured": 0,
+                "errors": 0,
+            }
+        result = ingester.scan(self.config.project_root, incremental=True)
+        return {
+            "enabled": True,
+            "transcripts_scanned": result.transcripts_scanned,
+            "turns_read": result.turns_read,
+            "decisions_captured": result.decisions_captured,
+            "newly_captured": result.newly_captured,
+            "errors": result.errors,
+        }
+
+    # ------------------------------------------------------------------
     # Background jobs
     # ------------------------------------------------------------------
     def _start_scheduler(self) -> None:
@@ -136,6 +184,12 @@ class Daemon:
             scheduler.add_job(
                 lambda: write_instructions_file(self.store), "interval", hours=1,
                 id="copilot-instructions",
+            )
+        if self.conversations_enabled:
+            # ~10 min balances freshness against cost; the ingester is
+            # incremental (byte offsets) so each tick only reads new appends.
+            scheduler.add_job(
+                self.scan_conversations, "interval", minutes=10, id="scan-conversations"
             )
         scheduler.start()
         self._scheduler = scheduler
@@ -167,14 +221,26 @@ class Daemon:
         write_pid_file(self.config, os.getpid(), port)
         logger.info("dot daemon starting for %s", self.config.project_root)
 
-        sync_thread = threading.Thread(target=self.full_sync, daemon=True, name="dot-sync")
+        def _initial_sync() -> None:
+            self.full_sync()
+            if self.conversations_enabled:
+                try:
+                    self.scan_conversations()
+                except Exception:  # noqa: BLE001 -- startup must not abort on transcript errors
+                    logger.exception("initial conversation scan failed")
+
+        sync_thread = threading.Thread(target=_initial_sync, daemon=True, name="dot-sync")
         sync_thread.start()
         self.watcher.start()
+        if self._conversation_watcher:
+            self._conversation_watcher.start()
         self._start_scheduler()
 
         def shutdown(*_args) -> None:
             logger.info("shutting down")
             self.watcher.stop()
+            if self._conversation_watcher:
+                self._conversation_watcher.stop()
             if self._scheduler:
                 self._scheduler.shutdown(wait=False)
             remove_pid_file(self.config)
@@ -185,6 +251,8 @@ class Daemon:
             uvicorn.run(create_app(self), host=host, port=port, log_level="warning")
         finally:
             self.watcher.stop()
+            if self._conversation_watcher:
+                self._conversation_watcher.stop()
             if self._scheduler:
                 self._scheduler.shutdown(wait=False)
             remove_pid_file(self.config)

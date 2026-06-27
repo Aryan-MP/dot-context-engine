@@ -186,6 +186,18 @@ def create_app(daemon: Daemon) -> FastAPI:
         thread.start()
         return {"status": "sync started", "force": force}
 
+    @app.post("/conversations/scan", status_code=200)
+    def scan_conversations() -> dict:
+        """Incrementally scan Claude Code transcripts and capture decisions.
+
+        Unlike :http:post:`/sync` (which fires a heavy re-index in the
+        background), this runs synchronously: a conversation scan is cheap
+        (incremental byte-offset reads of local JSONL) so the caller gets the
+        real counts back immediately. Returns ``{"enabled": False, ...}`` when
+        capture is off rather than erroring, so clients can probe safely.
+        """
+        return daemon.scan_conversations()
+
     @app.post("/hooks/git/commit")
     def git_commit_hook() -> dict:
         captured = daemon.decisions.mine_git(max_count=5)

@@ -27,3 +27,6 @@ dashboard/dist/
 *.log
 .claude/
 site/
+
+# Kimchi harness metadata
+.kimchi/
