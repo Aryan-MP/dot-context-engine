@@ -7,4 +7,10 @@ export default defineConfig({
   output: 'static',
   site: 'https://dotmemory.dev',
   compressHTML: true,
+  markdown: {
+    shikiConfig: {
+      theme: 'github-dark',
+      wrap: false,
+    },
+  },
 });

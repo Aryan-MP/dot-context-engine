@@ -1,10 +1,35 @@
-@import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap');
+/* ============================================================
+   Dot — "Field Notes" theme.
+   A developer's memory, kept like an engineering notebook:
+   warm paper, ink, ruled margins, section marks, index cards.
+   Hand-written by a human who is tired of dark glowing dev-tool sites.
+   ============================================================ */
 
 :root {
+  /* paper + ink */
+  --paper: #f4efe4;
+  --paper-2: #faf6ec; /* cards / raised surfaces */
+  --paper-edge: #e7dfcd;
+  --ink: #1f1b16;
+  --ink-2: #6b6357;
+  --ink-3: #9a9384;
+  --rule: rgba(31, 27, 22, 0.1); /* notebook rule lines */
+  --rule-strong: rgba(31, 27, 22, 0.22);
+
+  /* accents */
+  --violet: #6a4ff0; /* brand, the "highlighter" */
+  --violet-ink: #5238d6;
+  --violet-wash: rgba(106, 79, 240, 0.12);
+  --terra: #c8612f; /* marginalia / stamps, warm + human */
+  --green: #3f7d4f;
+
   --easing: cubic-bezier(0.16, 1, 0.3, 1);
-  --duration-fast: 200ms;
-  --duration-base: 400ms;
-  --duration-slow: 600ms;
+  --maxw: 1080px;
+
+  --serif: "Fraunces", Georgia, "Times New Roman", serif;
+  --sans: "Inter", system-ui, sans-serif;
+  --mono: "JetBrains Mono", ui-monospace, monospace;
+  --hand: "Caveat", "Comic Sans MS", cursive;
 }
 
 * {
@@ -14,17 +39,24 @@
 }
 
 html {
-  background: #0c0c0e;
-  color: #f0f0f5;
+  background: var(--paper);
+  color: var(--ink);
   scroll-behavior: smooth;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
+  /* faint engineering-paper grid, very low contrast */
+  background-image:
+    linear-gradient(var(--rule) 1px, transparent 1px),
+    linear-gradient(90deg, var(--rule) 1px, transparent 1px);
+  background-size: 28px 28px;
+  background-position: -1px -1px;
 }
 
 body {
-  font-family: 'Inter', system-ui, sans-serif;
-  font-size: 16px;
-  line-height: 1.7;
+  font-family: var(--sans);
+  font-size: 17px;
+  line-height: 1.65;
+  color: var(--ink);
   overflow-x: hidden;
 }
 
@@ -34,79 +66,303 @@ a {
 }
 
 ::selection {
-  background: rgba(124, 106, 247, 0.3);
-  color: #f0f0f5;
+  background: var(--violet);
+  color: #fff;
 }
 
 ::-webkit-scrollbar {
-  width: 6px;
+  width: 11px;
 }
 ::-webkit-scrollbar-track {
-  background: #0c0c0e;
+  background: var(--paper);
 }
 ::-webkit-scrollbar-thumb {
-  background: #2a2a3a;
-  border-radius: 3px;
+  background: var(--paper-edge);
+  border: 3px solid var(--paper);
+  border-radius: 99px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #3a3a4e;
+  background: var(--ink-3);
 }
 
-/* Page width helper */
-.container-dot {
+/* ---------- layout helpers ---------- */
+.wrap {
   width: 100%;
-  max-width: 1100px;
+  max-width: var(--maxw);
   margin-inline: auto;
-  padding-inline: 24px;
+  padding-inline: 28px;
 }
 
-/* Faint dot grid background */
-.dot-grid {
-  background-image: radial-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px);
-  background-size: 28px 28px;
+.serif {
+  font-family: var(--serif);
+  font-weight: 400;
 }
 
-/* Animate on scroll utility */
+/* Section mark like a notebook heading: § 01 — Title, with a ruled line */
+.sec-mark {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  font-family: var(--mono);
+  font-size: 12.5px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-2);
+  margin-bottom: 26px;
+}
+.sec-mark::before {
+  content: "§";
+  color: var(--violet);
+  font-size: 15px;
+}
+.sec-mark .rule {
+  flex: 1;
+  height: 1px;
+  background: var(--rule-strong);
+}
+
+/* Display headings */
+h1,
+h2,
+h3 {
+  font-family: var(--serif);
+  font-weight: 400;
+  line-height: 1.04;
+  letter-spacing: -0.015em;
+  color: var(--ink);
+}
+
+/* Hand-drawn ink underline under selected words */
+.inked {
+  position: relative;
+  white-space: nowrap;
+}
+.inked svg {
+  position: absolute;
+  left: -2%;
+  bottom: -0.32em;
+  width: 104%;
+  height: 0.4em;
+  overflow: visible;
+  pointer-events: none;
+}
+.inked svg path {
+  fill: none;
+  stroke: var(--violet);
+  stroke-width: 4;
+  stroke-linecap: round;
+  stroke-dasharray: 320;
+  stroke-dashoffset: 320;
+  transition: stroke-dashoffset 1.1s var(--easing) 0.25s;
+}
+.inked.drawn svg path {
+  stroke-dashoffset: 0;
+}
+
+/* italic accent inside headings */
+.serif em {
+  font-style: italic;
+  color: var(--violet-ink);
+}
+
+/* marginalia — handwritten note */
+.margin-note {
+  font-family: var(--hand);
+  font-size: 23px;
+  line-height: 1.15;
+  color: var(--terra);
+  transform: rotate(-2.5deg);
+}
+
+/* index card surface */
+.card {
+  background: var(--paper-2);
+  border: 1px solid var(--paper-edge);
+  border-radius: 4px;
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.6) inset,
+    0 10px 24px -18px rgba(31, 27, 22, 0.45);
+}
+
+/* a small letterpress-style button */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  font-family: var(--sans);
+  font-size: 15px;
+  font-weight: 500;
+  padding: 12px 22px;
+  border-radius: 3px;
+  border: 1.5px solid var(--ink);
+  transition:
+    transform 0.18s var(--easing),
+    box-shadow 0.18s var(--easing),
+    background 0.18s var(--easing),
+    color 0.18s var(--easing);
+  cursor: pointer;
+}
+.btn-primary {
+  background: var(--ink);
+  color: var(--paper);
+  box-shadow: 3px 3px 0 0 var(--violet);
+}
+.btn-primary:hover {
+  transform: translate(-1px, -1px);
+  box-shadow: 5px 5px 0 0 var(--violet);
+}
+.btn-ghost {
+  background: transparent;
+  color: var(--ink);
+  border-color: var(--rule-strong);
+}
+.btn-ghost:hover {
+  border-color: var(--ink);
+  box-shadow: 3px 3px 0 0 var(--ink);
+  transform: translate(-1px, -1px);
+}
+
+/* monospace tag/stamp */
+.stamp {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--violet-ink);
+  border: 1px solid var(--violet);
+  border-radius: 3px;
+  padding: 3px 8px;
+  background: var(--violet-wash);
+}
+
+/* ---------- reveal on scroll ---------- */
 .reveal {
   opacity: 0;
-  transform: translateY(12px);
+  transform: translateY(14px);
   transition:
-    opacity var(--duration-slow) var(--easing),
-    transform var(--duration-slow) var(--easing);
-  will-change: opacity, transform;
+    opacity 0.7s var(--easing),
+    transform 0.7s var(--easing);
 }
 .reveal.visible {
   opacity: 1;
-  transform: translateY(0);
+  transform: none;
 }
-.reveal-delay-1 {
+.d1 {
   transition-delay: 80ms;
 }
-.reveal-delay-2 {
+.d2 {
   transition-delay: 160ms;
 }
-.reveal-delay-3 {
+.d3 {
   transition-delay: 240ms;
 }
-.reveal-delay-4 {
+.d4 {
   transition-delay: 320ms;
 }
-.reveal-delay-5 {
+.d5 {
   transition-delay: 400ms;
 }
-.reveal-delay-6 {
-  transition-delay: 480ms;
+
+/* ---------- reading prose (docs) ---------- */
+.prose {
+  font-size: 16.5px;
+  line-height: 1.72;
+  color: var(--ink);
+}
+.prose > * + * {
+  margin-top: 1.1em;
+}
+.prose h2 {
+  font-size: 30px;
+  margin-top: 1.8em;
+  padding-bottom: 0.3em;
+  border-bottom: 1px solid var(--rule-strong);
+}
+.prose h3 {
+  font-size: 22px;
+  margin-top: 1.6em;
+}
+.prose h2 + *,
+.prose h3 + * {
+  margin-top: 0.7em;
+}
+.prose a {
+  color: var(--violet-ink);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  text-decoration-thickness: 1px;
+}
+.prose code {
+  font-family: var(--mono);
+  font-size: 0.85em;
+  background: var(--paper-2);
+  border: 1px solid var(--paper-edge);
+  border-radius: 3px;
+  padding: 0.1em 0.4em;
+}
+.prose pre {
+  font-family: var(--mono);
+  font-size: 13.5px;
+  line-height: 1.7;
+  background: #1c1916;
+  color: #e9e3d6;
+  border-radius: 6px;
+  padding: 16px 18px;
+  overflow-x: auto;
+  border: 1px solid #2c2822;
+}
+.prose pre code {
+  background: none;
+  border: none;
+  padding: 0;
+  font-size: inherit;
+  color: inherit;
+}
+.prose ul,
+.prose ol {
+  padding-left: 1.3em;
+}
+.prose li + li {
+  margin-top: 0.3em;
+}
+.prose table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14.5px;
+}
+.prose th,
+.prose td {
+  text-align: left;
+  padding: 9px 12px;
+  border-bottom: 1px solid var(--rule);
+  vertical-align: top;
+}
+.prose th {
+  font-family: var(--mono);
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--ink-2);
+  border-bottom: 1px solid var(--rule-strong);
+}
+.prose blockquote {
+  border-left: 3px solid var(--violet);
+  padding: 0.4em 0 0.4em 1.1em;
+  color: var(--ink-2);
+  font-style: italic;
+}
+.prose h2 a.anchor,
+.prose h3 a.anchor {
+  opacity: 0;
+  margin-left: 0.3em;
+  color: var(--violet);
+  text-decoration: none;
+}
+.prose h2:hover a.anchor,
+.prose h3:hover a.anchor {
+  opacity: 1;
 }
 
-/* Gradient text accent */
-.text-gradient {
-  background: linear-gradient(180deg, #f0f0f5 0%, rgba(240, 240, 245, 0.62) 100%);
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-
-/* Respect reduced motion */
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
@@ -121,5 +377,8 @@ a {
   .reveal {
     opacity: 1;
     transform: none;
+  }
+  .inked svg path {
+    stroke-dashoffset: 0;
   }
 }

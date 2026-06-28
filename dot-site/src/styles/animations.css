@@ -1,71 +1,9 @@
 /* ============================================================
-   Keyframes + motion utilities shared across components.
-   All transforms only — no layout-triggering properties.
+   Field Notes motion — tactile, paper-like, restrained.
    ============================================================ */
 
-@keyframes dot-orbit {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-@keyframes dot-orbit-rev {
-  from {
-    transform: rotate(360deg);
-  }
-  to {
-    transform: rotate(0deg);
-  }
-}
-
-@keyframes dot-breathe {
-  0%,
-  100% {
-    transform: scale(1);
-    opacity: 0.9;
-  }
-  50% {
-    transform: scale(1.05);
-    opacity: 1;
-  }
-}
-
-@keyframes dot-pulse-ring {
-  0% {
-    transform: scale(0.6);
-    opacity: 0.7;
-  }
-  100% {
-    transform: scale(2.2);
-    opacity: 0;
-  }
-}
-
-@keyframes dot-flow-line {
-  0% {
-    opacity: 0.15;
-  }
-  50% {
-    opacity: 0.6;
-  }
-  100% {
-    opacity: 0.15;
-  }
-}
-
-@keyframes dot-travel {
-  from {
-    offset-distance: 0%;
-  }
-  to {
-    offset-distance: 100%;
-  }
-}
-
-@keyframes dot-blink {
+/* blinking terminal caret */
+@keyframes fn-blink {
   0%,
   100% {
     opacity: 1;
@@ -74,142 +12,76 @@
     opacity: 0;
   }
 }
-
-@keyframes dot-thinking {
-  0%,
-  80%,
-  100% {
-    opacity: 0.25;
-    transform: translateY(0);
-  }
-  40% {
-    opacity: 1;
-    transform: translateY(-2px);
-  }
-}
-
-@keyframes dot-float {
-  0%,
-  100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-6px);
-  }
-}
-
-@keyframes dot-flash {
-  0% {
-    opacity: 0;
-  }
-  30% {
-    opacity: 0.18;
-  }
-  100% {
-    opacity: 0;
-  }
-}
-
-@keyframes dot-scroll-cue {
-  0% {
-    transform: translateY(0);
-    opacity: 0;
-  }
-  40% {
-    opacity: 1;
-  }
-  80% {
-    transform: translateY(8px);
-    opacity: 0;
-  }
-  100% {
-    opacity: 0;
-  }
-}
-
-/* ---- utility classes ---- */
-
-.animate-orbit {
-  animation: dot-orbit 20s linear infinite;
-}
-.animate-orbit-rev {
-  animation: dot-orbit-rev 28s linear infinite;
-}
-.animate-breathe {
-  animation: dot-breathe 4s ease-in-out infinite;
-}
-.animate-float {
-  animation: dot-float 6s ease-in-out infinite;
-}
-.animate-blink {
-  animation: dot-blink 1s step-end infinite;
-}
-
-/* Typewriter caret */
-.caret {
+.fn-caret {
   display: inline-block;
-  width: 7px;
+  width: 8px;
   height: 1.05em;
-  background: #7c6af7;
+  background: var(--violet);
   vertical-align: -2px;
   margin-left: 1px;
-  animation: dot-blink 1s step-end infinite;
+  animation: fn-blink 1s step-end infinite;
 }
 
-/* AI "thinking" dots */
-.thinking span {
-  display: inline-block;
-  width: 5px;
-  height: 5px;
-  margin: 0 1.5px;
-  border-radius: 50%;
-  background: #7c6af7;
-  animation: dot-thinking 1.4s ease-in-out infinite;
+/* a memory card being "filed": drifts up + settles, very subtle */
+@keyframes fn-file {
+  0% {
+    opacity: 0;
+    transform: translateY(20px) rotate(var(--rot, 0deg));
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) rotate(var(--rot, 0deg));
+  }
 }
-.thinking span:nth-child(2) {
-  animation-delay: 0.2s;
-}
-.thinking span:nth-child(3) {
-  animation-delay: 0.4s;
-}
-
-/* Pulse ring overlay */
-.pulse-ring {
-  position: absolute;
-  inset: 0;
-  margin: auto;
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  border: 2px solid #7c6af7;
-  pointer-events: none;
+.fn-file {
   opacity: 0;
 }
-.pulse-ring.go {
-  animation: dot-pulse-ring 1s var(--easing) forwards;
+.fn-file.go {
+  animation: fn-file 0.7s var(--easing) forwards;
 }
 
-/* Flash overlay for the reset moment */
-.flash-overlay {
-  position: absolute;
-  inset: 0;
-  background: #f87171;
-  pointer-events: none;
-  opacity: 0;
-  border-radius: inherit;
+/* gentle float for the hero recall card */
+@keyframes fn-float {
+  0%,
+  100% {
+    transform: translateY(0) rotate(var(--rot, 0deg));
+  }
+  50% {
+    transform: translateY(-6px) rotate(var(--rot, 0deg));
+  }
 }
-.flash-overlay.go {
-  animation: dot-flash 0.5s ease-out forwards;
+.fn-float {
+  animation: fn-float 7s ease-in-out infinite;
 }
 
-/* dots travelling along an SVG path via offset-path are set inline */
+/* a soft ink-bleed pulse on the central index dot */
+@keyframes fn-pulse {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 var(--violet-wash);
+  }
+  50% {
+    box-shadow: 0 0 0 10px transparent;
+  }
+}
+.fn-pulse {
+  animation: fn-pulse 3.5s ease-in-out infinite;
+}
+
+/* dashed line that draws itself (connectors) */
+@keyframes fn-draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
-  .animate-orbit,
-  .animate-orbit-rev,
-  .animate-breathe,
-  .animate-float,
-  .animate-blink,
-  .thinking span {
-    animation: none !important;
+  .fn-caret,
+  .fn-float,
+  .fn-pulse {
+    animation: none;
+  }
+  .fn-file {
+    opacity: 1;
   }
 }

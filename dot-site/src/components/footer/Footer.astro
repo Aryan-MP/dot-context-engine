@@ -1,89 +1,167 @@
 ---
-const REPO = 'aryanp-spektra/dot-context-engine';
-const GITHUB_URL = `https://github.com/${REPO}`;
-
-const product = [
-  { label: 'Docs', href: '/docs' },
-  { label: 'Changelog', href: '/changelog' },
-  { label: 'GitHub', href: GITHUB_URL },
-  { label: 'Discord', href: GITHUB_URL + '/discussions' },
-];
-const community = [
-  { label: 'Twitter / X', href: 'https://x.com' },
-  { label: 'Contributing', href: GITHUB_URL + '/blob/main/CONTRIBUTING.md' },
-  { label: 'Issues', href: GITHUB_URL + '/issues' },
-];
+const GITHUB = 'https://github.com/aryanp-spektra/dot-context-engine';
 const year = new Date().getFullYear();
+const cols = [
+  {
+    head: 'Product',
+    links: [
+      { label: 'Documentation', href: '/docs' },
+      { label: 'Installation', href: '/docs/installation' },
+      { label: 'Commands', href: '/docs/cli' },
+      { label: 'Changelog', href: '/changelog' },
+    ],
+  },
+  {
+    head: 'Source',
+    links: [
+      { label: 'GitHub', href: GITHUB, ext: true },
+      { label: 'Issues', href: GITHUB + '/issues', ext: true },
+      { label: 'Contributing', href: GITHUB + '/blob/main/CONTRIBUTING.md', ext: true },
+      { label: 'MIT License', href: GITHUB + '/blob/main/LICENSE', ext: true },
+    ],
+  },
+];
 ---
 
-<footer class="border-t border-border bg-surface">
-  <div class="container-dot grid grid-cols-1 gap-12 py-14 md:grid-cols-3">
-    <!-- Brand -->
-    <div>
-      <a href="/" class="flex items-center gap-2.5 text-lg font-semibold tracking-tight">
-        <img src="/logo-mark.svg" alt="" width="32" height="32" />
-        d<span class="text-accent">·</span>t
-      </a>
-      <p class="mt-3 max-w-xs text-sm text-secondary">Memory for every AI tool you use.</p>
-      <p class="mt-2 text-xs text-muted">Built by developers, for developers.</p>
-    </div>
-
-    <!-- Link columns -->
-    <div class="grid grid-cols-2 gap-8">
-      <div>
-        <h3 class="mb-3 font-mono text-xs uppercase tracking-wider text-muted">Product</h3>
-        <ul class="space-y-2">
-          {
-            product.map((l) => (
-              <li>
-                <a
-                  href={l.href}
-                  class="text-sm text-secondary transition-colors hover:text-primary"
-                  {...(l.href.startsWith('http') ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
-                >
-                  {l.label}
-                </a>
-              </li>
-            ))
-          }
-        </ul>
+<footer class="fn-foot">
+  <div class="wrap">
+    <div class="fn-foot-grid">
+      <div class="fn-colophon">
+        <a href="/" class="fn-brand">
+          <img src="/logo-mark.svg" alt="" width="34" height="34" />
+          <span class="fn-word">dot</span>
+        </a>
+        <p class="fn-tag">Memory for every AI tool you use.</p>
+        <p class="fn-note">
+          Set in Fraunces &amp; Inter. Kept like a notebook, on purpose.<br />
+          Local-first &middot; private &middot; open source.
+        </p>
       </div>
-      <div>
-        <h3 class="mb-3 font-mono text-xs uppercase tracking-wider text-muted">Community</h3>
-        <ul class="space-y-2">
-          {
-            community.map((l) => (
-              <li>
-                <a
-                  href={l.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  class="text-sm text-secondary transition-colors hover:text-primary"
-                >
-                  {l.label}
-                </a>
-              </li>
-            ))
-          }
-        </ul>
+
+      {
+        cols.map((c) => (
+          <div class="fn-col">
+            <h3>{c.head}</h3>
+            <ul>
+              {c.links.map((l) => (
+                <li>
+                  <a href={l.href} {...(l.ext ? { target: '_blank', rel: 'noopener' } : {})}>
+                    {l.label}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))
+      }
+
+      <div class="fn-col fn-install-col">
+        <h3>Install</h3>
+        <code>pip install dot-context[ml]</code>
+        <p class="fn-os">macOS &middot; Linux &middot; Windows</p>
       </div>
     </div>
 
-    <!-- Install -->
-    <div>
-      <h3 class="mb-3 font-mono text-xs uppercase tracking-wider text-muted">Install</h3>
-      <div class="space-y-2">
-        <code class="block rounded-lg border border-border bg-bg px-3 py-2 font-mono text-sm text-secondary">pip install dot-ai</code>
-        <code class="block rounded-lg border border-border bg-bg px-3 py-2 font-mono text-sm text-muted">brew install dot-ai <span class="text-amber/70">(soon)</span></code>
-      </div>
-      <p class="mt-4 text-xs text-muted">Supports: macOS · Linux · Windows</p>
-    </div>
-  </div>
-
-  <div class="border-t border-border">
-    <div class="container-dot flex flex-col gap-2 py-6 text-xs text-muted sm:flex-row sm:items-center">
-      <span>© {year} Dot. MIT License.</span>
-      <span class="sm:ml-auto">Your code never leaves your machine.</span>
+    <div class="fn-foot-base">
+      <span>&copy; {year} Dot &middot; MIT License</span>
+      <span class="fn-foot-hand">your code never leaves your machine ✎</span>
     </div>
   </div>
 </footer>
+
+<style>
+  .fn-foot {
+    border-top: 1px solid var(--rule-strong);
+    margin-top: 40px;
+    padding: 56px 0 32px;
+    background: linear-gradient(var(--paper-2), var(--paper));
+  }
+  .fn-foot-grid {
+    display: grid;
+    grid-template-columns: 1.5fr 1fr 1fr 1.2fr;
+    gap: 32px;
+  }
+  .fn-brand {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+  }
+  .fn-word {
+    font-family: var(--serif);
+    font-size: 26px;
+    font-weight: 600;
+  }
+  .fn-tag {
+    margin-top: 12px;
+    color: var(--ink);
+    font-size: 15px;
+  }
+  .fn-note {
+    margin-top: 8px;
+    color: var(--ink-3);
+    font-size: 12.5px;
+    line-height: 1.6;
+  }
+  .fn-col h3 {
+    font-family: var(--mono);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--ink-3);
+    margin-bottom: 14px;
+  }
+  .fn-col ul {
+    list-style: none;
+  }
+  .fn-col li + li {
+    margin-top: 9px;
+  }
+  .fn-col a {
+    font-size: 14.5px;
+    color: var(--ink-2);
+    transition: color 0.2s var(--easing);
+  }
+  .fn-col a:hover {
+    color: var(--violet-ink);
+  }
+  .fn-install-col code {
+    display: block;
+    font-family: var(--mono);
+    font-size: 12.5px;
+    background: #1c1916;
+    color: #e9e3d6;
+    padding: 9px 11px;
+    border-radius: 4px;
+  }
+  .fn-os {
+    margin-top: 10px;
+    font-size: 12px;
+    color: var(--ink-3);
+  }
+  .fn-foot-base {
+    margin-top: 44px;
+    padding-top: 18px;
+    border-top: 1px solid var(--rule);
+    display: flex;
+    justify-content: space-between;
+    font-size: 13px;
+    color: var(--ink-3);
+  }
+  .fn-foot-hand {
+    font-family: var(--hand);
+    font-size: 18px;
+    color: var(--terra);
+  }
+  @media (max-width: 760px) {
+    .fn-foot-grid {
+      grid-template-columns: 1fr 1fr;
+    }
+    .fn-colophon {
+      grid-column: 1 / -1;
+    }
+    .fn-foot-base {
+      flex-direction: column;
+      gap: 6px;
+    }
+  }
+</style>

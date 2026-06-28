@@ -1,182 +1,176 @@
 ---
-import { icons } from '../../data/icons.ts';
-
-const REPO = 'aryanp-spektra/dot-context-engine';
-const GITHUB_URL = `https://github.com/${REPO}`;
-
-// Fetch star count at build time, with a graceful fallback when offline.
-function formatStars(n: number): string {
-  if (n >= 1000) return `${(n / 1000).toFixed(1).replace(/\.0$/, '')}k`;
-  return String(n);
-}
-let stars = '2.4k';
-try {
-  const res = await fetch(`https://api.github.com/repos/${REPO}`, {
-    headers: { Accept: 'application/vnd.github+json' },
-  });
-  if (res.ok) {
-    const data = await res.json();
-    if (typeof data.stargazers_count === 'number') {
-      stars = formatStars(data.stargazers_count);
-    }
-  }
-} catch {
-  // offline build — keep fallback
-}
-
+const GITHUB = 'https://github.com/aryanp-spektra/dot-context-engine';
 const links = [
   { label: 'Docs', href: '/docs' },
   { label: 'Changelog', href: '/changelog' },
+  { label: 'GitHub', href: GITHUB, external: true },
 ];
+const path = Astro.url.pathname;
 ---
 
-<header
-  id="site-nav"
-  class="fixed inset-x-0 top-0 z-50 border-b border-transparent transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)]"
->
-  <div class="container-dot flex items-center gap-6 py-3.5">
-    <!-- Wordmark -->
-    <a href="/" class="group flex items-center gap-2.5 text-[20px] font-semibold tracking-tight" aria-label="Dot home">
-      <img src="/logo-mark.svg" alt="" width="34" height="34" class="transition-transform duration-300 group-hover:rotate-[20deg]" />
-      <span>d<span class="px-px text-accent">·</span>t</span>
+<header class="fn-nav">
+  <div class="wrap fn-nav-inner">
+    <a href="/" class="fn-brand" aria-label="Dot home">
+      <img src="/logo-mark.svg" alt="" width="30" height="30" />
+      <span class="fn-word">dot</span>
+      <span class="fn-edition">field&nbsp;notes</span>
     </a>
 
-    <!-- Desktop links -->
-    <nav class="ml-auto hidden items-center gap-7 text-sm md:flex">
+    <nav class="fn-links" aria-label="Primary">
       {
         links.map((l) => (
-          <a href={l.href} class="text-secondary transition-colors duration-200 hover:text-primary">
+          <a
+            href={l.href}
+            class:list={['fn-link', { current: path.startsWith(l.href) && l.href !== '/' }]}
+            {...(l.external ? { target: '_blank', rel: 'noopener' } : {})}
+          >
             {l.label}
           </a>
         ))
       }
-      <a
-        href={GITHUB_URL}
-        target="_blank"
-        rel="noopener noreferrer"
-        class="flex items-center gap-2 text-secondary transition-colors duration-200 hover:text-primary"
-      >
-        <svg viewBox="0 0 24 24" width="16" height="16" set:html={icons.github} />
-        <span class="font-mono text-xs">{stars}</span>
-      </a>
-      <a
-        href="#install"
-        class="rounded-full bg-accent px-4 py-1.5 text-sm font-medium text-white transition-all duration-200 hover:bg-accent/90 active:scale-[0.98]"
-      >
-        Install
-      </a>
+      <a href="/docs/installation" class="btn btn-primary fn-install">Install</a>
     </nav>
 
-    <!-- Mobile toggle -->
-    <button
-      id="nav-toggle"
-      class="ml-auto flex h-9 w-9 items-center justify-center rounded-lg text-secondary transition-colors hover:text-primary md:hidden"
-      aria-label="Open menu"
-      aria-expanded="false"
-    >
-      <svg viewBox="0 0 24 24" width="22" height="22" set:html={icons.menu} />
+    <button class="fn-burger" id="fn-burger" aria-label="Menu" aria-expanded="false">
+      <span></span><span></span><span></span>
     </button>
   </div>
-</header>
 
-<!-- Mobile drawer -->
-<div
-  id="nav-drawer"
-  class="pointer-events-none fixed inset-0 z-[60] md:hidden"
-  aria-hidden="true"
->
-  <div id="nav-backdrop" class="absolute inset-0 bg-black/60 opacity-0 transition-opacity duration-300"></div>
-  <aside
-    id="nav-panel"
-    class="absolute right-0 top-0 flex h-full w-72 translate-x-full flex-col gap-1 border-l border-border bg-surface p-6 transition-transform duration-300 ease-[cubic-bezier(0.16,1,0.3,1)]"
-  >
-    <div class="mb-6 flex items-center justify-between">
-      <span class="flex items-center gap-2 text-lg font-semibold">
-        <img src="/logo-mark.svg" alt="" width="26" height="26" />
-        d<span class="text-accent">·</span>t
-      </span>
-      <button id="nav-close" class="text-secondary hover:text-primary" aria-label="Close menu">
-        <svg viewBox="0 0 24 24" width="22" height="22" set:html={icons.close} />
-      </button>
-    </div>
+  <div class="fn-drawer" id="fn-drawer">
     {
       links.map((l) => (
-        <a href={l.href} class="rounded-lg px-3 py-2.5 text-secondary hover:bg-elevated hover:text-primary" data-nav-link>
+        <a href={l.href} {...(l.external ? { target: '_blank', rel: 'noopener' } : {})}>
           {l.label}
         </a>
       ))
     }
-    <a
-      href={GITHUB_URL}
-      target="_blank"
-      rel="noopener noreferrer"
-      class="flex items-center gap-2 rounded-lg px-3 py-2.5 text-secondary hover:bg-elevated hover:text-primary"
-      data-nav-link
-    >
-      <svg viewBox="0 0 24 24" width="16" height="16" set:html={icons.github} />
-      GitHub · {stars}
-    </a>
-    <a
-      href="#install"
-      class="mt-3 rounded-full bg-accent px-4 py-2.5 text-center font-medium text-white"
-      data-nav-link
-    >
-      Install
-    </a>
-  </aside>
-</div>
+    <a href="/docs/installation" class="btn btn-primary" style="margin-top:8px;">Install</a>
+  </div>
+</header>
+
+<style>
+  .fn-nav {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: rgba(244, 239, 228, 0.82);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--rule);
+  }
+  .fn-nav-inner {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    padding-top: 14px;
+    padding-bottom: 14px;
+  }
+  .fn-brand {
+    display: flex;
+    align-items: baseline;
+    gap: 9px;
+  }
+  .fn-brand img {
+    align-self: center;
+  }
+  .fn-word {
+    font-family: var(--serif);
+    font-size: 24px;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+  }
+  .fn-edition {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+    border-left: 1px solid var(--rule-strong);
+    padding-left: 9px;
+  }
+  .fn-links {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: 26px;
+  }
+  .fn-link {
+    font-size: 15px;
+    color: var(--ink-2);
+    transition: color 0.2s var(--easing);
+    position: relative;
+  }
+  .fn-link:hover,
+  .fn-link.current {
+    color: var(--ink);
+  }
+  .fn-link.current::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -6px;
+    height: 2px;
+    background: var(--violet);
+  }
+  .fn-install {
+    padding: 8px 16px;
+    font-size: 14px;
+  }
+  .fn-burger {
+    display: none;
+    margin-left: auto;
+    flex-direction: column;
+    gap: 5px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 6px;
+  }
+  .fn-burger span {
+    width: 22px;
+    height: 2px;
+    background: var(--ink);
+    display: block;
+  }
+  .fn-drawer {
+    display: none;
+    flex-direction: column;
+    gap: 4px;
+    padding: 8px 28px 18px;
+    border-bottom: 1px solid var(--rule);
+  }
+  .fn-drawer.open {
+    display: flex;
+  }
+  /* the drawer is a mobile affordance only */
+  @media (min-width: 721px) {
+    .fn-drawer {
+      display: none !important;
+    }
+  }
+  .fn-drawer a:not(.btn) {
+    padding: 10px 0;
+    color: var(--ink-2);
+    border-bottom: 1px solid var(--rule);
+  }
+  @media (max-width: 720px) {
+    .fn-links {
+      display: none;
+    }
+    .fn-burger {
+      display: flex;
+    }
+    .fn-edition {
+      display: none;
+    }
+  }
+</style>
 
 <script>
-  // Blur + border on scroll, driven by a sentinel (no scroll listener).
-  const nav = document.getElementById('site-nav');
-  if (nav) {
-    const sentinel = document.createElement('div');
-    sentinel.setAttribute('aria-hidden', 'true');
-    sentinel.style.cssText = 'position:absolute;top:0;height:8px;width:1px;pointer-events:none;';
-    document.body.prepend(sentinel);
-    const io = new IntersectionObserver(
-      ([entry]) => {
-        const scrolled = !entry.isIntersecting;
-        nav.classList.toggle('border-border', scrolled);
-        nav.classList.toggle('bg-bg/80', scrolled);
-        nav.classList.toggle('backdrop-blur-xl', scrolled);
-      },
-      { threshold: 0 },
-    );
-    io.observe(sentinel);
-  }
-
-  // Mobile drawer
-  const drawer = document.getElementById('nav-drawer');
-  const panel = document.getElementById('nav-panel');
-  const backdrop = document.getElementById('nav-backdrop');
-  const toggle = document.getElementById('nav-toggle');
-  const closeBtn = document.getElementById('nav-close');
-
-  function openDrawer() {
-    if (!drawer || !panel || !backdrop || !toggle) return;
-    drawer.classList.add('pointer-events-auto');
-    drawer.setAttribute('aria-hidden', 'false');
-    toggle.setAttribute('aria-expanded', 'true');
-    requestAnimationFrame(() => {
-      panel.classList.remove('translate-x-full');
-      backdrop.classList.remove('opacity-0');
-    });
-  }
-  function closeDrawer() {
-    if (!drawer || !panel || !backdrop || !toggle) return;
-    panel.classList.add('translate-x-full');
-    backdrop.classList.add('opacity-0');
-    toggle.setAttribute('aria-expanded', 'false');
-    drawer.setAttribute('aria-hidden', 'true');
-    setTimeout(() => drawer.classList.remove('pointer-events-auto'), 300);
-  }
-
-  toggle?.addEventListener('click', openDrawer);
-  closeBtn?.addEventListener('click', closeDrawer);
-  backdrop?.addEventListener('click', closeDrawer);
-  document.querySelectorAll('[data-nav-link]').forEach((l) => l.addEventListener('click', closeDrawer));
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') closeDrawer();
+  const burger = document.getElementById('fn-burger');
+  const drawer = document.getElementById('fn-drawer');
+  burger?.addEventListener('click', () => {
+    const open = drawer?.classList.toggle('open');
+    burger.setAttribute('aria-expanded', String(!!open));
   });
 </script>

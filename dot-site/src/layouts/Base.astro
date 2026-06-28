@@ -53,11 +53,15 @@ const jsonLd = {
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
-    <meta name="theme-color" content="#0c0c0e" />
+    <meta name="theme-color" content="#f4efe4" />
 
-    <!-- Fonts: preconnect + display=swap for zero blocking -->
+    <!-- Fonts: Fraunces (display serif), Inter (UI), JetBrains Mono (code), Caveat (marginalia) -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&family=Caveat:wght@500;600&display=swap"
+      rel="stylesheet"
+    />
 
     <!-- Open Graph -->
     <meta property="og:type" content="website" />
@@ -75,10 +79,11 @@ const jsonLd = {
 
     <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
   </head>
-  <body class="bg-bg text-primary font-sans antialiased">
+  <body>
     <a
       href="#main"
-      class="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-[100] focus:rounded-lg focus:bg-accent focus:px-4 focus:py-2 focus:text-white"
+      class="sr-only focus:not-sr-only"
+      style="position:fixed;left:16px;top:16px;z-index:100;background:var(--ink);color:var(--paper);padding:8px 16px;border-radius:3px;"
       >Skip to content</a
     >
     <slot />
