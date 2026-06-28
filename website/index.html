@@ -3,9 +3,9 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Dot — your AI tools finally have a memory</title>
-<meta name="description" content="Dot is an open-source, local-first context memory daemon. One daemon, every AI tool remembers your codebase — Claude Code, Copilot, Cursor, and any model API. Local. Private. Model-agnostic.">
-<meta property="og:title" content="Dot — your AI tools finally have a memory">
+<title>Dot - your AI tools finally have a memory</title>
+<meta name="description" content="Dot is an open-source, local-first context memory daemon. One daemon, every AI tool remembers your codebase - Claude Code, Copilot, Cursor, and any model API. Local. Private. Model-agnostic.">
+<meta property="og:title" content="Dot - your AI tools finally have a memory">
 <meta property="og:description" content="Stop re-explaining your codebase. One local daemon gives every AI tool persistent memory of your code and decisions.">
 <meta property="og:type" content="website">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><circle cx='16' cy='16' r='7' fill='%237c6af7'/><circle cx='16' cy='16' r='13' fill='none' stroke='%237c6af7' stroke-width='2' stroke-dasharray='4 5'/></svg>">
@@ -457,7 +457,7 @@ footer{border-top:1px solid var(--border);padding:48px 0;color:var(--text-3);fon
     <div class="terminal reveal" id="terminal">
       <div class="term-bar">
         <span class="term-dots"><i></i><i></i><i></i></span>
-        <span id="termTitle">ai-chat — session 1</span>
+        <span id="termTitle">ai-chat - session 1</span>
         <span class="term-counter" id="termCounter">Times re-explained today: 2</span>
       </div>
       <div class="term-body" id="termBody"></div>
@@ -543,7 +543,7 @@ footer{border-top:1px solid var(--border);padding:48px 0;color:var(--text-3);fon
           </div>
         </div>
         <h3>The lost decision</h3>
-        <p>Your codebase shows what was built. It never shows why. Architectural decisions, rejected approaches, hard-won lessons — they evaporate. Every new session starts without them.</p>
+        <p>Your codebase shows what was built. It never shows why. Architectural decisions, rejected approaches, hard-won lessons - they evaporate. Every new session starts without them.</p>
       </div>
     </div>
   </div>
@@ -584,7 +584,7 @@ footer{border-top:1px solid var(--border);padding:48px 0;color:var(--text-3);fon
         <!-- moment 1 -->
         <div class="moment reveal" id="moment1">
           <h3>Dot learns your codebase</h3>
-          <p>Dot parses your codebase with AST-aware chunking — not naive text splitting. It understands functions, classes, dependencies, and how everything connects. Initial index takes minutes. Updates are instant.</p>
+          <p>Dot parses your codebase with AST-aware chunking - not naive text splitting. It understands functions, classes, dependencies, and how everything connects. Initial index takes minutes. Updates are instant.</p>
           <div class="demo-box">
             <div class="demo-head"><span class="gd"></span>~/acme-api</div>
             <div class="demo-body">
@@ -601,7 +601,7 @@ footer{border-top:1px solid var(--border);padding:48px 0;color:var(--text-3);fon
           <h3>Dot captures your decisions</h3>
           <p>Every architectural decision buried in commit messages, PR descriptions, and code comments gets surfaced, structured, and made queryable. Your codebase finally remembers why it is the way it is.</p>
           <div class="demo-box">
-            <div class="demo-head"><span class="gd"></span>git log — decision mining</div>
+            <div class="demo-head"><span class="gd"></span>git log - decision mining</div>
             <div class="demo-body" id="commitStream"></div>
           </div>
         </div>
@@ -609,15 +609,15 @@ footer{border-top:1px solid var(--border);padding:48px 0;color:var(--text-3);fon
         <!-- moment 3 -->
         <div class="moment reveal" id="moment3">
           <h3>Dot injects context automatically</h3>
-          <p>When you switch files, Dot assembles the most relevant context and injects it into every AI tool automatically. Semantic similarity, file proximity, recent changes, captured decisions — all combined, ranked, and delivered in under 100ms.</p>
+          <p>When you switch files, Dot assembles the most relevant context and injects it into every AI tool automatically. Semantic similarity, file proximity, recent changes, captured decisions - all combined, ranked, and delivered in under 100ms.</p>
           <div class="demo-box">
-            <div class="demo-head"><span class="gd"></span>payments/limiter.ts — VS Code</div>
+            <div class="demo-head"><span class="gd"></span>payments/limiter.ts - VS Code</div>
             <div class="asm-grid">
               <div class="asm-pane">
                 <div class="ttl">editor</div>
                 <div class="skel sk-1"></div><div class="skel sk-2"></div><div class="skel sk-3"></div>
                 <div class="skel sk-4"></div><div class="skel sk-5"></div><div class="skel sk-2"></div>
-                <div class="asm-suggest" id="asmSuggest">// Copilot — aware of your system:
+                <div class="asm-suggest" id="asmSuggest">// Copilot - aware of your system:
 // reuse auth's Redis limiter; payments
 // SLA is stricter → max: 5/min
 app.use('/payments', rateLimit({
@@ -749,7 +749,7 @@ app.use('/payments', rateLimit({
       <div class="callout">
         <div class="n">01</div>
         <h4>AST-aware chunking</h4>
-        <p>Tree-sitter parses your code into semantic units — functions, classes, modules. Not arbitrary token windows. Real structure.</p>
+        <p>Tree-sitter parses your code into semantic units - functions, classes, modules. Not arbitrary token windows. Real structure.</p>
       </div>
       <div class="callout">
         <div class="n">02</div>
@@ -840,19 +840,19 @@ app.use('/payments', rateLimit({
 
     <div class="api-block reveal">
       <div class="api-head">
-        <span>one universal API — anything can query it</span>
+        <span>one universal API - anything can query it</span>
         <button class="copy" data-copy="curl 'http://127.0.0.1:7337/context?query=how%20does%20auth%20work&fmt=raw'">copy</button>
       </div>
-      <pre><span class="c"># assembled context for any query, ranked and budgeted — under 100ms</span>
+      <pre><span class="c"># assembled context for any query, ranked and budgeted - under 100ms</span>
 <span class="g">$</span> curl <span class="y">'http://127.0.0.1:7337/context?query=how%20does%20auth%20work&amp;fmt=raw'</span>
 {
   <span class="v">"tokens_used"</span>: 3240,
   <span class="v">"assembly_ms"</span>: 67,
   <span class="v">"chunks"</span>: [ { <span class="v">"file_path"</span>: <span class="y">"auth/limiter.ts"</span>, <span class="v">"score"</span>: 0.92, ... } ],
-  <span class="v">"decisions"</span>: [ { <span class="v">"content"</span>: <span class="y">"Chose Redis over Memcached — TTL requirements"</span> } ]
+  <span class="v">"decisions"</span>: [ { <span class="v">"content"</span>: <span class="y">"Chose Redis over Memcached - TTL requirements"</span> } ]
 }
 
-<span class="c"># capture a decision from anywhere — a script, a chat hook, a CI job</span>
+<span class="c"># capture a decision from anywhere - a script, a chat hook, a CI job</span>
 <span class="g">$</span> curl -X POST http://127.0.0.1:7337/memory \
     -d <span class="y">'{"content": "Decided to shard by tenant id", "kind": "decision"}'</span></pre>
     </div>
@@ -1041,7 +1041,7 @@ let reExplained = 2;
 async function runLoop(){
   /* ----- PHASE 1: without dot ----- */
   terminal.classList.remove("with-dot");
-  termTitle.textContent = "ai-chat — session 1";
+  termTitle.textContent = "ai-chat - session 1";
   termCounter.className = "term-counter";
   termCounter.textContent = "Times re-explained today: " + reExplained;
   clearTerm();
@@ -1061,7 +1061,7 @@ async function runLoop(){
   reExplained += 1;
   termCounter.classList.add("bad");
   termCounter.textContent = "Times re-explained today: " + reExplained;
-  termTitle.textContent = "ai-chat — session 2";
+  termTitle.textContent = "ai-chat - session 2";
   await sleep(350);
 
   await say("ai", "Hello! How can I help you today?", {pause: 600});
@@ -1080,13 +1080,13 @@ async function runLoop(){
 
   /* ----- PHASE 3: with dot ----- */
   terminal.classList.add("with-dot");
-  termTitle.textContent = "ai-chat — session 3 · ● dot connected";
+  termTitle.textContent = "ai-chat - session 3 · ● dot connected";
   termCounter.className = "term-counter good";
   termCounter.textContent = "Context re-explanations: 0";
   clearTerm();
 
   await say("dev", "Add rate limiting to the payments endpoint");
-  await say("ai", "On it. Based on your Express + Redis setup and the rate limiting you added to auth last week, I'll apply the same pattern to payments. One difference — payments has a stricter SLA, so a lower threshold:", {code: CODE_PHASE3, pause: 1100});
+  await say("ai", "On it. Based on your Express + Redis setup and the rate limiting you added to auth last week, I'll apply the same pattern to payments. One difference - payments has a stricter SLA, so a lower threshold:", {code: CODE_PHASE3, pause: 1100});
   await say("dev", "exactly what i needed", {pause: 2400});
 
   loops += 1;
@@ -1145,9 +1145,9 @@ const commits = [
   {sha:"9f2c1ab", m:"bump deps, fix lockfile"},
   {sha:"abc123f", m:"Switched to event sourcing for order state", tag:"decision"},
   {sha:"77d0e21", m:"fix flaky test in reconcile worker"},
-  {sha:"def456a", m:"Chose Redis over Memcached — TTL requirements", tag:"decision"},
+  {sha:"def456a", m:"Chose Redis over Memcached - TTL requirements", tag:"decision"},
   {sha:"31bb9c4", m:"chore: format"},
-  {sha:"ghi789b", m:"Removed synchronous calls — caused timeout cascade", tag:"decision"},
+  {sha:"ghi789b", m:"Removed synchronous calls - caused timeout cascade", tag:"decision"},
   {sha:"c4e88d0", m:"update README badges"}
 ];
 let m2Started = false;

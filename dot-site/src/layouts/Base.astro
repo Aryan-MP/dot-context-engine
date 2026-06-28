@@ -14,7 +14,7 @@ const {
   image = '/og-image.png',
 } = Astro.props;
 
-const fullTitle = title.includes('Dot') ? title : `${title} — Dot`;
+const fullTitle = title.includes('Dot') ? title : `${title} - Dot`;
 const canonical = new URL(Astro.url.pathname, Astro.site ?? 'https://dotmemory.dev').href;
 const ogImage = new URL(image, Astro.site ?? 'https://dotmemory.dev').href;
 
@@ -45,6 +45,17 @@ const jsonLd = {
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="generator" content={Astro.generator} />
+
+    <!-- Set theme before paint to avoid a flash -->
+    <script is:inline>
+      (function () {
+        try {
+          var saved = localStorage.getItem('dot-theme');
+          var theme = saved || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+          document.documentElement.setAttribute('data-theme', theme);
+        } catch (e) {}
+      })();
+    </script>
 
     <title>{fullTitle}</title>
     <meta name="description" content={description} />

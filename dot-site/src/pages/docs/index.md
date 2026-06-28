@@ -30,12 +30,12 @@ Dot has three jobs, and it does them continuously in the background:
 
 ## Where to go next
 
-- **[Installation](/docs/installation)** — get Dot onto your machine.
-- **[Quick start](/docs/quickstart)** — index your first project and try it.
-- **[Commands](/docs/cli)** — the full CLI reference.
-- **[Configuration](/docs/configuration)** — every setting in `.dot/config.json`.
-- **[Integrations](/docs/integrations)** — Claude Code, Copilot, Cursor, REST.
-- **[FAQ](/docs/faq)** — storage, privacy, Windows, and other common questions.
+- **[Installation](/docs/installation)** - get Dot onto your machine.
+- **[Quick start](/docs/quickstart)** - index your first project and try it.
+- **[Commands](/docs/cli)** - the full CLI reference.
+- **[Configuration](/docs/configuration)** - every setting in `.dot/config.json`.
+- **[Integrations](/docs/integrations)** - Claude Code, Copilot, Cursor, REST.
+- **[FAQ](/docs/faq)** - storage, privacy, Windows, and other common questions.
 
 For the deep technical story (architecture, ranking math, the forgetting curve),
 see [`docs/internals.md`](https://github.com/aryanp-spektra/dot-context-engine/blob/main/docs/internals.md)

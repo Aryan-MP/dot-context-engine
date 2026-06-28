@@ -25,11 +25,11 @@ itself. To record a decision mid-session, ask it to use `dot_remember`.
 
 Two paths, depending on whether you use the extension:
 
-- **VS Code extension** — shows a "What Dot knows about this file" sidebar,
+- **VS Code extension** - shows a "What Dot knows about this file" sidebar,
   registers Dot as a Language Model tool for Copilot Chat (`#dotContext`), and
   offers one-click decision capture. Grab the `.vsix` from the
   [latest release](https://github.com/aryanp-spektra/dot-context-engine/releases/latest).
-- **No extension** — run `dot init --copilot`. Dot maintains a managed section
+- **No extension** - run `dot init --copilot`. Dot maintains a managed section
   of `.github/copilot-instructions.md` with your top decisions, refreshed
   automatically, which Copilot reads natively.
 
@@ -58,7 +58,7 @@ The daemon serves these on `localhost` only:
 | `POST` | `/sync` | Trigger a re-index. |
 | `GET` | `/ui` | The web dashboard. |
 
-Example: capture a decision from any script or CI job —
+Example: capture a decision from any script or CI job -
 
 ```bash
 curl -X POST http://127.0.0.1:7337/memory \
@@ -70,7 +70,7 @@ curl -X POST http://127.0.0.1:7337/memory \
 
 Decisions you mark with `--share` (or `"share": true`) are appended to a
 committed `dot-memories.jsonl` file. When a teammate pulls and their daemon sees
-the change, it imports the new memories automatically. No server, no accounts —
+the change, it imports the new memories automatically. No server, no accounts -
 git is the transport. See [`dot memory share`](/docs/cli) and `dot import`.
 
 Next: the **[FAQ](/docs/faq)**.

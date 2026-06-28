@@ -12,7 +12,7 @@ to Copilot, then again in a new chat. Dot ends that. It runs silently in the bac
 builds a deep understanding of your codebase and the decisions behind it, and serves the
 right context to any AI tool through a local REST API.
 
-**Local. Private. Model-agnostic. Open source.** No code leaves your machine — embeddings
+**Local. Private. Model-agnostic. Open source.** No code leaves your machine - embeddings
 are generated locally with sentence-transformers, storage is SQLite + ChromaDB on disk.
 
 ## Install
@@ -22,7 +22,7 @@ pip install dot-context[ml]        # alpha release from PyPI, with local embeddi
 dot --version
 ```
 
-Or install the light build (no ML stack — uses deterministic hashing instead):
+Or install the light build (no ML stack - uses deterministic hashing instead):
 
 ```bash
 pip install dot-context
@@ -48,7 +48,7 @@ cd dot-context-engine && pip install -e ".[dev]"
 - **dot-indexer** chunks code by function/class (not fixed token windows), extracts
   docstrings, imports, and TODO/`decided to…` comments, and embeds everything locally.
 - **dot-memory** mines architectural decisions from commit messages and conversations,
-  with a forgetting curve — stale memories decay, frequently used ones are reinforced.
+  with a forgetting curve - stale memories decay, frequently used ones are reinforced.
 - **dot-context** assembles context ranked by semantic similarity, file proximity,
   recency, and edit frequency, fills a token budget greedily, and formats it for the
   consumer (Claude XML, concise Copilot, markdown, or raw JSON).
@@ -77,7 +77,7 @@ Prerequisites from zero: [docs/foundations.md](docs/foundations.md)
 | `dot init` | initialize Dot in a project (+ git hook, CLAUDE.md, Claude Code hook) |
 | `dot status` | what Dot knows about the current project |
 | `dot ask "…"` | query your codebase in natural language |
-| `dot inject [query]` | print assembled context — pipe it anywhere |
+| `dot inject [query]` | print assembled context - pipe it anywhere |
 | `dot memory list/add/export/delete` | browse and manage captured decisions |
 | `dot sync` | force re-index |
 | `dot forget "pattern"` | remove memories matching a pattern |
@@ -99,13 +99,13 @@ POST /sync                   force re-index
 
 ## Integrations
 
-- **Claude Code** — `dot init` adds a CLAUDE.md section and a SessionStart hook that
+- **Claude Code** - `dot init` adds a CLAUDE.md section and a SessionStart hook that
   injects context at the start of every session.
-- **VS Code / Copilot** — the [extension](vscode-extension/) shows "what Dot knows about
+- **VS Code / Copilot** - the [extension](vscode-extension/) shows "what Dot knows about
   this file" in a sidebar, registers Dot as a Language Model tool for Copilot Chat
   (`#dotContext`), and offers one-click decision capture. Download the `.vsix` from the
   [latest release](https://github.com/aryanp-spektra/dot-context-engine/releases/latest).
-- **Anything else** — `curl localhost:7337/context?query=...&fmt=raw`.
+- **Anything else** - `curl localhost:7337/context?query=...&fmt=raw`.
 
 ## Development
 
@@ -118,7 +118,7 @@ make extension   # compile the VS Code extension
 ```
 
 The ML stack (`chromadb`, `sentence-transformers`) and tree-sitter are **optional
-extras** — without them Dot degrades to a deterministic hashing embedder, SQLite
+extras** - without them Dot degrades to a deterministic hashing embedder, SQLite
 brute-force vector search, and heuristic parsing, so the full pipeline still works
 (and tests run) on any machine.
 

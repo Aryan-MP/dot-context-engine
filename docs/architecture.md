@@ -28,19 +28,19 @@ extension, web dashboard) that all talk to the same local REST API.
 
 ## Indexing pipeline (dot/indexer/)
 
-- **watcher.py** — watchdog observer with a 1.5s debounce so editor write bursts
+- **watcher.py** - watchdog observer with a 1.5s debounce so editor write bursts
   collapse into one event. Ignores `node_modules`, `.venv`, etc.
-- **parser.py** — three strategies in preference order: Python's builtin `ast`
+- **parser.py** - three strategies in preference order: Python's builtin `ast`
   (exact, always available), tree-sitter via `tree-sitter-language-pack` (optional
   extra, 30+ languages), and a regex heuristic fallback. Extracts functions,
   classes + hierarchy, imports, and annotated comments (`TODO`, `FIXME`,
   `NOTE`, plus "why" phrases like *decided to*, *chose X over Y*, *workaround for*).
-- **chunker.py** — chunks align to symbol boundaries. Oversized classes become a
+- **chunker.py** - chunks align to symbol boundaries. Oversized classes become a
   skeleton chunk (signature + docstring) with methods chunked individually;
   oversized functions split on blank lines; tiny adjacent functions merge.
   Each chunk embeds with a `path :: symbol (kind)` header so identical code in
   different modules still embeds distinctly.
-- **embedder.py** — all-MiniLM-L6-v2 locally (384-dim, normalized), batched with
+- **embedder.py** - all-MiniLM-L6-v2 locally (384-dim, normalized), batched with
   an in-process content-hash cache. The no-ML fallback is feature hashing over
   identifiers into the same 384 dims, so the two backends are interchangeable
   on disk.
@@ -49,16 +49,16 @@ Files are content-hashed; unchanged files are skipped on re-sync.
 
 ## Memory (dot/memory/)
 
-- **store.py** — SQLAlchemy/SQLite is the source of truth; ChromaDB holds vectors
+- **store.py** - SQLAlchemy/SQLite is the source of truth; ChromaDB holds vectors
   (per-project, under `.dot/chroma`). Every chunk upsert replaces the file's old
   chunks and dependency edges atomically.
-- **decisions.py** — pattern-based decision extraction from commit messages,
+- **decisions.py** - pattern-based decision extraction from commit messages,
   comments, and conversation transcripts. Captures are idempotent (memory id =
   hash of source + content), so re-mining git never duplicates.
-- **decay.py** — the forgetting curve:
+- **decay.py** - the forgetting curve:
   `weight = confidence · 2^(−age/half_life) · (1 + 0.25·ln(1+accesses))`.
   Querying a memory bumps its access count (reinforcement). A periodic job
-  archives memories below the 0.05 threshold — archive, not delete, so
+  archives memories below the 0.05 threshold - archive, not delete, so
   `dot memory export` keeps full history.
 
 ## Context assembly (dot/context/)

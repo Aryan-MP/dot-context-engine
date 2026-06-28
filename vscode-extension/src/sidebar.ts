@@ -2,7 +2,7 @@ import * as vscode from "vscode";
 import { DotApi, DotContext } from "./api";
 import { ContextProvider } from "./contextProvider";
 
-/** "What Dot knows about this file" — webview in the activity bar. */
+/** "What Dot knows about this file" - webview in the activity bar. */
 export class SidebarProvider implements vscode.WebviewViewProvider {
   public static readonly viewType = "dot.sidebarView";
   private view: vscode.WebviewView | undefined;

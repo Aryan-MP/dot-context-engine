@@ -1,5 +1,5 @@
 /* ============================================================
-   Dot — "Field Notes" theme.
+   Dot - "Field Notes" theme.
    A developer's memory, kept like an engineering notebook:
    warm paper, ink, ruled margins, section marks, index cards.
    Hand-written by a human who is tired of dark glowing dev-tool sites.
@@ -15,6 +15,7 @@
   --ink-3: #9a9384;
   --rule: rgba(31, 27, 22, 0.1); /* notebook rule lines */
   --rule-strong: rgba(31, 27, 22, 0.22);
+  --nav-bg: rgba(244, 239, 228, 0.82);
 
   /* accents */
   --violet: #6a4ff0; /* brand, the "highlighter" */
@@ -30,6 +31,28 @@
   --sans: "Inter", system-ui, sans-serif;
   --mono: "JetBrains Mono", ui-monospace, monospace;
   --hand: "Caveat", "Comic Sans MS", cursive;
+}
+
+/* "After hours" dark notebook - same character, lights off. */
+[data-theme='dark'] {
+  --paper: #15130e;
+  --paper-2: #1e1a14;
+  --paper-edge: #2f2a20;
+  --ink: #ece5d6;
+  --ink-2: #a89e8b;
+  --ink-3: #756c5b;
+  --rule: rgba(236, 229, 214, 0.08);
+  --rule-strong: rgba(236, 229, 214, 0.2);
+  --nav-bg: rgba(21, 19, 14, 0.82);
+  --violet: #8b78ff;
+  --violet-ink: #a89bff;
+  --violet-wash: rgba(139, 120, 255, 0.16);
+  --terra: #e0925c;
+  --green: #6fb87f;
+}
+[data-theme='dark'] .prose pre {
+  background: #0e0d09;
+  border-color: #2f2a20;
 }
 
 * {
@@ -98,7 +121,7 @@ a {
   font-weight: 400;
 }
 
-/* Section mark like a notebook heading: § 01 — Title, with a ruled line */
+/* Section mark like a notebook heading: § 01 - Title, with a ruled line */
 .sec-mark {
   display: flex;
   align-items: center;
@@ -165,7 +188,7 @@ h3 {
   color: var(--violet-ink);
 }
 
-/* marginalia — handwritten note */
+/* marginalia - handwritten note */
 .margin-note {
   font-family: var(--hand);
   font-size: 23px;

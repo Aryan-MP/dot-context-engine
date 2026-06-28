@@ -1,0 +1,14 @@
+# Source and build config - not needed in the packaged extension
+src/**
+tsconfig.json
+.vscodeignore
+**/*.map
+**/*.ts
+!out/**/*.js
+
+# Dev noise
+node_modules/**
+.gitignore
+package-lock.json
+
+# Keep: out/ (compiled JS), media/ (icon), README.md, package.json, LICENSE

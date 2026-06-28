@@ -1,8 +1,8 @@
 # Contributing to Dot
 
 Thanks for taking the time to contribute! Dot is an open-source, local-first AI context
-memory daemon. All contributions — bug reports, documentation fixes, feature ideas, and
-pull requests — are welcome.
+memory daemon. All contributions - bug reports, documentation fixes, feature ideas, and
+pull requests - are welcome.
 
 ## Getting started
 

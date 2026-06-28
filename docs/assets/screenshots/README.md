@@ -4,8 +4,8 @@ This directory contains screenshots and mockups used in the README and documenta
 
 ## Current assets
 
-- `cli-status.svg` — mockup of `dot status` terminal output.
-- `dashboard-mock.svg` — mockup of the Dot web dashboard.
+- `cli-status.svg` - mockup of `dot status` terminal output.
+- `dashboard-mock.svg` - mockup of the Dot web dashboard.
 
 ## Capturing real screenshots
 

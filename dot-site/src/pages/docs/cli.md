@@ -1,7 +1,7 @@
 ---
 layout: ../../layouts/DocsLayout.astro
 title: Commands
-description: The complete Dot command-line reference — every command, subcommand, and option.
+description: The complete Dot command-line reference - every command, subcommand, and option.
 ---
 
 Run `dot --help`, or `dot <command> --help`, to see any of this in your terminal.
@@ -15,7 +15,7 @@ they talk to it; if not, they run in-process.
 | `dot init [path]` | Initialize Dot in a project: index code, mine git decisions, install the commit hook, wire up integrations. |
 | `dot status` | Show what Dot knows: files, chunks, memories, storage size, daemon state, port. |
 | `dot ask "question"` | Query your codebase in natural language. |
-| `dot inject [query]` | Print assembled context to stdout — pipe it into any tool. |
+| `dot inject [query]` | Print assembled context to stdout - pipe it into any tool. |
 | `dot sync` | Re-index changed files (add `--force` for everything). |
 | `dot forget "pattern"` | Remove memories matching a regex/substring. |
 | `dot import [file]` | Import shared memories (from `dot-memories.jsonl`, or an exported file). |
@@ -82,7 +82,7 @@ dot daemon install-service  # survive reboots
 ```
 
 If the preferred port (7337) is taken, the daemon automatically uses the next
-free one and records it in the project's config — `dot status` always shows the
+free one and records it in the project's config - `dot status` always shows the
 real port.
 
 Next: **[Configuration](/docs/configuration)**.

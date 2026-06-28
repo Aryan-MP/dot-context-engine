@@ -53,7 +53,7 @@ export async function activate(context: vscode.ExtensionContext): Promise<void> 
       status.tooltip = `Dot: ${info.files_indexed} files indexed, ${info.memories} memories`;
     } else {
       status.text = "$(circle-outline) dot";
-      status.tooltip = "Dot daemon offline — run `dot daemon start`";
+      status.tooltip = "Dot daemon offline - run `dot daemon start`";
     }
     status.show();
   };

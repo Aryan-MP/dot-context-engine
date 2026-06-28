@@ -281,7 +281,7 @@ dot init --conversations
 This sets `capture_conversations` in `.dot/config.json` (off by default). The
 daemon then reads local JSONL session transcripts under `~/.claude` (or
 `$CLAUDE_CONFIG_DIR`) for this project, extracts decision-bearing assistant
-turns, and feeds them through the same capture pipeline as commit messages —
+turns, and feeds them through the same capture pipeline as commit messages -
 no fork, no network, no transcript pasting. Captures are incremental
 (per-file byte offsets) and idempotent (sha256 memory ids), so re-running is
 free.

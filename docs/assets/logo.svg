@@ -1,5 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240" width="240" height="240">
-  <title>Dot — memory spiral mark</title>
+  <title>Dot - memory spiral mark</title>
   <defs>
     <radialGradient id="core" cx="38%" cy="34%" r="75%">
       <stop offset="0%" stop-color="#9d8ffb"/>

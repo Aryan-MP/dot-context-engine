@@ -26,7 +26,7 @@ export function registerCommands(
         await api.captureMemory(content, kind, relativeActiveFile() ?? "");
         vscode.window.showInformationMessage("Dot captured the decision.");
       } catch (error) {
-        vscode.window.showErrorMessage(`Dot: capture failed — ${String(error)}`);
+        vscode.window.showErrorMessage(`Dot: capture failed - ${String(error)}`);
       }
     }),
 
@@ -49,7 +49,7 @@ export function registerCommands(
         await api.sync();
         vscode.window.showInformationMessage("Dot: re-index started.");
       } catch (error) {
-        vscode.window.showErrorMessage(`Dot: sync failed — ${String(error)}`);
+        vscode.window.showErrorMessage(`Dot: sync failed - ${String(error)}`);
       }
     }),
 

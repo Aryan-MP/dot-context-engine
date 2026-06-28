@@ -20,7 +20,7 @@ delete the `.dot/` folder; `dot sync` rebuilds it.
 
 ## Does it work on Windows?
 
-Yes — macOS, Linux, and Windows. The daemon lifecycle is cross-platform. On
+Yes - macOS, Linux, and Windows. The daemon lifecycle is cross-platform. On
 macOS and Linux you can install it as a background service with
 `dot daemon install-service`; on Windows, launch `dot daemon start` (for example
 via Task Scheduler) to keep it running.
@@ -28,7 +28,7 @@ via Task Scheduler) to keep it running.
 ## Do I need a GPU or an API key?
 
 Neither. The default model (`all-MiniLM-L6-v2`) runs comfortably on a CPU, and
-Dot never calls a hosted LLM — it does retrieval, your tools do generation.
+Dot never calls a hosted LLM - it does retrieval, your tools do generation.
 
 ## My notes/docs aren't being indexed.
 
@@ -38,7 +38,7 @@ default; to add more (like `.txt`), set `extra_extensions` in
 
 ## Can I change the embedding model?
 
-Yes, via `embedding_model` in the config — but vectors from different models are
+Yes, via `embedding_model` in the config - but vectors from different models are
 not comparable, so run `dot sync --force` afterwards to rebuild the index.
 
 ## How does it decide what's a "decision"?

@@ -652,16 +652,16 @@ hook it does not own.
 **Claude Code session capture** (`dot/conversations/`). Opt-in via
 `dot init --conversations` (the `capture_conversations` config flag, off by
 default). The daemon's `ConversationWatcher` resolves the transcript
-directory — `$CLAUDE_CONFIG_DIR/projects` (falling back to
-`~/.claude/projects`) — and watches it for new and modified `.jsonl` files;
+directory - `$CLAUDE_CONFIG_DIR/projects` (falling back to
+`~/.claude/projects`) - and watches it for new and modified `.jsonl` files;
 an APScheduler job (`scan-conversations`, ~10 min) is a backstop. Each scan
 is incremental: per-file byte offsets are persisted in
 `.dot/conversations_offsets.json` so only new appends are read.
 `ClaudeCodeSource.parse_transcript` extracts assistant/user text turns,
 skips tool_result and tool_use noise, and maps a turn to the current project
 via the transcript line's `cwd` field (not folder-name encoding). Turns flow
-through the existing `DecisionService.capture_from_conversation` — no forked
-pipeline — and land as memories with `source: conversation:<session-id>`.
+through the existing `DecisionService.capture_from_conversation` - no forked
+pipeline - and land as memories with `source: conversation:<session-id>`.
 Capture is idempotent (sha256 of `source::content`). Entry points:
 `Daemon.scan_conversations()`, the `dot capture` CLI command, and
 `POST /conversations/scan` (synchronous, returns counts). Degrades to a
@@ -764,7 +764,7 @@ Honest list, ordered by how likely you are to hit them:
    flag, off by default) closes this gap for Claude Code: the daemon reads
    local JSONL session transcripts under `$CLAUDE_CONFIG_DIR` (falling back
    to `~/.claude`), extracts decision-bearing turns, and feeds them through
-   the existing capture pipeline — incremental, idempotent, no network. See
+   the existing capture pipeline - incremental, idempotent, no network. See
    section 14. Capture for Copilot chats and other clients is still manual
    via `/memory/conversation` or `dot_remember`.
 2. **Decision mining is pattern-based.** "chose X over Y because" is
