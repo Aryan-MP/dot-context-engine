@@ -2,6 +2,7 @@
 
 [![PyPI](https://img.shields.io/pypi/v/dot-context?color=blue&label=PyPI)](https://pypi.org/project/dot-context/)
 [![GitHub release](https://img.shields.io/github/v/release/Aryan-MP/dot-context-engine?include_prereleases&label=release)](https://github.com/Aryan-MP/dot-context-engine/releases)
+[![VS Code Marketplace](https://img.shields.io/visual-studio-marketplace/v/AryanMangod.dot-context-memory?label=VS%20Code%20extension)](https://marketplace.visualstudio.com/items?itemName=AryanMangod.dot-context-memory)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Tests](https://github.com/Aryan-MP/dot-context-engine/actions/workflows/ci.yml/badge.svg)](https://github.com/Aryan-MP/dot-context-engine/actions/workflows/ci.yml)
 
