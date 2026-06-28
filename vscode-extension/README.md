@@ -12,7 +12,7 @@ already knowing your code, your conventions, and the decisions behind them.
 
 Local. Private. Model-agnostic. Nothing leaves your machine.
 
-![Dot](https://raw.githubusercontent.com/Aryan-MP/dot-context-engine/main/branding/social-preview.png)
+![Dot for VS Code](https://raw.githubusercontent.com/Aryan-MP/dot-context-engine/main/docs/assets/screenshots/screenshot-extension.png)
 
 ## What it does
 

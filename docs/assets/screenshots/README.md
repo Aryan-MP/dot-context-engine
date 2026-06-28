@@ -1,28 +1,20 @@
 # Screenshots
 
-This directory contains screenshots and mockups used in the README and documentation.
+This directory contains screenshots and demo assets used in the README and documentation.
 
-## Current assets
+## Assets
 
-- `cli-status.svg` - mockup of `dot status` terminal output.
-- `dashboard-mock.svg` - mockup of the Dot web dashboard.
+- `screenshot-cli.png` - `dot status` output showing daemon, indexed files, chunks, memories, and top contexts.
+- `screenshot-dashboard.png` - The Dot web dashboard with stats, search, and ranked matches.
+- `screenshot-extension.png` - The Dot sidebar in VS Code showing decisions and related code.
+- `demo.gif` - Animated walkthrough of the core workflow: `dot init`, `dot daemon start`, `dot ask`, and the ranked results.
 
-## Capturing real screenshots
+## Regenerating assets
 
-Once Dot is running locally, replace these mockups with real captures:
+The PNG and GIF assets are generated with Pillow from `scripts/generate_assets.py` so they stay consistent with the Field Notes theme.
 
 ```bash
-# CLI screenshot
-dot status
-
-# Dashboard screenshot
-# Start the daemon, open http://localhost:7337/ui, and capture the browser window.
+python3 scripts/generate_assets.py
 ```
 
-Recommended tools:
-
-- macOS: `Cmd + Shift + 4` or CleanShot
-- Linux: `gnome-screenshot`, `flameshot`, or `grim`
-- Windows: Snipping Tool or ShareX
-
-When replacing a mockup, keep the same filename so the README and docs links stay valid.
+To capture real screenshots instead, use your OS screenshot tool while Dot is running and save them here with the same filenames.

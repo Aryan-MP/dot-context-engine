@@ -56,6 +56,15 @@ dot status
 dot dashboard                     # web UI at http://localhost:7337/ui
 ```
 
+## See it in action
+
+![Dot CLI workflow demo](docs/assets/screenshots/demo.gif)
+
+| `dot status` | `dot dashboard` | VS Code extension |
+|---|---|---|
+| ![CLI status](docs/assets/screenshots/screenshot-cli.png) | ![Dashboard](docs/assets/screenshots/screenshot-dashboard.png) | ![Extension](docs/assets/screenshots/screenshot-extension.png) |
+
+
 Full walkthrough with experiments: [docs/getting-started.md](docs/getting-started.md)  
 Deep technical internals: [docs/internals.md](docs/internals.md)  
 Prerequisites from zero: [docs/foundations.md](docs/foundations.md)
