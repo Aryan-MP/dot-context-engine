@@ -35,16 +35,6 @@ git clone https://github.com/Aryan-MP/dot-context-engine.git
 cd dot-context-engine && pip install -e ".[dev]"
 ```
 
-## How it works
-
-```
- filesystem ──▶ watcher ──▶ AST parser ──▶ semantic chunker ──▶ local embeddings
- git history ──▶ decision miner ──────────────────────────────▶ ┌─────────────┐
- AI chats ────▶ decision capture ─────────────────────────────▶ │ SQLite +    │
-                                                                │ ChromaDB    │
-        any AI tool ◀── /context (ranked, budgeted, formatted) ◀┴─────────────┘
-```
-
 - **dot-indexer** chunks code by function/class (not fixed token windows), extracts
   docstrings, imports, and TODO/`decided to…` comments, and embeds everything locally.
 - **dot-memory** mines architectural decisions from commit messages and conversations,
