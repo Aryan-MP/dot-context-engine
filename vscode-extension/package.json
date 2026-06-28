@@ -8,12 +8,12 @@
   "icon": "media/icon.png",
   "repository": {
     "type": "git",
-    "url": "https://github.com/aryanp-spektra/dot-context-engine"
+    "url": "https://github.com/Aryan-MP/dot-context-engine"
   },
   "bugs": {
-    "url": "https://github.com/aryanp-spektra/dot-context-engine/issues"
+    "url": "https://github.com/Aryan-MP/dot-context-engine/issues"
   },
-  "homepage": "https://github.com/aryanp-spektra/dot-context-engine#readme",
+  "homepage": "https://github.com/Aryan-MP/dot-context-engine#readme",
   "qna": false,
   "galleryBanner": {
     "color": "#0c0c0e",

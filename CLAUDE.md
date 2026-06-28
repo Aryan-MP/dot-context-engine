@@ -1,6 +1,6 @@
 ## Dot context memory
 
-This project runs [Dot](https://github.com/aryanp-spektra/dot-context-engine),
+This project runs [Dot](https://github.com/Aryan-MP/dot-context-engine),
 a local context daemon. Query it for relevant code and past decisions:
 
 - `curl 'http://127.0.0.1:7337/context?query=<your question>&fmt=claude'`

@@ -28,7 +28,7 @@ Two paths, depending on whether you use the extension:
 - **VS Code extension** - shows a "What Dot knows about this file" sidebar,
   registers Dot as a Language Model tool for Copilot Chat (`#dotContext`), and
   offers one-click decision capture. Grab the `.vsix` from the
-  [latest release](https://github.com/aryanp-spektra/dot-context-engine/releases/latest).
+  [latest release](https://github.com/Aryan-MP/dot-context-engine/releases/latest).
 - **No extension** - run `dot init --copilot`. Dot maintains a managed section
   of `.github/copilot-instructions.md` with your top decisions, refreshed
   automatically, which Copilot reads natively.

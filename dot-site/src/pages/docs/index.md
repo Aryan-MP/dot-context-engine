@@ -38,5 +38,5 @@ Dot has three jobs, and it does them continuously in the background:
 - **[FAQ](/docs/faq)** - storage, privacy, Windows, and other common questions.
 
 For the deep technical story (architecture, ranking math, the forgetting curve),
-see [`docs/internals.md`](https://github.com/aryanp-spektra/dot-context-engine/blob/main/docs/internals.md)
+see [`docs/internals.md`](https://github.com/Aryan-MP/dot-context-engine/blob/main/docs/internals.md)
 in the repository.

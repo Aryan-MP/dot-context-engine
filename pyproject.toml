@@ -59,7 +59,7 @@ all = ["dot-context[ml,treesitter,dev]"]
 dot = "dot.cli:app"
 
 [project.urls]
-Homepage = "https://github.com/aryanp-spektra/dot-context-engine"
+Homepage = "https://github.com/Aryan-MP/dot-context-engine"
 
 [tool.setuptools.packages.find]
 include = ["dot*"]

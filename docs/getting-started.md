@@ -28,7 +28,7 @@ Everything runs on your machine. Nothing is uploaded anywhere.
 Dot is not on PyPI yet, so install from source. You need Python 3.11 or newer.
 
 ```bash
-git clone https://github.com/aryanp-spektra/dot-context-engine.git
+git clone https://github.com/Aryan-MP/dot-context-engine.git
 cd dot-context-engine
 
 python3 -m venv .venv

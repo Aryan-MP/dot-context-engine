@@ -21,7 +21,7 @@ logger = logging.getLogger(__name__)
 CLAUDE_MD_TEMPLATE = """
 ## Dot context memory
 
-This project runs [Dot](https://github.com/aryanp-spektra/dot-context-engine),
+This project runs [Dot](https://github.com/Aryan-MP/dot-context-engine),
 a local context daemon. Prefer the MCP tools (dot_context, dot_remember,
 dot_status) when available; the REST API works from any shell:
 

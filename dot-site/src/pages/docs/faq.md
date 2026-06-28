@@ -67,7 +67,7 @@ and the git post-commit hook are plain text and safe to delete by hand.
 
 ## Where's the deep technical documentation?
 
-The repository's [`docs/internals.md`](https://github.com/aryanp-spektra/dot-context-engine/blob/main/docs/internals.md)
+The repository's [`docs/internals.md`](https://github.com/Aryan-MP/dot-context-engine/blob/main/docs/internals.md)
 covers the architecture, ranking math, and storage design in depth, and
-[`docs/foundations.md`](https://github.com/aryanp-spektra/dot-context-engine/blob/main/docs/foundations.md)
+[`docs/foundations.md`](https://github.com/Aryan-MP/dot-context-engine/blob/main/docs/foundations.md)
 teaches the underlying concepts from zero.

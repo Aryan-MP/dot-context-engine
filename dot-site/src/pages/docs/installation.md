@@ -32,7 +32,7 @@ thing.
 ## From source
 
 ```bash
-git clone https://github.com/aryanp-spektra/dot-context-engine.git
+git clone https://github.com/Aryan-MP/dot-context-engine.git
 cd dot-context-engine
 python3 -m venv .venv
 source .venv/bin/activate        # Windows: .venv\Scripts\Activate.ps1

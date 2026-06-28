@@ -1,9 +1,9 @@
 # ● Dot
 
 [![PyPI](https://img.shields.io/pypi/v/dot-context?color=blue&label=PyPI)](https://pypi.org/project/dot-context/)
-[![GitHub release](https://img.shields.io/github/v/release/aryanp-spektra/dot-context-engine?include_prereleases&label=release)](https://github.com/aryanp-spektra/dot-context-engine/releases)
+[![GitHub release](https://img.shields.io/github/v/release/Aryan-MP/dot-context-engine?include_prereleases&label=release)](https://github.com/Aryan-MP/dot-context-engine/releases)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
-[![Tests](https://github.com/aryanp-spektra/dot-context-engine/actions/workflows/ci.yml/badge.svg)](https://github.com/aryanp-spektra/dot-context-engine/actions/workflows/ci.yml)
+[![Tests](https://github.com/Aryan-MP/dot-context-engine/actions/workflows/ci.yml/badge.svg)](https://github.com/Aryan-MP/dot-context-engine/actions/workflows/ci.yml)
 
 **A local-first AI context memory daemon.** Stop re-explaining your codebase to every AI tool.
 
@@ -31,7 +31,7 @@ pip install dot-context
 For development, clone and install in editable mode:
 
 ```bash
-git clone https://github.com/aryanp-spektra/dot-context-engine.git
+git clone https://github.com/Aryan-MP/dot-context-engine.git
 cd dot-context-engine && pip install -e ".[dev]"
 ```
 
@@ -104,7 +104,7 @@ POST /sync                   force re-index
 - **VS Code / Copilot** - the [extension](vscode-extension/) shows "what Dot knows about
   this file" in a sidebar, registers Dot as a Language Model tool for Copilot Chat
   (`#dotContext`), and offers one-click decision capture. Download the `.vsix` from the
-  [latest release](https://github.com/aryanp-spektra/dot-context-engine/releases/latest).
+  [latest release](https://github.com/Aryan-MP/dot-context-engine/releases/latest).
 - **Anything else** - `curl localhost:7337/context?query=...&fmt=raw`.
 
 ## Development

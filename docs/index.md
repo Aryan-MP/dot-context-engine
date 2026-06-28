@@ -53,6 +53,6 @@ knowing your code, your conventions, and the reasons behind them.
 
 ## Quick links
 
-- [GitHub repository](https://github.com/aryanp-spektra/dot-context-engine)
+- [GitHub repository](https://github.com/Aryan-MP/dot-context-engine)
 - [Product website](https://dot-context-engine.vercel.app)
 - [Architecture overview](architecture.md) for a shorter tour than internals

@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://raw.githubusercontent.com/aryanp-spektra/dot-context-engine/main/branding/logo-mark.svg" width="84" alt="Dot" />
+  <img src="https://raw.githubusercontent.com/Aryan-MP/dot-context-engine/main/branding/logo-mark.svg" width="84" alt="Dot" />
 </p>
 
 <h1 align="center">Dot for VS Code</h1>
@@ -12,7 +12,7 @@ already knowing your code, your conventions, and the decisions behind them.
 
 Local. Private. Model-agnostic. Nothing leaves your machine.
 
-![Dot](https://raw.githubusercontent.com/aryanp-spektra/dot-context-engine/main/branding/social-preview.png)
+![Dot](https://raw.githubusercontent.com/Aryan-MP/dot-context-engine/main/branding/social-preview.png)
 
 ## What it does
 
@@ -38,7 +38,7 @@ dot init
 dot daemon start
 ```
 
-See the [full installation guide](https://github.com/aryanp-spektra/dot-context-engine/blob/main/docs/getting-started.md).
+See the [full installation guide](https://github.com/Aryan-MP/dot-context-engine/blob/main/docs/getting-started.md).
 
 ## Commands
 
@@ -69,7 +69,7 @@ code never leaves your machine.
 
 ## Learn more
 
-- [Documentation](https://github.com/aryanp-spektra/dot-context-engine/tree/main/docs)
-- [GitHub repository](https://github.com/aryanp-spektra/dot-context-engine)
+- [Documentation](https://github.com/Aryan-MP/dot-context-engine/tree/main/docs)
+- [GitHub repository](https://github.com/Aryan-MP/dot-context-engine)
 
 MIT License.
