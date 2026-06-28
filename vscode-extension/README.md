@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://raw.githubusercontent.com/Aryan-MP/dot-context-engine/main/branding/logo-mark.svg" width="84" alt="Dot" />
+  <img src="https://raw.githubusercontent.com/Aryan-MP/dot-context-engine/main/branding/app-icon.png" width="84" alt="Dot" />
 </p>
 
 <h1 align="center">Dot for VS Code</h1>

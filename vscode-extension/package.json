@@ -1,9 +1,9 @@
 {
-  "name": "dot-context",
+  "name": "dot-context-memory",
   "displayName": "Dot - AI Context Memory",
   "description": "Give every AI tool a memory of your codebase. Injects ranked code context and captured decisions into Copilot Chat and other tools via the local Dot daemon.",
-  "version": "0.1.0-alpha",
-  "publisher": "dot",
+  "version": "0.1.0",
+  "publisher": "AryanMangod",
   "license": "MIT",
   "icon": "media/icon.png",
   "repository": {
@@ -31,17 +31,41 @@
   "engines": {
     "vscode": "^1.90.0"
   },
-  "categories": ["AI", "Machine Learning", "Other"],
-  "activationEvents": ["onStartupFinished"],
+  "categories": [
+    "AI",
+    "Machine Learning",
+    "Other"
+  ],
+  "activationEvents": [
+    "onStartupFinished"
+  ],
   "main": "./out/extension.js",
   "contributes": {
     "commands": [
-      { "command": "dot.captureDecision", "title": "Dot: Capture This Decision" },
-      { "command": "dot.showContext", "title": "Dot: Show Context for Current File" },
-      { "command": "dot.sync", "title": "Dot: Force Re-index Project" },
-      { "command": "dot.startDaemon", "title": "Dot: Start Daemon" },
-      { "command": "dot.stopDaemon", "title": "Dot: Stop Daemon" },
-      { "command": "dot.openDashboard", "title": "Dot: Open Dashboard" }
+      {
+        "command": "dot.captureDecision",
+        "title": "Dot: Capture This Decision"
+      },
+      {
+        "command": "dot.showContext",
+        "title": "Dot: Show Context for Current File"
+      },
+      {
+        "command": "dot.sync",
+        "title": "Dot: Force Re-index Project"
+      },
+      {
+        "command": "dot.startDaemon",
+        "title": "Dot: Start Daemon"
+      },
+      {
+        "command": "dot.stopDaemon",
+        "title": "Dot: Stop Daemon"
+      },
+      {
+        "command": "dot.openDashboard",
+        "title": "Dot: Open Dashboard"
+      }
     ],
     "viewsContainers": {
       "activitybar": [
@@ -101,7 +125,9 @@
               "description": "Natural-language question or topic to retrieve context for"
             }
           },
-          "required": ["query"]
+          "required": [
+            "query"
+          ]
         }
       }
     ]
@@ -110,7 +136,8 @@
     "compile": "tsc -p ./",
     "watch": "tsc -watch -p ./",
     "lint": "tsc --noEmit",
-    "package": "vsce package"
+    "package": "vsce package",
+    "publish-prerelease": "vsce publish --pre-release"
   },
   "devDependencies": {
     "@types/node": "^20.12.0",
