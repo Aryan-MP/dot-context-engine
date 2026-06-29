@@ -28,5 +28,13 @@ dashboard/dist/
 .claude/
 site/
 
+# Local AI-tool wiring (regenerated per-machine by `dot init`)
+CLAUDE.md
+.mcp.json
+
+# Marketing site - kept local until it ships under its own domain
+website/
+dot-site/
+
 # Kimchi harness metadata
 .kimchi/

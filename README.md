@@ -1,29 +1,65 @@
-# ● Dot
+<p align="center">
+  <img src="branding/app-icon.png" width="96" alt="Dot">
+</p>
 
-[![PyPI](https://img.shields.io/pypi/v/dot-context?color=blue&label=PyPI)](https://pypi.org/project/dot-context/)
-[![GitHub release](https://img.shields.io/github/v/release/Aryan-MP/dot-context-engine?include_prereleases&label=release)](https://github.com/Aryan-MP/dot-context-engine/releases)
-[![VS Code Marketplace](https://img.shields.io/visual-studio-marketplace/v/AryanMangod.dot-context-memory?label=VS%20Code%20extension)](https://marketplace.visualstudio.com/items?itemName=AryanMangod.dot-context-memory)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
-[![Tests](https://github.com/Aryan-MP/dot-context-engine/actions/workflows/ci.yml/badge.svg)](https://github.com/Aryan-MP/dot-context-engine/actions/workflows/ci.yml)
+<h1 align="center">Dot</h1>
 
-**A local-first AI context memory daemon.** Stop re-explaining your codebase to every AI tool.
+<p align="center">
+  <strong>A shared, local-first memory for your AI agents.</strong><br>
+  One brain that every tool reads from and writes to, so you never re-explain your codebase again.
+</p>
 
-Every AI tool starts from zero: you explain your architecture to Claude Code, then again
-to Copilot, then again in a new chat. Dot ends that. It runs silently in the background,
-builds a deep understanding of your codebase and the decisions behind it, and serves the
-right context to any AI tool through a local REST API.
+<p align="center">
+  <a href="https://pypi.org/project/dot-context/"><img src="https://img.shields.io/pypi/v/dot-context?color=blue&label=PyPI" alt="PyPI"></a>
+  <a href="https://github.com/Aryan-MP/dot-context-engine/releases"><img src="https://img.shields.io/github/v/release/Aryan-MP/dot-context-engine?include_prereleases&label=release" alt="Release"></a>
+  <a href="https://marketplace.visualstudio.com/items?itemName=AryanMangod.dot-context-memory"><img src="https://img.shields.io/visual-studio-marketplace/v/AryanMangod.dot-context-memory?label=VS%20Code%20extension" alt="VS Code Marketplace"></a>
+  <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-yellow.svg" alt="License: MIT"></a>
+  <a href="https://github.com/Aryan-MP/dot-context-engine/actions/workflows/ci.yml"><img src="https://github.com/Aryan-MP/dot-context-engine/actions/workflows/ci.yml/badge.svg" alt="Tests"></a>
+</p>
+
+---
+
+**Every agent you run is an amnesiac.**
+
+You run Claude Code in one terminal, Cursor in another, Copilot in your editor, and none
+of them remember anything. You explain your architecture to one, then again to the next,
+then again in a fresh chat tomorrow. Every decision you made and every reason behind it is
+gone the moment the session ends.
+
+Dot is the memory they are missing. It runs quietly in the background as a local daemon,
+builds a living understanding of your codebase and the decisions behind it, and serves
+that memory to **any** agent through a local REST API: one brain that every tool reads
+from and writes to. Think of it as a second brain for your agents, or a notebook that
+remembers *why*, not just *what*.
 
 **Local. Private. Model-agnostic. Open source.** No code leaves your machine - embeddings
 are generated locally with sentence-transformers, storage is SQLite + ChromaDB on disk.
 
+### Why a separate memory layer?
+
+Your AI tools each have their own context window, and each one resets to zero. Dot sits
+underneath all of them:
+
+- **One memory, every agent.** Claude Code, Copilot, Cursor, a CI agent, a `curl` one-liner
+  in a script - they all read the same context and write back to the same store.
+- **It remembers across sessions.** Decisions captured from a chat last night are there
+  this morning, for a *different* tool, without you re-explaining anything.
+- **It remembers *why*.** Not just code, but the architectural decisions, the rejected
+  alternatives, the "we chose X over Y because..." that normally lives only in your head.
+- **A forgetting curve keeps it sharp.** Memories decay with age but are reinforced every
+  time they are used, so what stays relevant survives and stale noise fades: spaced
+  repetition for your codebase.
+
 ## Install
 
+Requires **Python 3.11+**. Everything runs locally - no account, no API key, no cloud.
+
 ```bash
-pip install dot-context[ml]        # alpha release from PyPI, with local embeddings
+pip install "dot-context[ml]"      # recommended: with local embeddings
 dot --version
 ```
 
-Or install the light build (no ML stack - uses deterministic hashing instead):
+Or the light build (no ML stack - uses a deterministic hashing embedder instead):
 
 ```bash
 pip install dot-context
@@ -36,13 +72,20 @@ git clone https://github.com/Aryan-MP/dot-context-engine.git
 cd dot-context-engine && pip install -e ".[dev]"
 ```
 
-- **dot-indexer** chunks code by function/class (not fixed token windows), extracts
-  docstrings, imports, and TODO/`decided to…` comments, and embeds everything locally.
-- **dot-memory** mines architectural decisions from commit messages and conversations,
-  with a forgetting curve - stale memories decay, frequently used ones are reinforced.
-- **dot-context** assembles context ranked by semantic similarity, file proximity,
-  recency, and edit frequency, fills a token budget greedily, and formats it for the
-  consumer (Claude XML, concise Copilot, markdown, or raw JSON).
+## How it works
+
+Three layers make up the brain:
+
+- **dot-memory** is the long-term memory. It mines architectural decisions from commit
+  messages and AI conversations, stores them with a forgetting curve (stale memories decay,
+  frequently used ones are reinforced), and lets any agent write new decisions back via the
+  API. This is the part that makes Dot a *second brain* and not just a search index.
+- **dot-indexer** is the working memory of your code. It chunks code by function/class
+  (not fixed token windows), extracts docstrings, imports, and TODO/`decided to…` comments,
+  and embeds everything locally.
+- **dot-context** is recall. It assembles context ranked by semantic similarity, file
+  proximity, recency, and edit frequency, fills a token budget greedily, and formats it for
+  whichever agent is asking (Claude XML, concise Copilot, markdown, or raw JSON).
 
 ## Quick start
 
@@ -56,6 +99,25 @@ dot inject "refactoring the billing module" --fmt claude | pbcopy
 dot status
 dot dashboard                     # web UI at http://localhost:7337/ui
 ```
+
+## One brain, every agent
+
+The point of Dot is that what *one* agent learns, *every* agent knows. Teach it once:
+
+```bash
+# Monday - while pairing with Claude Code, you record a decision:
+curl -X POST http://127.0.0.1:7337/memory -H 'content-type: application/json' \
+  -d '{"content": "Chose Postgres advisory locks over Redis for job dedup, one less service to run", "kind": "decision"}'
+```
+
+```bash
+# Tuesday - a different tool, a fresh session, asks the same question:
+curl 'http://127.0.0.1:7337/context?query=how%20do%20we%20dedup%20jobs&fmt=raw'
+# surfaces the advisory-locks decision, the reasoning, and the code around it.
+```
+
+No re-explaining. No copy-pasting context between tools. The memory outlives the session
+and crosses the tool boundary, which is the whole idea.
 
 ## See it in action
 
@@ -98,6 +160,9 @@ POST /sync                   force re-index
 ```
 
 ## Integrations
+
+Every integration is just another agent plugging into the same brain: read context, write
+decisions back.
 
 - **Claude Code** - `dot init` adds a CLAUDE.md section and a SessionStart hook that
   injects context at the start of every session.

@@ -25,7 +25,20 @@ Everything runs on your machine. Nothing is uploaded anywhere.
 
 ## 1. Install
 
-Dot is not on PyPI yet, so install from source. You need Python 3.11 or newer.
+You need Python 3.11 or newer. Install from PyPI:
+
+```bash
+pip install "dot-context[ml]"     # recommended: with local embeddings
+dot version                       # expect: dot 0.1.0
+```
+
+Or the light build (no ML stack - see the note below):
+
+```bash
+pip install dot-context
+```
+
+To hack on Dot itself, install from source in editable mode instead:
 
 ```bash
 git clone https://github.com/Aryan-MP/dot-context-engine.git
@@ -35,13 +48,16 @@ python3 -m venv .venv
 source .venv/bin/activate        # Windows: .venv\Scripts\Activate.ps1
 
 pip install -e ".[dev]"
-dot version                       # expect: dot 0.1.0
+dot version
 ```
 
 ### The ML extra (recommended)
 
+The `[ml]` extra above pulls in everything below. If you started with the
+light build, add it any time:
+
 ```bash
-pip install -e ".[ml]"
+pip install "dot-context[ml]"
 ```
 
 This adds ChromaDB (a local vector database) and sentence-transformers
