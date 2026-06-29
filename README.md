@@ -143,9 +143,7 @@ and crosses the tool boundary, which is the whole idea.
 | ![CLI status](docs/assets/screenshots/screenshot-cli.png) | ![Dashboard](docs/assets/screenshots/screenshot-dashboard.png) | ![Extension](docs/assets/screenshots/screenshot-extension.png) |
 
 
-New here? Start with the narrative setup guide (terminal + VS Code, step by step):
-[marketing/medium-getting-started.md](marketing/medium-getting-started.md)  
-Full walkthrough with experiments: [docs/getting-started.md](docs/getting-started.md)  
+Full walkthrough with experiments (terminal + VS Code): [docs/getting-started.md](docs/getting-started.md)  
 Deep technical internals: [docs/internals.md](docs/internals.md)  
 Prerequisites from zero: [docs/foundations.md](docs/foundations.md)
 

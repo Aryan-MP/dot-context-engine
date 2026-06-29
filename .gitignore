@@ -32,9 +32,10 @@ site/
 CLAUDE.md
 .mcp.json
 
-# Marketing site - kept local until it ships under its own domain
+# Internal / marketing drafts - kept local, never in the public repo
 website/
 dot-site/
+marketing/
 
 # Kimchi harness metadata
 .kimchi/
