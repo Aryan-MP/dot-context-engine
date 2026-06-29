@@ -181,10 +181,10 @@ decisions back.
 
 - **Claude Code** - `dot init` adds a CLAUDE.md section and a SessionStart hook that
   injects context at the start of every session.
-- **VS Code / Copilot** - the [extension](vscode-extension/) shows "what Dot knows about
-  this file" in a sidebar, registers Dot as a Language Model tool for Copilot Chat
-  (`#dotContext`), and offers one-click decision capture. Download the `.vsix` from the
-  [latest release](https://github.com/Aryan-MP/dot-context-engine/releases/latest).
+- **VS Code / Copilot** - install [Dot - AI Context Memory](https://marketplace.visualstudio.com/items?itemName=AryanMangod.dot-context-memory)
+  from the VS Code Marketplace. It shows "what Dot knows about this file" in a sidebar,
+  registers Dot as a Language Model tool for Copilot Chat (`#dotContext`), and offers
+  one-click decision capture.
 - **Anything else** - `curl localhost:7337/context?query=...&fmt=raw`.
 
 ## Development

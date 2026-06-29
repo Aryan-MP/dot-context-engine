@@ -357,16 +357,18 @@ practice and re-imports are always safe.
 | tool | mechanism | setup |
 |---|---|---|
 | Claude Code | MCP server (`dot mcp` via `.mcp.json`), CLAUDE.md, SessionStart hook | `dot init --claude` (or auto-detected) |
-| GitHub Copilot | VS Code extension injects context via the Language Model API | build `vscode-extension/`, press F5 or install the vsix |
+| GitHub Copilot | VS Code extension injects context via the Language Model API | install [Dot - AI Context Memory](https://marketplace.visualstudio.com/items?itemName=AryanMangod.dot-context-memory) from the Marketplace |
 | Copilot (no extension) | Dot-managed section in `.github/copilot-instructions.md`, refreshed hourly | `dot init --copilot` |
 | Cursor / anything | REST API on localhost | `curl localhost:7337/context?query=...` |
 
-To build the VS Code extension:
+Install the extension from the VS Code Marketplace (search "Dot - AI Context
+Memory", or run `code --install-extension AryanMangod.dot-context-memory`).
+
+Contributors building it from source instead:
 
 ```bash
 cd vscode-extension && npm install && npm run compile
-# F5 in VS Code for a dev host, or:
-npx @vscode/vsce package && code --install-extension dot-context-0.1.0.vsix
+# press F5 in VS Code for a dev host
 ```
 
 ## 7. Configuration reference
