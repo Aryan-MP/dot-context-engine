@@ -208,6 +208,23 @@ walkthrough and test experiments, [docs/internals.md](docs/internals.md)
 for the complete technical deep dive (architecture, algorithms, math, and
 trade-offs), and [docs/integrations.md](docs/integrations.md) for tool wiring.
 
+## Roadmap
+
+Dot already works. The interesting part is where it is going:
+
+- **Agent Notebook.** Today agents can write decisions back to Dot when asked. Next,
+  they do it on their own: when an agent finishes a task or makes a call, Dot captures
+  a summary and folds it into memory and into the instruction files each tool reads at
+  startup. Your agents keep their own notes, and the next session begins already knowing.
+- **Memory graph.** Right now memories are a flat, ranked list. Next they become a graph
+  with typed links (supersedes, relates-to, caused-by), so Dot can answer not just *what*
+  you decided but *what replaced it, and why*. Institutional memory you can trace.
+- **Hybrid retrieval.** Semantic search is strong on intent and weak on exact names.
+  Pairing it with classic keyword scoring catches both, so looking up one specific
+  function or flag is as reliable as asking a vague question.
+
+Have a view on what matters most? [Open an issue](https://github.com/Aryan-MP/dot-context-engine/issues).
+
 ## Contributing
 
 We welcome bug reports, feature ideas, and pull requests. See
