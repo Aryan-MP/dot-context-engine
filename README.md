@@ -100,6 +100,21 @@ dot status
 dot dashboard                     # web UI at http://localhost:7337/ui
 ```
 
+## Your first 5 minutes
+
+A quick health check before you wire Dot into every tool. From your project root:
+
+```bash
+dot init && dot daemon start
+dot status                         # expect: files indexed > 0, daemon running
+dot ask "where is X handled?"      # real files, even without exact keywords
+dot memory add "Chose JWT over sessions for the stateless API"
+dot memory list                    # your decision is captured
+```
+
+If `dot ask` returns the right files and `dot memory list` shows your decision,
+the core loop works. Now prove the *shared* part below.
+
 ## One brain, every agent
 
 The point of Dot is that what *one* agent learns, *every* agent knows. Teach it once:
