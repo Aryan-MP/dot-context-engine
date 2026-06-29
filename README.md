@@ -143,6 +143,7 @@ and crosses the tool boundary, which is the whole idea.
 | ![CLI status](docs/assets/screenshots/screenshot-cli.png) | ![Dashboard](docs/assets/screenshots/screenshot-dashboard.png) | ![Extension](docs/assets/screenshots/screenshot-extension.png) |
 
 
+New here? Read the story: [Your AI tools have amnesia. I built them a shared memory.](https://medium.com/@aryanmp2003/your-ai-tools-have-amnesia-i-built-them-a-shared-memory-5ed617e89bc8)  
 Full walkthrough with experiments (terminal + VS Code): [docs/getting-started.md](docs/getting-started.md)  
 Deep technical internals: [docs/internals.md](docs/internals.md)  
 Prerequisites from zero: [docs/foundations.md](docs/foundations.md)
