@@ -14,7 +14,7 @@ try:
 except PackageNotFoundError:
     # Running from a source tree that was never installed (e.g. tests on a
     # fresh checkout). Keep in sync with pyproject.toml as a fallback only.
-    __version__ = "0.1.0a1"
+    __version__ = "0.1.0a2"
 
 DEFAULT_PORT = 7337
 DEFAULT_HOST = "127.0.0.1"

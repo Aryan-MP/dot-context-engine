@@ -43,7 +43,7 @@ body:
       placeholder: |
         OS: Ubuntu 24.04 / macOS 14 / Windows 11
         Python: 3.11.x
-        dot-context: 0.1.0a1
+        dot-context: 0.1.0a2
     validations:
       required: true
 

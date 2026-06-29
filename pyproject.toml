@@ -6,8 +6,8 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "dot-context"
-version = "0.1.0a1"
-description = "Dot — a local-first AI context memory daemon. Stop re-explaining your codebase to every AI tool."
+version = "0.1.0a2"
+description = "Dot - a shared, local-first memory for your AI agents. Stop re-explaining your codebase to every AI tool."
 readme = "README.md"
 license = { text = "MIT" }
 requires-python = ">=3.11"
